@@ -77,9 +77,8 @@
             padding: 0;
             margin: 0;
             box-sizing: border-box;
-            -moz-appearance: textfield; /* Hilangkan panah number di Firefox */
+            -moz-appearance: textfield;
         }
-        /* Hilangkan panah number di Chrome/Safari */
         .circle-input::-webkit-outer-spin-button,
         .circle-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -160,7 +159,7 @@
 
 <div class="game-container">
     <h1>Math Fun: Pecah Angka</h1>
-    <div class="score-board">Skor: <span id="score">0</span></div>
+    <div class="score-board">Soal <span id="current-q-num">1</span> dari 10 | Skor: <span id="score">0</span></div>
     
     <div class="math-problem-area">
         <div class="question-box" id="question-text">Loading...</div>
@@ -184,25 +183,38 @@
 </div>
 
 <script>
-    let currentQuestion = {};
     let score = 0;
+    let questionIndex = 0;
 
+    // 10 Variasi Soal Berbeda
     const questions = [
         { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
         { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+        { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 },
         { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232 },
         { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342 },
-        { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 }
+        { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+        { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588 },
+        { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
+        { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+        { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 }
     ];
 
-    let questionIndex = 0;
+    let currentQuestion = {};
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            questionIndex = 0; 
+            document.querySelector('.game-container').innerHTML = `
+                <h1 style="color: #2e7d32;">Selamat! 🎉</h1>
+                <p style="font-size: 18px; margin: 20px 0;">Kamu telah menyelesaikan semua 10 soal!</p>
+                <p style="font-size: 22px; font-weight: bold;">Skor Akhirmu: ${score}</p>
+                <button onclick="location.reload()" style="margin-top: 20px;">Main Lagi</button>
+            `;
+            return;
         }
+
         currentQuestion = questions[questionIndex];
-        
+        document.getElementById('current-q-num').innerText = questionIndex + 1;
         document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
         
         let circlesContainer = document.getElementById('bond-circles-container');
