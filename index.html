@@ -12,6 +12,7 @@
             text-align: center;
             padding: 20px;
             margin: 0;
+            touch-action: manipulation;
         }
         .game-container {
             max-width: 550px;
@@ -89,8 +90,9 @@
             color: #d32f2f;
             background-color: #f1f8e9;
             box-sizing: border-box;
+            cursor: pointer;
         }
-        .circle-dropzone.drag-over {
+        .circle-dropzone.highlight {
             background-color: #c8e6c9;
             border-color: #1b5e20 !important;
         }
@@ -101,7 +103,8 @@
             justify-content: center;
             gap: 12px;
             margin: 15px 0;
-            min-height: 50px;
+            min-height: 55px;
+            align-items: center;
         }
         .draggable-item {
             width: 50px;
@@ -115,12 +118,18 @@
             font-weight: bold;
             font-size: 16px;
             color: #01579b;
-            cursor: grab;
+            cursor: pointer;
             user-select: none;
+            touch-action: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
         }
-        .draggable-item:active {
-            cursor: grabbing;
+        .draggable-item.dragging {
+            position: fixed;
+            z-index: 1000;
+            opacity: 0.85;
+            pointer-events: none;
+            transform: scale(1.1);
         }
 
         .circle-input {
@@ -276,14 +285,14 @@
                     <!-- Garis cabang SVG -->
                 </svg>
                 <div class="bond-circles" id="bond-circles-container">
-                    <!-- Lingkaran input / dropzone -->
+                    <!-- Lingkaran dropzone -->
                 </div>
             </div>
         </div>
 
         <!-- Wadah Kepingan Drag (Hanya tampil di Easy) -->
         <div id="drag-source-wrapper" style="display:none;">
-            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret angka ke lingkaran hijau di atas:</p>
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret angka ke lingkaran hijau di atas (atau klik untuk memasukkan):</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
@@ -446,49 +455,33 @@
             `;
         }
 
-        // KONDISIONAL: EASY MENGGUNAKAN DRAG-AND-DROP, LEVEL LAIN KETIK MANUAL
         if (currentLevel === 'easy') {
             dragSourceWrapper.style.display = 'block';
 
-            // Buat dropzone lingkaran
             decomp.forEach((_, index) => {
                 let dropzone = document.createElement('div');
                 dropzone.className = 'circle-dropzone';
                 dropzone.id = `decomp-${index}`;
                 dropzone.dataset.value = "";
-                
-                dropzone.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    dropzone.classList.add('drag-over');
-                });
-                dropzone.addEventListener('dragleave', () => {
-                    dropzone.classList.remove('drag-over');
-                });
-                dropzone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    dropzone.classList.remove('drag-over');
-                    let val = e.dataTransfer.getData('text/plain');
-                    dropzone.innerText = val;
-                    dropzone.dataset.value = val;
-                    updateDistributiveLabels();
+                dropzone.innerText = "?";
+
+                // Klik dropzone untuk mengembalikan nilai ke bawah jika ingin diubah
+                dropzone.addEventListener('click', () => {
+                    if (dropzone.dataset.value) {
+                        let val = parseInt(dropzone.dataset.value);
+                        dropzone.dataset.value = "";
+                        dropzone.innerText = "?";
+                        createDraggableItem(val, dragSourceBox);
+                        updateDistributiveLabels();
+                    }
                 });
 
                 circlesContainer.appendChild(dropzone);
             });
 
-            // Buat kepingan angka yang bisa diseret (diacak urutannya)
             let shuffledDecomp = shuffleArray([...decomp]);
             shuffledDecomp.forEach((val) => {
-                let item = document.createElement('div');
-                item.className = 'draggable-item';
-                item.draggable = true;
-                item.innerText = val;
-                
-                item.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', val);
-                });
-
-                dragSourceBox.appendChild(item);
+                createDraggableItem(val, dragSourceBox);
             });
 
         } else {
@@ -504,7 +497,6 @@
             });
         }
 
-        // Render input perkalian distributif bawah
         let container = document.getElementById('inputs-container');
         container.innerHTML = '';
         
@@ -536,7 +528,6 @@
         finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
         container.appendChild(finalGroup);
 
-        // Listener update teks label perkalian otomatis saat diketik (untuk level non-easy)
         if (currentLevel !== 'easy') {
             decomp.forEach((_, index) => {
                 let decompInput = document.getElementById(`decomp-${index}`);
@@ -548,7 +539,80 @@
         }
     }
 
-    // Update label perkalian untuk mode drag-and-drop Easy
+    // Fungsi membuat kepingan seret dengan Pointer Events yang lancar di HP & Laptop
+    function createDraggableItem(val, container) {
+        let item = document.createElement('div');
+        item.className = 'draggable-item';
+        item.innerText = val;
+        item.dataset.value = val;
+
+        item.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            let startX = e.clientX;
+            let startY = e.clientY;
+            let rect = item.getBoundingClientRect();
+            
+            item.classList.add('dragging');
+            item.style.left = `${rect.left}px`;
+            item.style.top = `${rect.top}px`;
+
+            function onPointerMove(e) {
+                let dx = e.clientX - startX;
+                let dy = e.clientY - startY;
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
+
+                // Cek area dropzone
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        zone.classList.add('highlight');
+                    } else {
+                        zone.classList.remove('highlight');
+                    }
+                });
+            }
+
+            function onPointerUp(e) {
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+                item.classList.remove('dragging');
+                item.style.transform = '';
+                item.style.left = '';
+                item.style.top = '';
+
+                let dropped = false;
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    zone.classList.remove('highlight');
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        
+                        // Jika zona sudah terisi, kembalikan isi lama ke bawah
+                        if (zone.dataset.value) {
+                            createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
+                        }
+
+                        zone.dataset.value = val;
+                        zone.innerText = val;
+                        item.remove(); // Hapus dari wadah asal
+                        dropped = true;
+                        updateDistributiveLabels();
+                    }
+                });
+
+                if (!dropped) {
+                    // Kalau tidak masuk ke lingkaran, kembali ke posisi asal
+                }
+            }
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        });
+
+        container.appendChild(item);
+    }
+
     function updateDistributiveLabels() {
         currentQuestion.decomp.forEach((_, index) => {
             let zone = document.getElementById(`decomp-${index}`);
