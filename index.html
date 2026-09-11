@@ -48,7 +48,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         .question-box {
             font-size: 28px;
@@ -74,6 +74,55 @@
             margin-top: -2px;
         }
         
+        .circle-dropzone {
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px;
+            min-height: 52px;
+            border: 3px dashed #388e3c !important;
+            border-radius: 50% !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+            background-color: #f1f8e9;
+            box-sizing: border-box;
+        }
+        .circle-dropzone.drag-over {
+            background-color: #c8e6c9;
+            border-color: #1b5e20 !important;
+        }
+
+        /* KEPINGAN DRAG PILIHAN */
+        .drag-source-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+            min-height: 50px;
+        }
+        .draggable-item {
+            width: 50px;
+            height: 50px;
+            background-color: #e3f2fd;
+            border: 2px solid #0288d1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #01579b;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+
         .circle-input {
             width: 52px !important;
             height: 52px !important;
@@ -97,10 +146,6 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        .circle-input:focus {
-            border-color: #1b5e20 !important;
-            background-color: #fff;
-        }
 
         .lines-svg {
             width: 220px;
@@ -113,7 +158,7 @@
             gap: 8px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 25px 0 15px 0;
+            margin: 15px 0;
             background: #f8fafc;
             padding: 15px;
             border-radius: 12px;
@@ -138,9 +183,6 @@
             border-radius: 8px;
             outline: none;
             transition: border-color 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus {
-            border-color: #2e7d32;
         }
         .btn {
             background-color: #2e7d32;
@@ -211,10 +253,10 @@
         <h1>Pilih Level Kesulitan</h1>
         <p>Halo, <span id="display-player" style="font-weight: bold; color: #2e7d32;"></span>! Pilih tingkat tantanganmu:</p>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Waktu Santai: 60 detik per soal</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Waktu Tantangan: 45 detik per soal</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Waktu Kilat: 30 detik per soal</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Waktu Ekstrem: 20 detik per soal</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Drag & Drop Puluhan • Waktu: 60s</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan Sedang • Waktu: 45s</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (3 Bagian) • Waktu: 30s</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Tantangan • Waktu: 20s</span></div>
         </div>
     </div>
 
@@ -234,9 +276,15 @@
                     <!-- Garis cabang SVG -->
                 </svg>
                 <div class="bond-circles" id="bond-circles-container">
-                    <!-- Lingkaran input kosong -->
+                    <!-- Lingkaran input / dropzone -->
                 </div>
             </div>
+        </div>
+
+        <!-- Wadah Kepingan Drag (Hanya tampil di Easy) -->
+        <div id="drag-source-wrapper" style="display:none;">
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret angka ke lingkaran hijau di atas:</p>
+            <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
         <div class="breakdown-section" id="inputs-container">
@@ -267,24 +315,41 @@
     let timer = 60;
     let timerInterval = null;
 
-    // BANK SOAL PERKALIAN DISTRIBUTIF (Ratusan & Puluhan)
-    const masterQuestions = [
-        { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
-        { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
-        { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 },
-        { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232 },
-        { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342 },
-        { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
-        { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588 },
-        { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
-        { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
-        { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
-        { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
-        { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
-        { a: 45, b: 6, decomp: [40, 5], parts: [240, 30], ans: 270 },
-        { a: 73, b: 8, decomp: [70, 3], parts: [560, 24], ans: 584 },
-        { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 }
-    ];
+    const levelBanks = {
+        easy: [
+            { a: 24, b: 6, decomp: [20, 4], parts: [120, 24], ans: 144 },
+            { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232 },
+            { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342 },
+            { a: 45, b: 6, decomp: [40, 5], parts: [240, 30], ans: 270 },
+            { a: 64, b: 7, decomp: [60, 4], parts: [420, 28], ans: 448 },
+            { a: 34, b: 5, decomp: [30, 4], parts: [150, 20], ans: 170 },
+            { a: 42, b: 3, decomp: [40, 2], parts: [120, 6], ans: 126 },
+            { a: 53, b: 4, decomp: [50, 3], parts: [200, 12], ans: 212 },
+            { a: 26, b: 7, decomp: [20, 6], parts: [140, 42], ans: 182 },
+            { a: 38, b: 5, decomp: [30, 8], parts: [150, 40], ans: 190 }
+        ],
+        medium: [
+            { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588 },
+            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+            { a: 73, b: 8, decomp: [70, 3], parts: [560, 24], ans: 584 },
+            { a: 96, b: 5, decomp: [90, 6], parts: [450, 30], ans: 480 },
+            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 }
+        ],
+        expert: [
+            { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
+            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+            { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 },
+            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
+            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 }
+        ],
+        nightmare: [
+            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+            { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
+            { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
+            { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
+            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 }
+        ]
+    };
 
     function goToScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -317,15 +382,14 @@
         score = 0;
         questionIndex = 0;
 
-        // Filter atau ambil 5 soal secara acak berdasarkan level
-        let shuffled = shuffleArray([...masterQuestions]);
-        questions = shuffled.slice(0, 5);
+        let sourceBank = levelBanks[level];
+        let shuffledBank = shuffleArray([...sourceBank]);
+        questions = shuffledBank.slice(0, 5);
 
-        // Atur durasi timer berdasarkan level
         if (level === 'easy') timer = 60;
         else if (level === 'medium') timer = 45;
         else if (level === 'expert') timer = 30;
-        else timer = 20; // Nightmare
+        else timer = 20;
 
         goToScreen('screen-game');
         loadQuestion();
@@ -344,12 +408,10 @@
         document.getElementById('score').innerText = score;
         document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
         
-        // Reset Tombol
         document.getElementById('submit-btn').style.display = 'block';
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        // Reset Timer per soal
         if (currentLevel === 'easy') timer = 60;
         else if (currentLevel === 'medium') timer = 45;
         else if (currentLevel === 'expert') timer = 30;
@@ -361,8 +423,12 @@
 
         let circlesContainer = document.getElementById('bond-circles-container');
         let svgContainer = document.getElementById('bond-lines');
+        let dragSourceWrapper = document.getElementById('drag-source-wrapper');
+        let dragSourceBox = document.getElementById('drag-source-box');
+
         circlesContainer.innerHTML = '';
         svgContainer.innerHTML = '';
+        dragSourceBox.innerHTML = '';
 
         let decomp = currentQuestion.decomp;
         let count = decomp.length;
@@ -380,15 +446,65 @@
             `;
         }
 
-        decomp.forEach((_, index) => {
-            let inputCircle = document.createElement('input');
-            inputCircle.type = 'number';
-            inputCircle.className = 'circle-input';
-            inputCircle.id = `decomp-${index}`;
-            inputCircle.placeholder = '?';
-            circlesContainer.appendChild(inputCircle);
-        });
+        // KONDISIONAL: EASY MENGGUNAKAN DRAG-AND-DROP, LEVEL LAIN KETIK MANUAL
+        if (currentLevel === 'easy') {
+            dragSourceWrapper.style.display = 'block';
 
+            // Buat dropzone lingkaran
+            decomp.forEach((_, index) => {
+                let dropzone = document.createElement('div');
+                dropzone.className = 'circle-dropzone';
+                dropzone.id = `decomp-${index}`;
+                dropzone.dataset.value = "";
+                
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('drag-over');
+                });
+                dropzone.addEventListener('dragleave', () => {
+                    dropzone.classList.remove('drag-over');
+                });
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('drag-over');
+                    let val = e.dataTransfer.getData('text/plain');
+                    dropzone.innerText = val;
+                    dropzone.dataset.value = val;
+                    updateDistributiveLabels();
+                });
+
+                circlesContainer.appendChild(dropzone);
+            });
+
+            // Buat kepingan angka yang bisa diseret (diacak urutannya)
+            let shuffledDecomp = shuffleArray([...decomp]);
+            shuffledDecomp.forEach((val) => {
+                let item = document.createElement('div');
+                item.className = 'draggable-item';
+                item.draggable = true;
+                item.innerText = val;
+                
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', val);
+                });
+
+                dragSourceBox.appendChild(item);
+            });
+
+        } else {
+            dragSourceWrapper.style.display = 'none';
+
+            decomp.forEach((_, index) => {
+                let inputCircle = document.createElement('input');
+                inputCircle.type = 'number';
+                inputCircle.className = 'circle-input';
+                inputCircle.id = `decomp-${index}`;
+                inputCircle.placeholder = '?';
+                circlesContainer.appendChild(inputCircle);
+            });
+        }
+
+        // Render input perkalian distributif bawah
         let container = document.getElementById('inputs-container');
         container.innerHTML = '';
         
@@ -420,12 +536,27 @@
         finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
         container.appendChild(finalGroup);
 
-        decomp.forEach((_, index) => {
-            let decompInput = document.getElementById(`decomp-${index}`);
-            decompInput.addEventListener('input', (e) => {
-                let val = e.target.value || '?';
-                document.getElementById(`label-part-${index}`).innerText = `${val} × ${currentQuestion.b}`;
+        // Listener update teks label perkalian otomatis saat diketik (untuk level non-easy)
+        if (currentLevel !== 'easy') {
+            decomp.forEach((_, index) => {
+                let decompInput = document.getElementById(`decomp-${index}`);
+                decompInput.addEventListener('input', (e) => {
+                    let val = e.target.value || '?';
+                    document.getElementById(`label-part-${index}`).innerText = `${val} × ${currentQuestion.b}`;
+                });
             });
+        }
+    }
+
+    // Update label perkalian untuk mode drag-and-drop Easy
+    function updateDistributiveLabels() {
+        currentQuestion.decomp.forEach((_, index) => {
+            let zone = document.getElementById(`decomp-${index}`);
+            let val = zone.dataset.value || '?';
+            let label = document.getElementById(`label-part-${index}`);
+            if(label) {
+                label.innerText = `${val} × ${currentQuestion.b}`;
+            }
         });
     }
 
@@ -447,7 +578,13 @@
         let allCorrect = true;
         
         currentQuestion.decomp.forEach((val, index) => {
-            let userVal = parseInt(document.getElementById(`decomp-${index}`).value);
+            let userVal;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                userVal = parseInt(zone.dataset.value);
+            } else {
+                userVal = parseInt(document.getElementById(`decomp-${index}`).value);
+            }
             if (userVal !== val) allCorrect = false;
         });
 
