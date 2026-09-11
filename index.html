@@ -97,6 +97,10 @@
             background-color: #c8e6c9;
             border-color: #1b5e20 !important;
         }
+        .circle-dropzone.error-highlight {
+            background-color: #ffcdd2;
+            border-color: #d32f2f !important;
+        }
 
         /* KEPINGAN DRAG PILIHAN */
         .drag-source-container {
@@ -211,7 +215,6 @@
         .btn-secondary { background-color: #0288d1; }
         .btn-secondary:hover { background-color: #01579b; }
         
-        /* TOMBOL KEMBALI KECIL DI POJOK */
         .btn-back-menu {
             background-color: #78909c;
             color: white;
@@ -281,16 +284,15 @@
         <h1>Pilih Level Kesulitan</h1>
         <p>Halo, <span id="display-player" style="font-weight: bold; color: #2e7d32;"></span>! Pilih tingkat tantanganmu:</p>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Drag & Drop Puluhan • Waktu: 60s</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan Sedang • Waktu: 45s</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (3 Bagian) • Waktu: 30s</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Tantangan • Waktu: 20s</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Belasan (12-19) • Waktu: 60s</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan (20-50) • Waktu: 45s</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (60-200) • Waktu: 30s</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Tinggi (>200) • Waktu: 20s</span></div>
         </div>
     </div>
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
     <div id="screen-game" class="screen">
-        <!-- Tombol kembali ke menu tingkat kesulitan -->
         <div style="text-align: left;">
             <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
         </div>
@@ -316,7 +318,7 @@
 
         <!-- Wadah Kepingan Drag (Hanya tampil di Easy) -->
         <div id="drag-source-wrapper" style="display:none;">
-            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret angka ke lingkaran hijau di atas (atau klik untuk memasukkan):</p>
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret <b>Puluhan ke kiri</b> & <b>Satuan ke kanan</b>:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
@@ -350,37 +352,52 @@
 
     const levelBanks = {
         easy: [
-            { a: 24, b: 6, decomp: [20, 4], parts: [120, 24], ans: 144 },
-            { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232 },
-            { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342 },
-            { a: 45, b: 6, decomp: [40, 5], parts: [240, 30], ans: 270 },
-            { a: 64, b: 7, decomp: [60, 4], parts: [420, 28], ans: 448 },
-            { a: 34, b: 5, decomp: [30, 4], parts: [150, 20], ans: 170 },
-            { a: 42, b: 3, decomp: [40, 2], parts: [120, 6], ans: 126 },
-            { a: 53, b: 4, decomp: [50, 3], parts: [200, 12], ans: 212 },
-            { a: 26, b: 7, decomp: [20, 6], parts: [140, 42], ans: 182 },
-            { a: 38, b: 5, decomp: [30, 8], parts: [150, 40], ans: 190 }
+            { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
+            { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
+            { a: 14, b: 2, decomp: [10, 4], parts: [20, 8], ans: 28 },
+            { a: 15, b: 3, decomp: [10, 5], parts: [30, 15], ans: 45 },
+            { a: 16, b: 4, decomp: [10, 6], parts: [40, 24], ans: 64 },
+            { a: 17, b: 3, decomp: [10, 7], parts: [30, 21], ans: 51 },
+            { a: 18, b: 2, decomp: [10, 8], parts: [20, 16], ans: 36 },
+            { a: 19, b: 4, decomp: [10, 9], parts: [40, 36], ans: 76 },
+            { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
+            { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 }
         ],
-        medium: [
-            { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588 },
-            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
-            { a: 73, b: 8, decomp: [70, 3], parts: [560, 24], ans: 584 },
-            { a: 96, b: 5, decomp: [90, 6], parts: [450, 30], ans: 480 },
-            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 }
+        medium: [ // Angka depan berkisar 20 - 50
+            { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
+            { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
+            { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
+            { a: 42, b: 6, decomp: [40, 2], parts: [240, 12], ans: 252 },
+            { a: 45, b: 3, decomp: [40, 5], parts: [120, 15], ans: 135 },
+            { a: 28, b: 4, decomp: [20, 8], parts: [80, 32], ans: 112 },
+            { a: 36, b: 5, decomp: [30, 6], parts: [150, 30], ans: 180 },
+            { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
+            { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
+            { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
         ],
-        expert: [
+        expert: [ // Angka depan berkisar 60 - 200 (3 Bagian)
+            { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
+            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
+            { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
             { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
-            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
-            { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 },
-            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
-            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 }
+            { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
+            { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
+            { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
+            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
+            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+            { a: 190, b: 5, decomp: [100, 90, 0], parts: [500, 450, 0], ans: 950 }
         ],
-        nightmare: [
-            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+        nightmare: [ // Angka depan di atas 200 (3 Bagian)
             { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
+            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
             { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
+            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
             { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
-            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 }
+            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
+            { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
+            { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
+            { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
         ]
     };
 
@@ -400,7 +417,6 @@
         goToScreen('screen-levels');
     }
 
-    // Fungsi untuk kembali ke menu level sekaligus menghentikan timer aktif
     function returnToMenu() {
         clearInterval(timerInterval);
         goToScreen('screen-levels');
@@ -493,6 +509,7 @@
                 dropzone.className = 'circle-dropzone';
                 dropzone.id = `decomp-${index}`;
                 dropzone.dataset.value = "";
+                dropzone.dataset.index = index; // 0 = Kiri (Puluhan), 1 = Kanan (Satuan)
                 dropzone.innerText = "?";
 
                 dropzone.addEventListener('click', () => {
@@ -609,12 +626,34 @@
                 item.style.top = '';
 
                 let dropped = false;
+                let feedback = document.getElementById('feedback');
+
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     zone.classList.remove('highlight');
                     let zRect = zone.getBoundingClientRect();
                     if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
                         e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
                         
+                        let zoneIndex = parseInt(zone.dataset.index); // 0 = Kiri (Puluhan), 1 = Kanan (Satuan)
+                        let isPuluhan = val >= 10;
+                        let isSatuan = val < 10;
+
+                        // Validasi posisi: Kiri harus puluhan, Kanan harus satuan
+                        let isValidPosition = (zoneIndex === 0 && isPuluhan) || (zoneIndex === 1 && isSatuan);
+
+                        if (!isValidPosition) {
+                            // Ditolak / Mental
+                            zone.classList.add('error-highlight');
+                            setTimeout(() => zone.classList.remove('error-highlight'), 600);
+                            
+                            feedback.innerText = zoneIndex === 0 
+                                ? "⚠️ Kotak kiri khusus untuk angka puluhan (contoh: 10)!" 
+                                : "⚠️ Kotak kanan khusus untuk angka satuan!";
+                            feedback.className = "incorrect";
+                            return;
+                        }
+
+                        // Jika valid dan zona sudah terisi, kembalikan isi lama ke bawah
                         if (zone.dataset.value) {
                             createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
                         }
@@ -622,6 +661,7 @@
                         zone.dataset.value = val;
                         zone.innerText = val;
                         item.remove();
+                        feedback.innerText = "";
                         dropped = true;
                         updateDistributiveLabels();
                     }
