@@ -3,110 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Pecah Perkalian & Number Bond Interaktif</title>
+    <title>Game Matematika Miss Runi</title>
     <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --accent: #ffb300;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --danger: #d32f2f;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            background-color: var(--bg);
+            color: var(--text);
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             margin: 0;
         }
-        .game-container {
-            max-width: 550px;
-            margin: 30px auto;
-            background: white;
-            padding: 30px;
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
         }
         h1 {
-            color: #2e7d32;
+            color: var(--primary);
             font-size: 24px;
             margin-bottom: 5px;
         }
-        .score-board {
-            font-size: 16px;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 15px;
-        }
+        p { color: #666; font-size: 14px; }
         
-        .math-problem-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* Screen Management */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* Form Inputs */
+        input[type="text"], input[type="number"] {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            text-align: center;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            margin: 10px 0;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn:hover { background-color: var(--primary-dark); }
+        .btn:active { transform: scale(0.98); }
+        .btn-secondary { background-color: #0288d1; }
+        .btn-secondary:hover { background-color: #01579b; }
+
+        /* Menu & Level Grid */
+        .menu-grid, .level-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
             margin: 20px 0;
         }
+        .card-menu, .level-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .card-menu:hover, .level-card:hover {
+            border-color: var(--primary);
+            background: #f1f8e9;
+        }
+        .level-card.easy { border-left: 6px solid #4caf50; }
+        .level-card.medium { border-left: 6px solid #ff9800; }
+        .level-card.expert { border-left: 6px solid #f44336; }
+        .level-card.nightmare { border-left: 6px solid #9c27b0; }
+
+        /* Game Play Arena */
+        .game-header-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 14px;
+            background: #e8f5e9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        .timer-box { color: var(--danger); }
+        
         .question-box {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             color: #1f2937;
+            margin: 15px 0;
         }
-        
-        /* NUMBER BOND DIGESER KE KIRI */
+
+        /* Number Bond & Drag Drop */
         .number-bond-container {
             position: relative;
             width: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 5px;
-            margin-left: -100px;
+            margin: 10px auto;
+            margin-left: calc(50% - 110px);
         }
-        
         .bond-circles {
             display: flex;
             justify-content: space-between;
             width: 100%;
             margin-top: -2px;
         }
-        
-        /* DIJAMIN BENTUK LINGKARAN SEMPURNA */
-        .circle-input {
+        .circle-input, .drop-zone {
             width: 52px !important;
             height: 52px !important;
             min-width: 52px;
             min-height: 52px;
-            border: 3px solid #388e3c !important;
+            border: 3px solid var(--primary) !important;
             border-radius: 50% !important;
             text-align: center;
             font-size: 16px;
             font-weight: bold;
-            color: #d32f2f;
+            color: var(--danger);
             background-color: #f1f8e9;
             outline: none;
             padding: 0;
-            margin: 0;
             box-sizing: border-box;
-            -moz-appearance: textfield;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .circle-input::-webkit-outer-spin-button,
-        .circle-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        .lines-svg { width: 220px; height: 35px; }
 
-        .circle-input:focus {
-            border-color: #1b5e20 !important;
-            background-color: #fff;
+        .drag-items-pool {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            min-height: 55px;
         }
-
-        .lines-svg {
-            width: 220px;
-            height: 35px;
+        .drag-item {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: grab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            user-select: none;
         }
+        .drag-item:active { cursor: grabbing; }
 
         .breakdown-section {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 25px 0 15px 0;
+            margin: 15px 0;
             background: #f8fafc;
-            padding: 15px;
+            padding: 12px;
             border-radius: 12px;
         }
         .input-group {
@@ -115,251 +201,483 @@
             align-items: center;
         }
         .input-group label {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 600;
         }
-        input[type="number"] {
-            width: 75px;
-            padding: 8px;
-            font-size: 16px;
-            text-align: center;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.2s;
+        .breakdown-section input {
+            width: 65px;
+            padding: 6px;
+            font-size: 14px;
         }
-        input[type="number"]:focus {
-            border-color: #2e7d32;
-        }
-        button {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-        button:hover {
-            background-color: #1b5e20;
-        }
+
         #feedback {
-            margin-top: 15px;
-            font-size: 16px;
+            margin-top: 10px;
+            font-size: 15px;
             font-weight: bold;
+            min-height: 24px;
         }
-        .correct { color: #2e7d32; }
-        .incorrect { color: #d32f2f; }
+        .correct { color: var(--primary); }
+        .incorrect { color: var(--danger); }
+
+        /* Podium Leaderboard */
+        .podium-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin: 20px 0;
+            height: 160px;
+        }
+        .podium-step {
+            width: 90px;
+            background: #e2e8f0;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .podium-1 { height: 140px; background: #ffd700; color: #744210; }
+        .podium-2 { height: 110px; background: #c0c0c0; color: #334155; }
+        .podium-3 { height: 85px; background: #cd7f32; color: #fff; }
+        
+        .leaderboard-list {
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-<div class="game-container">
-    <h1>Math Fun: Pecah Angka</h1>
-    <div class="score-board">Soal <span id="current-q-num">1</span> dari 10 | Skor: <span id="score">0</span></div>
-    
-    <div class="math-problem-area">
-        <div class="question-box" id="question-text">Loading...</div>
-        
-        <div class="number-bond-container" id="bond-container">
-            <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
-                <!-- Garis cabang SVG -->
-            </svg>
-            <div class="bond-circles" id="bond-circles-container">
-                <!-- Lingkaran input kosong -->
-            </div>
+<div class="container">
+    <!-- SCREEN 1: WELCOME & PLAYER NAME -->
+    <div id="screen-welcome" class="screen active">
+        <h1>Selamat Datang di Game Miss Runi! 🌟</h1>
+        <p>Asah kemampuan matematika jadi seru dan menyenangkan!</p>
+        <div style="margin: 30px 0;">
+            <label for="player-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Masukkan Nama Player:</label>
+            <input type="text" id="player-name" placeholder="Nama Kamu..." maxlength="15">
         </div>
-    </div>
-    
-    <div class="breakdown-section" id="inputs-container">
-        <!-- Input dinamis perkalian distributif -->
+        <button class="btn" onclick="setPlayerName()">Mulai Bermain 🚀</button>
     </div>
 
-    <button id="submit-btn" onclick="checkAnswer()">Jawab</button>
-    <div id="feedback"></div>
+    <!-- SCREEN 2: TOPIC MENU -->
+    <div id="screen-menu" class="screen">
+        <h1>Pilih Menu Utama</h1>
+        <p>Halo, <span id="display-player" style="font-weight: bold; color: var(--primary);"></span>! Pilih topik latihan hari ini:</p>
+        <div class="menu-grid">
+            <div class="card-menu" onclick="selectTopic('multiplication')">✖️ Multiplication (Perkalian)</div>
+            <div class="card-menu" onclick="selectTopic('division')">➗ Division (Pembagian)</div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: LEVEL MAP -->
+    <div id="screen-levels" class="screen">
+        <h1>Peta Level</h1>
+        <p>Pilih tingkat kesulitan tantanganmu:</p>
+        <div class="level-grid">
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666;">(Drag & Drop Dasar + Waktu Santai 60s)</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666;">(Teka-teki Komponen + Waktu 45s)</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666;">(Angka Lebih Besar + Waktu 30s)</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666;">(Tantangan Kilat + Waktu 20s)</span></div>
+        </div>
+        <button class="btn btn-secondary" onclick="goToScreen('screen-menu')" style="margin-top: 15px;">Kembali ke Menu Topik</button>
+    </div>
+
+    <!-- SCREEN 4: GAMEPLAY ARENA -->
+    <div id="screen-game" class="screen">
+        <div class="game-header-info">
+            <div>Level: <span id="lbl-level">Easy</span> | Soal: <span id="lbl-qnum">1</span>/5</div>
+            <div>XP: <span id="lbl-score">0</span></div>
+            <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
+        </div>
+
+        <div class="math-problem-area">
+            <div class="question-box" id="question-text">Loading...</div>
+            
+            <!-- Area dinamis khusus Easy (Drag & Drop Number Bond) -->
+            <div id="easy-bond-wrapper" style="display:none;">
+                <div class="number-bond-container">
+                    <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
+                        <line x1="110" y1="0" x2="55" y2="30" stroke="#388e3c" stroke-width="3" />
+                        <line x1="110" y1="0" x2="165" y2="30" stroke="#388e3c" stroke-width="3" />
+                    </svg>
+                    <div class="bond-circles" id="bond-circles-container">
+                        <div class="drop-zone" ondragover="allowDrop(event)" ondrop="drop(event, 0)" id="drop-0">?</div>
+                        <div class="drop-zone" ondragover="allowDrop(event)" ondrop="drop(event, 1)" id="drop-1">?</div>
+                    </div>
+                </div>
+                <div class="drag-items-pool" id="drag-pool">
+                    <!-- Item angka yang bisa di-drag -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="breakdown-section" id="inputs-container">
+            <!-- Input dinamis turunan perkalian/pembagian -->
+        </div>
+
+        <button class="btn" id="submit-btn" onclick="checkAnswer()">Jawab 🎯</button>
+        <button class="btn btn-secondary" id="next-btn" onclick="nextQuestion()" style="display:none; background-color: #f57c00;">Next Soal ➡️ (Bahas Dulu)</button>
+        <div id="feedback"></div>
+    </div>
+
+    <!-- SCREEN 5: LEADERBOARD / PODIUM -->
+    <div id="screen-score" class="screen">
+        <h1>Hasil Akhir Permainan! 🎉</h1>
+        <p>Hebat, <span id="final-player-name"></span>! Kamu telah menyelesaikan level ini.</p>
+        <h2 style="color: var(--primary); margin: 10px 0;">Skor Totalmu: <span id="final-score">0</span> XP</h2>
+        
+        <!-- Podium Tampilan -->
+        <div class="podium-container" id="podium-box">
+            <!-- Diisi dinamis -->
+        </div>
+
+        <h3>Papan Peringkat Sesi Ini</h3>
+        <div class="leaderboard-list" id="leaderboard-container">
+            <!-- List pemain -->
+        </div>
+
+        <button class="btn" onclick="goToScreen('screen-levels')" style="margin-top: 15px;">Pilih Level Lain 🗺️</button>
+        <button class="btn btn-secondary" onclick="goToScreen('screen-menu')">Ganti Topik / Menu Utama 🏠</button>
+    </div>
 </div>
 
 <script>
-    let score = 0;
-    let questionIndex = 0;
-
-    // BANK SOAL BESAR (Campuran Ratusan & Puluhan)
-    const masterQuestions = [
-        { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
-        { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
-        { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712 },
-        { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232 },
-        { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342 },
-        { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
-        { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588 },
-        { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
-        { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
-        { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
-        { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
-        { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
-        { a: 45, b: 6, decomp: [40, 5], parts: [240, 30], ans: 270 },
-        { a: 73, b: 8, decomp: [70, 3], parts: [560, 24], ans: 584 },
-        { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
-        { a: 96, b: 5, decomp: [90, 6], parts: [450, 30], ans: 480 },
-        { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
-        { a: 64, b: 7, decomp: [60, 4], parts: [420, 28], ans: 448 }
+    // --- BANK SOAL MULTIPLICATION & DIVISION (Masing-masing > 15 soal) ---
+    const bankMultiplication = [
+        { a: 24, b: 6, decomp: [20, 4], parts: [120, 24], ans: 144, type: 2 },
+        { a: 57, b: 6, decomp: [50, 7], parts: [300, 42], ans: 342, type: 2 },
+        { a: 84, b: 7, decomp: [80, 4], parts: [560, 28], ans: 588, type: 2 },
+        { a: 29, b: 8, decomp: [20, 9], parts: [160, 72], ans: 232, type: 2 },
+        { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612, type: 2 },
+        { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744, type: 3 },
+        { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768, type: 3 },
+        { a: 178, b: 4, decomp: [100, 70, 8], parts: [400, 280, 32], ans: 712, type: 3 },
+        { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575, type: 3 },
+        { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846, type: 3 },
+        { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540, type: 3 },
+        { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026, type: 3 },
+        { a: 45, b: 6, decomp: [40, 5], parts: [240, 30], ans: 270, type: 2 },
+        { a: 73, b: 8, decomp: [70, 3], parts: [560, 24], ans: 584, type: 2 },
+        { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048, type: 3 }
     ];
 
-    let questions = [];
+    const bankDivision = [
+        { a: 72, b: 6, decomp: [60, 12], parts: [10, 2], ans: 12, type: 2 },
+        { a: 84, b: 7, decomp: [70, 14], parts: [10, 2], ans: 12, type: 2 },
+        { a: 96, b: 8, decomp: [80, 16], parts: [10, 2], ans: 12, type: 2 },
+        { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13, type: 2 },
+        { a: 91, b: 7, decomp: [70, 21], parts: [10, 3], ans: 13, type: 2 },
+        { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32, type: 2 },
+        { a: 135, b: 5, decomp: [100, 35], parts: [20, 7], ans: 27, type: 2 },
+        { a: 144, b: 6, decomp: [120, 24], parts: [20, 4], ans: 24, type: 2 },
+        { a: 225, b: 5, decomp: [200, 25], parts: [40, 5], ans: 45, type: 2 },
+        { a: 216, b: 4, decomp: [200, 16], parts: [50, 4], ans: 54, type: 2 },
+        { a: 312, b: 3, decomp: [300, 12], parts: [100, 4], ans: 104, type: 2 },
+        { a: 424, b: 4, decomp: [400, 24], parts: [100, 6], ans: 106, type: 2 },
+        { a: 186, b: 3, decomp: [180, 6], parts: [60, 2], ans: 62, type: 2 },
+        { a: 255, b: 5, decomp: [250, 5], parts: [50, 1], ans: 51, type: 2 },
+        { a: 369, b: 3, decomp: [300, 60, 9], parts: [100, 20, 3], ans: 123, type: 3 }
+    ];
 
-    // Fungsi untuk mengacak urutan array (Fisher-Yates Shuffle)
-    function shuffleArray(array) {
-        let currentIndex = array.length, randomIndex;
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-        }
-        return array;
+    // --- STATE GAME ---
+    let playerName = "";
+    let currentTopic = "multiplication"; // 'multiplication' or 'division'
+    let currentLevel = "easy";          // 'easy', 'medium', 'expert', 'nightmare'
+    let activeQuestions = [];
+    let qIndex = 0;
+    let score = 0;
+    let timer = 60;
+    let timerInterval = null;
+    let leaderboardData = [];
+    let draggedValue = null;
+
+    // --- NAVIGASI LAYAR ---
+    function goToScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
     }
 
-    // Ambil 10 soal secara acak saat game dimulai
-    function initGame() {
-        let shuffled = shuffleArray([...masterQuestions]);
-        questions = shuffled.slice(0, 10);
+    function setPlayerName() {
+        const input = document.getElementById('player-name').value.trim();
+        if(!input) {
+            alert("Tulis nama kamu dulu ya!");
+            return;
+        }
+        playerName = input;
+        document.getElementById('display-player').innerText = playerName;
+        goToScreen('screen-menu');
+    }
+
+    function selectTopic(topic) {
+        currentTopic = topic;
+        goToScreen('screen-levels');
+    }
+
+    // --- MULAI LEVEL & ACAK 5 SOAL ---
+    function startLevel(level) {
+        currentLevel = level;
         score = 0;
-        questionIndex = 0;
+        qIndex = 0;
+
+        // Ambil dari bank soal sesuai topik
+        let sourceBank = currentTopic === 'multiplication' ? [...bankMultiplication] : [...bankDivision];
+        
+        // Shuffle Fisher-Yates
+        for (let i = sourceBank.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [sourceBank[i], sourceBank[j]] = [sourceBank[j], sourceBank[i]];
+        }
+        
+        // Ambil tepat 5 soal
+        activeQuestions = sourceBank.slice(0, 5);
+
+        document.getElementById('lbl-level').innerText = level.toUpperCase();
+        goToScreen('screen-game');
         loadQuestion();
     }
 
-    let currentQuestion = {};
-
+    // --- MUAT SOAL ---
     function loadQuestion() {
-        if (questionIndex >= questions.length) {
-            document.querySelector('.game-container').innerHTML = `
-                <h1 style="color: #2e7d32;">Selamat! 🎉</h1>
-                <p style="font-size: 18px; margin: 20px 0;">Kamu telah menyelesaikan semua 10 soal acak!</p>
-                <p style="font-size: 22px; font-weight: bold;">Skor Akhirmu: ${score}</p>
-                <button onclick="initGame()" style="margin-top: 20px;">Main Lagi (Soal Baru)</button>
-            `;
+        if (qIndex >= activeQuestions.length) {
+            endGame();
             return;
         }
 
-        currentQuestion = questions[questionIndex];
-        document.getElementById('current-q-num').innerText = questionIndex + 1;
-        document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
+        const q = activeQuestions[qIndex];
+        document.getElementById('lbl-qnum').innerText = qIndex + 1;
+        document.getElementById('lbl-score').innerText = score;
         
-        let circlesContainer = document.getElementById('bond-circles-container');
-        let svgContainer = document.getElementById('bond-lines');
-        circlesContainer.innerHTML = '';
-        svgContainer.innerHTML = '';
+        // Reset Tombol & Feedback
+        document.getElementById('submit-btn').style.display = 'block';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('feedback').innerText = '';
 
-        let decomp = currentQuestion.decomp;
-        let count = decomp.length;
+        // Tentukan Timer berdasarkan level (Lebih longgar)
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20; // Nightmare
 
-        if (count === 3) {
-            svgContainer.innerHTML = `
-                <line x1="110" y1="0" x2="30" y2="30" stroke="#388e3c" stroke-width="3" />
-                <line x1="110" y1="0" x2="110" y2="30" stroke="#388e3c" stroke-width="3" />
-                <line x1="110" y1="0" x2="190" y2="30" stroke="#388e3c" stroke-width="3" />
-            `;
+        document.getElementById('lbl-timer').innerText = timer;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // Render Tampilan Teks Soal
+        let symbol = currentTopic === 'multiplication' ? '×' : '÷';
+        document.getElementById('question-text').innerText = `${q.a} ${symbol} ${q.b} = ...`;
+
+        // Atur Tampilan khusus Easy (Drag & Drop) vs Lainnya
+        const easyWrapper = document.getElementById('easy-bond-wrapper');
+        const inputsContainer = document.getElementById('inputs-container');
+        inputsContainer.innerHTML = '';
+
+        if (currentLevel === 'easy' && q.decomp.length === 2) {
+            easyWrapper.style.display = 'block';
+            
+            // Render Drop Zones
+            let circlesContainer = document.getElementById('bond-circles-container');
+            circlesContainer.innerHTML = '';
+            q.decomp.forEach((val, idx) => {
+                let zone = document.createElement('div');
+                zone.className = 'drop-zone';
+                zone.id = `drop-${idx}`;
+                zone.setAttribute('ondragover', 'allowDrop(event)');
+                zone.setAttribute('ondrop', `drop(event, ${idx})`);
+                zone.innerText = '?';
+                circlesContainer.appendChild(zone);
+            });
+
+            // Render Drag Pool (diacak isinya)
+            let poolContainer = document.getElementById('drag-pool');
+            poolContainer.innerHTML = '';
+            let shuffledPool = [...q.decomp].sort(() => Math.random() - 0.5);
+            shuffledPool.forEach((val, idx) => {
+                let item = document.createElement('div');
+                item.className = 'drag-item';
+                item.draggable = true;
+                item.innerText = val;
+                item.id = `drag-item-${idx}`;
+                item.setAttribute('ondragstart', `drag(event, ${val})`);
+                poolContainer.appendChild(item);
+            });
         } else {
-            svgContainer.innerHTML = `
-                <line x1="110" y1="0" x2="55" y2="30" stroke="#388e3c" stroke-width="3" />
-                <line x1="110" y1="0" x2="165" y2="30" stroke="#388e3c" stroke-width="3" />
-            `;
+            easyWrapper.style.display = 'none';
+            // Buat input manual jika bukan level easy atau dekomposisi 3 bagian
+            q.decomp.forEach((_, idx) => {
+                let grp = document.createElement('div');
+                grp.className = 'input-group';
+                grp.innerHTML = `<label>Bagian ${idx+1}</label><input type="number" id="decomp-${idx}" placeholder="?">`;
+                inputsContainer.appendChild(grp);
+            });
         }
 
-        decomp.forEach((_, index) => {
-            let inputCircle = document.createElement('input');
-            inputCircle.type = 'number';
-            inputCircle.className = 'circle-input';
-            inputCircle.id = `decomp-${index}`;
-            inputCircle.placeholder = '?';
-            circlesContainer.appendChild(inputCircle);
+        // Input Breakdown Parts & Total
+        q.parts.forEach((_, idx) => {
+            let grp = document.createElement('div');
+            grp.className = 'input-group';
+            grp.innerHTML = `<label>Sub-Hasil ${idx+1}</label><input type="number" id="part-${idx}" placeholder="?">`;
+            inputsContainer.appendChild(grp);
         });
 
-        let container = document.getElementById('inputs-container');
-        container.innerHTML = '';
-        
-        currentQuestion.parts.forEach((_, index) => {
-            if (index > 0) {
-                let plus = document.createElement('span');
-                plus.innerText = '+';
-                plus.style.fontSize = '18px';
-                plus.style.fontWeight = 'bold';
-                plus.style.color = '#555';
-                container.appendChild(plus);
-            }
-            
-            let group = document.createElement('div');
-            group.className = 'input-group';
-            group.innerHTML = `<label id="label-part-${index}">[ ? ] × ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
-            container.appendChild(group);
-        });
-
-        let equals = document.createElement('span');
-        equals.innerText = '=';
-        equals.style.fontSize = '18px';
-        equals.style.fontWeight = 'bold';
-        equals.style.color = '#555';
-        container.appendChild(equals);
-
-        let finalGroup = document.createElement('div');
-        finalGroup.className = 'input-group';
-        finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
-        container.appendChild(finalGroup);
-
-        decomp.forEach((_, index) => {
-            let decompInput = document.getElementById(`decomp-${index}`);
-            decompInput.addEventListener('input', (e) => {
-                let val = e.target.value || '?';
-                document.getElementById(`label-part-${index}`).innerText = `${val} × ${currentQuestion.b}`;
-            });
-        });
-
-        document.getElementById('feedback').innerText = '';
+        let finalGrp = document.createElement('div');
+        finalGrp.className = 'input-group';
+        finalGrp.innerHTML = `<label>Jawaban Akhir</label><input type="number" id="final-ans" placeholder="Total">`;
+        inputsContainer.appendChild(finalGrp);
     }
 
+    // --- TIMER SYSTEM ---
+    function updateTimer() {
+        if (timer > 0) {
+            timer--;
+            document.getElementById('lbl-timer').innerText = timer;
+        } else {
+            // Waktu habis, potong 10 XP
+            score = Math.max(0, score - 10);
+            document.getElementById('lbl-score').innerText = score;
+            document.getElementById('feedback').innerText = "⏰ Waktu habis! (-10 XP). Silakan diskusikan bersama guru.";
+            document.getElementById('feedback').className = "incorrect";
+            clearInterval(timerInterval);
+            
+            // Buka akses tombol next untuk guru membahas
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+        }
+    }
+
+    // --- DRAG AND DROP HANDLERS ---
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev, val) {
+        draggedValue = val;
+        ev.dataTransfer.setData("text", val);
+    }
+    function drop(ev, index) {
+        ev.preventDefault();
+        let dropZone = document.getElementById(`drop-${index}`);
+        dropZone.innerText = draggedValue;
+        dropZone.setAttribute('data-val', draggedValue);
+    }
+
+    // --- CEK JAWABAN ---
     function checkAnswer() {
+        const q = activeQuestions[qIndex];
         let allCorrect = true;
-        
-        currentQuestion.decomp.forEach((val, index) => {
-            let userVal = parseInt(document.getElementById(`decomp-${index}`).value);
-            if (userVal !== val) {
-                allCorrect = false;
-            }
-        });
 
-        currentQuestion.parts.forEach((val, index) => {
-            let userVal = parseInt(document.getElementById(`part-${index}`).value);
-            if (userVal !== val) {
-                allCorrect = false;
-            }
-        });
-
-        let userFinal = parseInt(document.getElementById('final-ans').value);
-        if (userFinal !== currentQuestion.ans) {
-            allCorrect = false;
+        // Cek Dekomposisi / Number Bond
+        if (currentLevel === 'easy' && q.decomp.length === 2) {
+            q.decomp.forEach((val, idx) => {
+                let zoneVal = parseInt(document.getElementById(`drop-${idx}`).getAttribute('data-val'));
+                if (zoneVal !== val) allCorrect = false;
+            });
+        } else {
+            q.decomp.forEach((val, idx) => {
+                let userVal = parseInt(document.getElementById(`decomp-${idx}`).value);
+                if (userVal !== val) allCorrect = false;
+            });
         }
 
+        // Cek Sub-Parts
+        q.parts.forEach((val, idx) => {
+            let userVal = parseInt(document.getElementById(`part-${idx}`).value);
+            if (userVal !== val) allCorrect = false;
+        });
+
+        // Cek Final Answer
+        let userFinal = parseInt(document.getElementById('final-ans').value);
+        if (userFinal !== q.ans) allCorrect = false;
+
         let feedback = document.getElementById('feedback');
+        clearInterval(timerInterval);
+
         if (allCorrect) {
-            feedback.innerText = "Benar! Hebat banget! 🎉";
-            feedback.className = "correct";
             score += 10;
-            document.getElementById('score').innerText = score;
-            questionIndex++;
-            setTimeout(loadQuestion, 1500);
+            document.getElementById('lbl-score').innerText = score;
+            feedback.innerText = "🎉 Benar sekali! Hebat!";
+            feedback.className = "correct";
+            
+            // Jeda sebelum guru lanjut
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
         } else {
-            feedback.innerText = "Ups, masih ada yang kurang tepat. Coba teliti lagi ya! 💡";
+            // Salah: kurangi waktu & -5 XP
+            score = Math.max(0, score - 5);
+            timer = Math.max(1, timer - 5); // Waktu terpotong makin cepat
+            document.getElementById('lbl-timer').innerText = timer;
+            document.getElementById('lbl-score').innerText = score;
+            
+            feedback.innerText = "❌ Masih ada yang kurang tepat. Coba teliti lagi! (-5 XP)";
             feedback.className = "incorrect";
         }
     }
 
-    // Mulai permainan pertama kali
-    initGame();
+    // --- KONTROL GURU: NEXT SOAL ---
+    function nextQuestion() {
+        qIndex++;
+        loadQuestion();
+    }
+
+    // --- SELESAI GAME & LEADERBOARD PODIUM ---
+    function endGame() {
+        document.getElementById('final-player-name').innerText = playerName;
+        document.getElementById('final-score').innerText = score;
+
+        // Simpan data ke leaderboard sesi ini
+        leaderboardData.push({ name: playerName, score: score, level: currentLevel });
+        leaderboardData.sort((a, b) => b.score - a.score);
+        // Maksimal simpan 10 nama
+        if (leaderboardData.length > 10) leaderboardData.pop();
+
+        renderPodiumAndList();
+        goToScreen('screen-score');
+    }
+
+    function renderPodiumAndList() {
+        const podiumBox = document.getElementById('podium-box');
+        const listContainer = document.getElementById('leaderboard-container');
+        podiumBox.innerHTML = '';
+        listContainer.innerHTML = '';
+
+        let top3 = leaderboardData.slice(0, 3);
+        
+        // Urutan visual podium: Juara 2, Juara 1, Juara 3
+        let orderedPodium = [];
+        if(top3[1]) orderedPodium.push({ data: top3[1], rank: 2, cls: 'podium-2' });
+        if(top3[0]) orderedPodium.push({ data: top3[0], rank: 1, cls: 'podium-1' });
+        if(top3[2]) orderedPodium.push({ data: top3[2], rank: 3, cls: 'podium-3' });
+
+        orderedPodium.forEach(item => {
+            let div = document.createElement('div');
+            div.className = `podium-step ${item.cls}`;
+            div.innerHTML = `<span>#${item.rank}</span><span style="font-size:11px; margin-top:5px; overflow:hidden; text-overflow:ellipsis; width:80px;">${item.data.name}</span><span style="font-size:10px; opacity:0.8;">${item.data.score} XP</span>`;
+            podiumBox.appendChild(div);
+        });
+
+        // Sisa leaderboard list
+        leaderboardData.forEach((player, idx) => {
+            let item = document.createElement('div');
+            item.className = 'leaderboard-item';
+            item.innerHTML = `<span><b>#${idx+1}</b> ${player.name} (${player.level.toUpperCase()})</span> <span><b>${player.score} XP</b></span>`;
+            listContainer.appendChild(item);
+        });
+    }
 </script>
 
 </body>
