@@ -21,6 +21,7 @@
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
         }
         h1 {
             color: #2e7d32;
@@ -209,6 +210,24 @@
         .btn:hover { background-color: #1b5e20; }
         .btn-secondary { background-color: #0288d1; }
         .btn-secondary:hover { background-color: #01579b; }
+        
+        /* TOMBOL KEMBALI KECIL DI POJOK */
+        .btn-back-menu {
+            background-color: #78909c;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+        .btn-back-menu:hover { background-color: #546e7a; }
 
         .level-grid {
             display: grid;
@@ -271,6 +290,11 @@
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
     <div id="screen-game" class="screen">
+        <!-- Tombol kembali ke menu tingkat kesulitan -->
+        <div style="text-align: left;">
+            <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
+        </div>
+
         <h1>Math Fun: Pecah Angka</h1>
         <div class="score-board">
             <div>Soal <span id="current-q-num">1</span>/5 | Skor: <span id="score">0</span></div>
@@ -376,6 +400,12 @@
         goToScreen('screen-levels');
     }
 
+    // Fungsi untuk kembali ke menu level sekaligus menghentikan timer aktif
+    function returnToMenu() {
+        clearInterval(timerInterval);
+        goToScreen('screen-levels');
+    }
+
     function shuffleArray(array) {
         let currentIndex = array.length, randomIndex;
         while (currentIndex !== 0) {
@@ -465,7 +495,6 @@
                 dropzone.dataset.value = "";
                 dropzone.innerText = "?";
 
-                // Klik dropzone untuk mengembalikan nilai ke bawah jika ingin diubah
                 dropzone.addEventListener('click', () => {
                     if (dropzone.dataset.value) {
                         let val = parseInt(dropzone.dataset.value);
@@ -539,7 +568,6 @@
         }
     }
 
-    // Fungsi membuat kepingan seret dengan Pointer Events yang lancar di HP & Laptop
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
@@ -561,7 +589,6 @@
                 let dy = e.clientY - startY;
                 item.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
 
-                // Cek area dropzone
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     let zRect = zone.getBoundingClientRect();
                     if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
@@ -588,22 +615,17 @@
                     if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
                         e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
                         
-                        // Jika zona sudah terisi, kembalikan isi lama ke bawah
                         if (zone.dataset.value) {
                             createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
                         }
 
                         zone.dataset.value = val;
                         zone.innerText = val;
-                        item.remove(); // Hapus dari wadah asal
+                        item.remove();
                         dropped = true;
                         updateDistributiveLabels();
                     }
                 });
-
-                if (!dropped) {
-                    // Kalau tidak masuk ke lingkaran, kembali ke posisi asal
-                }
             }
 
             window.addEventListener('pointermove', onPointerMove);
