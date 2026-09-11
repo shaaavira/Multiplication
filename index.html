@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Pecah Perkalian & Number Bond</title>
+    <title>Game Pecah Perkalian & Number Bond Interaktif</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -33,14 +33,14 @@
             margin-bottom: 15px;
         }
         .question-box {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
-            margin: 15px 0;
+            margin: 15px 0 5px 0;
             color: #1f2937;
         }
-        /* Style untuk Number Bond Visual */
+        /* Style untuk Number Bond Visual di Bawah Soal */
         .number-bond-container {
-            margin: 20px auto;
+            margin: 0 auto 15px auto;
             position: relative;
             width: 100%;
             display: flex;
@@ -51,25 +51,29 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 10px;
+            margin-top: 5px;
         }
-        .circle {
+        /* Input khusus untuk lingkaran number bond */
+        .circle-input {
             width: 55px;
             height: 55px;
             border: 3px solid #388e3c;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
             font-size: 18px;
             font-weight: bold;
             color: #d32f2f;
             background-color: #f1f8e9;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .circle-input:focus {
+            border-color: #1b5e20;
+            background-color: #fff;
         }
         .lines-svg {
             width: 200px;
-            height: 40px;
+            height: 35px;
             margin-bottom: -5px;
         }
         .breakdown-section {
@@ -135,21 +139,23 @@
 <body>
 
 <div class="game-container">
-    <h1>Math Fun: Number Bond</h1>
+    <h1>Math Fun: Pecah Angka</h1>
     <div class="score-board">Skor: <span id="score">0</span></div>
     
+    <!-- Teks Soal Utama -->
     <div class="question-box" id="question-text">Loading...</div>
     
-    <!-- Visualisasi Number Bond (Pohon Faktor) -->
+    <!-- Visualisasi Number Bond (Cabang & Lingkaran Input Kosong di Bawahnya) -->
     <div class="number-bond-container">
-        <svg class="lines-svg" viewBox="0 0 200 40" id="bond-lines">
+        <svg class="lines-svg" viewBox="0 0 200 35" id="bond-lines">
             <!-- Garis cabang digambar otomatis via JavaScript -->
         </svg>
         <div class="bond-circles" id="bond-circles-container">
-            <!-- Lingkaran nilai tempat dimunculkan otomatis -->
+            <!-- Lingkaran input kosong dimunculkan otomatis -->
         </div>
     </div>
     
+    <!-- Kotak Input Langkah Perkalian & Total -->
     <div class="breakdown-section" id="inputs-container">
         <!-- Input dinamis perkalian distributif -->
     </div>
@@ -178,9 +184,10 @@
         }
         currentQuestion = questions[questionIndex];
         
+        // Tampilkan soal utama (misal: 124 × 6 = ...)
         document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
         
-        // Buat Number Bond Visual (Lingkaran & Garis Cabang)
+        // Setup Number Bond (Cabang dan Lingkaran Input Kosong)
         let circlesContainer = document.getElementById('bond-circles-container');
         let svgContainer = document.getElementById('bond-lines');
         circlesContainer.innerHTML = '';
@@ -192,23 +199,25 @@
         // Gambar garis cabang SVG tergantung jumlah pecahan (2 atau 3 cabang)
         if (count === 3) {
             svgContainer.innerHTML = `
-                <line x1="100" y1="0" x2="30" y2="35" stroke="#388e3c" stroke-width="3" />
-                <line x1="100" y1="0" x2="100" y2="35" stroke="#388e3c" stroke-width="3" />
-                <line x1="100" y1="0" x2="170" y2="35" stroke="#388e3c" stroke-width="3" />
+                <line x1="100" y1="0" x2="30" y2="30" stroke="#388e3c" stroke-width="3" />
+                <line x1="100" y1="0" x2="100" y2="30" stroke="#388e3c" stroke-width="3" />
+                <line x1="100" y1="0" x2="170" y2="30" stroke="#388e3c" stroke-width="3" />
             `;
         } else {
             svgContainer.innerHTML = `
-                <line x1="100" y1="0" x2="50" y2="35" stroke="#388e3c" stroke-width="3" />
-                <line x1="100" y1="0" x2="150" y2="35" stroke="#388e3c" stroke-width="3" />
+                <line x1="100" y1="0" x2="50" y2="30" stroke="#388e3c" stroke-width="3" />
+                <line x1="100" y1="0" x2="150" y2="30" stroke="#388e3c" stroke-width="3" />
             `;
         }
 
-        // Munculkan lingkaran nilai tempat
-        decomp.forEach(val => {
-            let circle = document.createElement('div');
-            circle.className = 'circle';
-            circle.innerText = val;
-            circlesContainer.appendChild(circle);
+        // Munculkan lingkaran berupa INPUT KOSONG untuk diisi siswa
+        decomp.forEach((_, index) => {
+            let inputCircle = document.createElement('input');
+            inputCircle.type = 'number';
+            inputCircle.className = 'circle-input';
+            inputCircle.id = `decomp-${index}`;
+            inputCircle.placeholder = '?';
+            circlesContainer.appendChild(inputCircle);
         });
 
         // Buat Input Perkalian Distributif di Bawahnya
@@ -227,7 +236,8 @@
             
             let group = document.createElement('div');
             group.className = 'input-group';
-            group.innerHTML = `<label>${decomp[index]} × ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
+            // Label mengikuti urutan input number bond
+            group.innerHTML = `<label id="label-part-${index}">[ ? ] × ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
             container.appendChild(group);
         });
 
@@ -243,12 +253,30 @@
         finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
         container.appendChild(finalGroup);
 
+        // Event listener biar label perkalian bawah otomatis ngikutin ketikan di number bond
+        decomp.forEach((_, index) => {
+            let decompInput = document.getElementById(`decomp-${index}`);
+            decompInput.addEventListener('input', (e) => {
+                let val = e.target.value || '?';
+                document.getElementById(`label-part-${index}`).innerText = `${val} × ${currentQuestion.b}`;
+            });
+        });
+
         document.getElementById('feedback').innerText = '';
     }
 
     function checkAnswer() {
         let allCorrect = true;
         
+        // 1. Cek jawaban number bond
+        currentQuestion.decomp.forEach((val, index) => {
+            let userVal = parseInt(document.getElementById(`decomp-${index}`).value);
+            if (userVal !== val) {
+                allCorrect = false;
+            }
+        });
+
+        // 2. Cek jawaban hasil kali parsial
         currentQuestion.parts.forEach((val, index) => {
             let userVal = parseInt(document.getElementById(`part-${index}`).value);
             if (userVal !== val) {
@@ -256,6 +284,7 @@
             }
         });
 
+        // 3. Cek jawaban akhir (total)
         let userFinal = parseInt(document.getElementById('final-ans').value);
         if (userFinal !== currentQuestion.ans) {
             allCorrect = false;
@@ -270,7 +299,7 @@
             questionIndex++;
             setTimeout(loadQuestion, 1500);
         } else {
-            feedback.innerText = "Ups, masih ada yang kurang tepat. Coba cek lagi perkaliannya ya! 💡";
+            feedback.innerText = "Ups, masih ada yang kurang tepat. Coba teliti lagi ya! 💡";
             feedback.className = "incorrect";
         }
     }
