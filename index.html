@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Pecah Perkalian Matematika</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .game-container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2e7d32;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .score-board {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .question-box {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #1f2937;
+        }
+        .breakdown-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:focus {
+            border-color: #2e7d32;
+        }
+        button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #1b5e20;
+        }
+        #feedback {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .correct { color: #2e7d32; }
+        .incorrect { color: #d32f2f; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Math Fun: Pecah Angka!</h1>
+    <div class="score-board">Skor: <span id="score">0</span></div>
+    
+    <div class="question-box" id="question-text">Loading...</div>
+    
+    <div class="breakdown-section" id="inputs-container">
+        <!-- Input dinamis akan muncul di sini -->
+    </div>
+
+    <button id="submit-btn" onclick="checkAnswer()">Jawab</button>
+    <div id="feedback"></div>
+</div>
+
+<script>
+    let currentQuestion = {};
+    let score = 0;
+
+    const questions = [
+        { a: 124, b: 6, parts: [600, 120, 24], ans: 744 },
+        { a: 256, b: 3, parts: [600, 150, 18], ans: 768 },
+        { a: 29, b: 8, parts: [160, 72], ans: 232 },
+        { a: 57, b: 6, parts: [300, 42], ans: 342 },
+        { a: 178, b: 4, parts: [400, 280, 32], ans: 712 }
+    ];
+
+    let questionIndex = 0;
+
+    function loadQuestion() {
+        if (questionIndex >= questions.length) {
+            questionIndex = 0; // Ulangi dari awal atau buat mode random
+        }
+        currentQuestion = questions[questionIndex];
+        
+        document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
+        
+        let container = document.getElementById('inputs-container');
+        container.innerHTML = '';
+        
+        // Buat input berdasarkan jumlah bagian (parts) perkalian distributifnya
+        currentQuestion.parts.forEach((_, index) => {
+            if (index > 0) {
+                let plus = document.createElement('span');
+                plus.innerText = '+';
+                plus.style.fontSize = '20px';
+                plus.style.fontWeight = 'bold';
+                container.appendChild(plus);
+            }
+            
+            let group = document.createElement('div');
+            group.className = 'input-group';
+            group.innerHTML = `<label>Bagian ${index+1}</label><input type="number" id="part-${index}" placeholder="?">`;
+            container.appendChild(group);
+        });
+
+        // Tambah input untuk hasil akhir (Total)
+        let equals = document.createElement('span');
+        equals.innerText = '=';
+        equals.style.fontSize = '20px';
+        equals.style.fontWeight = 'bold';
+        container.appendChild(equals);
+
+        let finalGroup = document.createElement('div');
+        finalGroup.className = 'input-group';
+        finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
+        container.appendChild(finalGroup);
+
+        document.getElementById('feedback').innerText = '';
+    }
+
+    function checkAnswer() {
+        let allCorrect = true;
+        
+        // Cek bagian-bagian pecahnya
+        currentQuestion.parts.forEach((val, index) => {
+            let userVal = parseInt(document.getElementById(`part-${index}`).value);
+            if (userVal !== val) {
+                allCorrect = false;
+            }
+        });
+
+        // Cek jawaban akhir
+        let userFinal = parseInt(document.getElementById('final-ans').value);
+        if (userFinal !== currentQuestion.ans) {
+            allCorrect = false;
+        }
+
+        let feedback = document.getElementById('feedback');
+        if (allCorrect) {
+            feedback.innerText = "Benar! Hebat banget! 🎉";
+            feedback.className = "correct";
+            score += 10;
+            document.getElementById('score').innerText = score;
+            questionIndex++;
+            setTimeout(loadQuestion, 1500);
+        } else {
+            feedback.innerText = "Ups, masih ada yang kurang tepat. Coba lagi ya! 💡";
+            feedback.className = "incorrect";
+        }
+    }
+
+    // Load soal pertama saat game dibuka
+    loadQuestion();
+</script>
+
+</body>
+</html>
