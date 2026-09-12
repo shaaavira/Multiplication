@@ -15,6 +15,16 @@
             --mario-bg-sky: #5c94fc;
         }
 
+        /* FIX FULLSCREEN & TANPA SCROLL UNTUK LAYAR TV */
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--mario-bg-sky);
@@ -25,54 +35,73 @@
             background-position: 0 0, 40px 40px;
             color: #fff;
             text-align: center;
-            padding: 30px 20px;
-            margin: 0;
             touch-action: manipulation;
             text-shadow: 2px 2px 0px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .game-container {
-            max-width: 1050px;
-            margin: 10px auto;
+            width: 95vw;
+            max-width: 1100px;
+            height: 94vh;
+            max-height: 720px;
+            margin: auto;
             background: #ffffff;
             color: #333;
-            padding: 40px 50px;
+            padding: 20px 30px;
             border-radius: 24px;
             border: 8px solid #000;
             box-shadow: 0 12px 0px #000, 0 20px 40px rgba(0,0,0,0.4);
             position: relative;
             text-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--mario-red);
-            font-size: 26px;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            font-size: 24px;
+            margin: 5px 0 10px 0;
+            line-height: 1.4;
             text-shadow: 3px 3px 0px var(--mario-yellow);
         }
 
         p { 
             color: #444; 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 600;
+            margin: 8px 0;
         }
         
-        .screen { display: none; }
-        .screen.active { display: block; }
+        .screen { 
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+        .screen.active { display: flex; }
 
         .score-board {
             display: flex;
             justify-content: space-between;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             background: #fff8e1;
             border: 4px solid #fbc02d;
-            padding: 16px 25px;
-            border-radius: 14px;
-            margin-bottom: 25px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
             color: #e65100;
+            width: 100%;
+            box-sizing: border-box;
         }
         .timer-box { color: var(--mario-red); }
         
@@ -80,28 +109,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 15px 0;
+            margin: 5px 0;
+            width: 100%;
         }
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 36px;
+            font-size: 30px;
             color: var(--mario-blue);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             width: 100%;
             background: #e3f2fd;
-            padding: 25px;
-            border-radius: 14px;
+            padding: 15px;
+            border-radius: 12px;
             border: 4px dashed var(--mario-blue);
+            box-sizing: border-box;
         }
 
         /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
         .game-play-layout {
             display: flex;
-            gap: 30px;
-            align-items: flex-start;
+            gap: 20px;
+            align-items: center;
             justify-content: center;
             flex-wrap: nowrap;
-            margin-top: 15px;
             width: 100%;
         }
         .main-game-column {
@@ -117,30 +147,30 @@
             display: none;
             background: #fff9c4;
             border: 4px solid #fbc02d;
-            padding: 15px 12px;
-            border-radius: 14px;
-            font-size: 16px;
+            padding: 12px 10px;
+            border-radius: 12px;
+            font-size: 15px;
             color: #f57f17;
-            width: 170px;
+            width: 160px;
             box-sizing: border-box;
             text-align: left;
             flex-shrink: 0;
-            box-shadow: 0 6px 0px #fbc02d;
+            box-shadow: 0 5px 0px #fbc02d;
             font-weight: bold;
         }
         .helper-multiples-box b {
             color: #e65100;
             display: block;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
             border-bottom: 3px dashed #ffe082;
-            padding-bottom: 6px;
+            padding-bottom: 5px;
         }
         .helper-list-item {
             font-family: 'Press Start 2P', monospace;
-            font-size: 13px;
-            margin-bottom: 8px;
+            font-size: 12px;
+            margin-bottom: 6px;
             white-space: nowrap;
             color: #333;
         }
@@ -148,11 +178,10 @@
         /* NUMBER BOND CONTAINER */
         .number-bond-container {
             position: relative;
-            width: 320px;
+            width: 280px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: -10px;
         }
         
         .bond-circles {
@@ -163,16 +192,16 @@
         }
         
         .circle-dropzone {
-            width: 76px !important;
-            height: 76px !important;
-            min-width: 76px;
-            min-height: 76px;
+            width: 68px !important;
+            height: 68px !important;
+            min-width: 68px;
+            min-height: 68px;
             border: 4px dashed var(--mario-red) !important;
             border-radius: 50% !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -189,31 +218,31 @@
             border-color: #d32f2f !important;
         }
 
-        /* KEPINGAN DRAG PILIHAN (GAYA KOTAK ITEM / KCOIN) */
+        /* KEPINGAN DRAG PILIHAN */
         .drag-source-container {
             display: flex;
             justify-content: center;
-            gap: 16px;
-            margin: 20px 0;
-            min-height: 75px;
+            gap: 12px;
+            margin: 10px 0;
+            min-height: 65px;
             align-items: center;
         }
         .draggable-item {
-            width: 70px;
-            height: 70px;
+            width: 62px;
+            height: 62px;
             background: linear-gradient(135deg, #ffeb3b, #fbc02d);
             border: 4px solid #f57f17;
-            border-radius: 16px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 26px;
+            font-size: 24px;
             color: #b71c1c;
             cursor: pointer;
             user-select: none;
             touch-action: none;
-            box-shadow: 0 6px 0px #e65100;
+            box-shadow: 0 5px 0px #e65100;
             transition: transform 0.1s;
         }
         .draggable-item.dragging {
@@ -225,14 +254,14 @@
         }
 
         .circle-input {
-            width: 76px !important;
-            height: 76px !important;
-            min-width: 76px;
-            min-height: 76px;
+            width: 68px !important;
+            height: 68px !important;
+            min-width: 68px;
+            min-height: 68px;
             border: 4px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -250,21 +279,21 @@
         }
 
         .lines-svg {
-            width: 320px;
-            height: 45px;
+            width: 280px;
+            height: 38px;
         }
 
         .breakdown-section {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin: 10px 0;
             background: #f1f8e9;
             border: 4px solid #81c784;
-            padding: 20px;
-            border-radius: 16px;
+            padding: 15px;
+            border-radius: 14px;
             transition: opacity 0.3s;
             width: 100%;
             box-sizing: border-box;
@@ -280,23 +309,22 @@
             align-items: center;
         }
         .input-group label {
-            font-size: 15px;
+            font-size: 14px;
             color: #2e7d32;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-weight: bold;
         }
         input[type="text"], input[type="number"] {
-            width: 110px;
-            padding: 12px;
-            font-size: 22px;
+            width: 100px;
+            padding: 10px;
+            font-size: 20px;
             text-align: center;
             border: 4px solid #81c784;
-            border-radius: 12px;
+            border-radius: 10px;
             outline: none;
             font-weight: bold;
             color: #333;
             background: #fff;
-            transition: border-color 0.2s;
         }
         input:disabled, .breakdown-section.disabled-section input {
             background-color: #e2e8f0;
@@ -308,79 +336,87 @@
             background-color: var(--mario-red);
             color: white;
             border: 4px solid #000;
-            padding: 18px 28px;
-            font-size: 16px;
-            border-radius: 12px;
+            padding: 15px 24px;
+            font-size: 15px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 15px;
+            margin-top: 10px;
             width: 100%;
-            box-shadow: 0 6px 0px #900;
+            box-shadow: 0 5px 0px #900;
             transition: all 0.1s;
         }
-        .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 8px 0px #900; }
+        .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 7px 0px #900; }
         .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
         
-        .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 6px 0px #001a75; }
-        .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 8px 0px #001a75; }
+        .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 5px 0px #001a75; }
+        .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 7px 0px #001a75; }
         
         .btn-back-menu {
             font-family: 'Press Start 2P', cursive;
             background-color: #78909c;
             color: white;
             border: 3px solid #000;
-            padding: 12px 18px;
-            font-size: 12px;
+            padding: 10px 15px;
+            font-size: 11px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-bottom: 20px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 0px #455a64;
+            gap: 6px;
+            box-shadow: 0 3px 0px #455a64;
             transition: background-color 0.2s;
         }
         .btn-back-menu:hover { background-color: #90a4ae; }
 
+        .top-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
         .level-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin: 25px 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+            width: 100%;
         }
         .level-card {
             background: #fff;
             border: 4px solid #000;
-            padding: 22px;
-            border-radius: 16px;
+            padding: 18px;
+            border-radius: 14px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 18px;
             transition: all 0.2s;
             text-align: left;
             color: #333;
-            box-shadow: 0 6px 0px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 0px rgba(0,0,0,0.2);
         }
         .level-card:hover { transform: translateY(-3px); background: #fffde7; }
-        .level-card.easy { border-left: 12px solid #4caf50; }
-        .level-card.medium { border-left: 12px solid #ff9800; }
-        .level-card.expert { border-left: 12px solid #f44336; }
-        .level-card.nightmare { border-left: 12px solid #9c27b0; }
+        .level-card.easy { border-left: 10px solid #4caf50; }
+        .level-card.medium { border-left: 10px solid #ff9800; }
+        .level-card.expert { border-left: 10px solid #f44336; }
+        .level-card.nightmare { border-left: 10px solid #9c27b0; }
 
         /* PLAYER SELECTION ARENA */
         .player-selector-arena {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 10px 0;
             width: 100%;
         }
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             width: 100%;
         }
@@ -389,8 +425,8 @@
             background-color: var(--mario-yellow);
             color: #b71c1c;
             border: 4px solid #000;
-            padding: 14px 20px;
-            font-size: 13px;
+            padding: 12px 18px;
+            font-size: 12px;
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
@@ -401,10 +437,10 @@
         .btn-player-pick:hover { background-color: #ffeb3b; }
 
         #feedback {
-            margin-top: 20px;
-            font-size: 20px;
+            margin-top: 10px;
+            font-size: 18px;
             font-weight: bold;
-            min-height: 30px;
+            min-height: 25px;
         }
         .correct { color: #2e7d32; }
         .incorrect { color: #d32f2f; }
@@ -412,6 +448,19 @@
         textarea {
             border: 4px solid #000 !important;
             box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        #scoreboard-footer {
+            margin-top: 10px;
+            background: #fffde7;
+            border: 3px solid #fbc02d;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #e65100;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -421,52 +470,55 @@
     <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
         <h1>🍄 SUPER MATH BROS 🌟</h1>
-        <p>Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
-        <div style="margin: 25px 0;">
-            <textarea id="player-names-input" rows="5" placeholder="Mario&#10;Luigi&#10;Peach" style="width: 90%; padding: 18px; font-size: 20px; border-radius: 12px; outline: none; resize: vertical; font-family: inherit;"></textarea>
+        <p style="font-size: 16px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
+        <div style="margin: 15px 0; width: 100%;">
+            <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="width: 85%; padding: 12px; font-size: 18px; border-radius: 10px; outline: none; resize: none; font-family: inherit;"></textarea>
         </div>
-        <button class="btn" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+        <button class="btn" style="width: 60%;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
     <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
         <h1>PILIH DUNIA PERMAINAN</h1>
-        <p>Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
-        <div class="level-grid" style="margin-top: 30px;">
-            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 12px solid var(--mario-red); text-align: center; padding: 25px;">
-                <span style="font-family:'Press Start 2P'; font-size: 18px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
-                <span style="font-size:16px; display:block; color:#666; font-weight:bold; margin-top: 10px;">Dunia Perkalian Distributif & Number Bond</span>
+        <p style="font-size: 15px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <div class="level-grid" style="margin-top: 20px; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 10px solid var(--mario-red); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Perkalian Distributif</span>
             </div>
-            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 12px solid var(--mario-blue); text-align: center; padding: 25px;">
-                <span style="font-family:'Press Start 2P'; font-size: 18px; color: var(--mario-blue);">➗ DIVISION</span>
-                <span style="font-size:16px; display:block; color:#666; font-weight:bold; margin-top: 10px;">Dunia Pembagian Distributif & Number Bond</span>
+            <div class="level-card" onclick="selectOperationMode('division')" style="border-left: 10px solid var(--mario-blue); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Pembagian Distributif</span>
             </div>
         </div>
-        <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 20px;">⬅️ Ganti Nama Pemain</button>
+        <div style="margin-top: 15px;">
+            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama Pemain</button>
+        </div>
     </div>
 
     <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
-        <div style="text-align: left;">
+        <div class="top-nav-row">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
+            <span style="font-size: 15px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
         </div>
-        <h1 id="level-screen-title" style="font-size: 20px;">PILIH LEVEL KESULITAN</h1>
-        <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <h1 id="level-screen-title" style="font-size: 18px; margin: 5px 0;">PILIH LEVEL KESULITAN</h1>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:15px; display:block; color:#666; font-weight:bold; margin-top:4px;">Drag & Drop Koin</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:15px; display:block; color:#666; font-weight:bold; margin-top:4px;">Number Bond Input</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan Dasar) <span style="font-size:15px; display:block; color:#666; font-weight:bold; margin-top:4px;">Tantangan Kastil</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle (>600) <span style="font-size:15px; display:block; color:#666; font-weight:bold; margin-top:4px;">Misi Penyelamatan Utama</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top:3px;">Drag & Drop Koin</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top:3px;">Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan) <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top:3px;">Tantangan Kastil</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top:3px;">Misi Penyelamatan Utama</span></div>
         </div>
     </div>
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
-    <div id="screen-game" class="screen">
-        <div style="text-align: left;">
+    <div id="screen-game" class="screen" style="justify-content: flex-start; padding-top: 5px;">
+        <div class="top-nav-row">
             <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
+            <div style="font-family: 'Press Start 2P'; font-size: 14px; color: var(--mario-red);" id="game-title">Super Math Bros</div>
+            <div style="width: 80px;"></div>
         </div>
 
-        <h1 id="game-title" style="font-size: 20px;">Super Math Bros</h1>
         <div class="score-board">
             <div>Soal <span id="current-q-num">1</span>/5</div>
             <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
@@ -480,12 +532,12 @@
                 <div class="main-game-column">
                     <!-- TOMBOL REBUTAN NAMA PEMAIN -->
                     <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                        <p style="font-weight: bold; color: var(--mario-red); font-size: 18px; margin: 0; font-family:'Press Start 2P'; line-height: 1.6;">⭐ PILIH PAHLAWANMU! ⭐</p>
+                        <p style="font-weight: bold; color: var(--mario-red); font-size: 15px; margin: 0; font-family:'Press Start 2P';">⭐ PILIH PAHLAWANMU! ⭐</p>
                         <div class="player-buttons-grid" id="player-buttons-box"></div>
                     </div>
 
                     <div class="number-bond-container" id="bond-container" style="display:none;">
-                        <svg class="lines-svg" viewBox="0 0 320 45" id="bond-lines">
+                        <svg class="lines-svg" viewBox="0 0 280 38" id="bond-lines">
                             <!-- Garis cabang SVG -->
                         </svg>
                         <div class="bond-circles" id="bond-circles-container">
@@ -494,7 +546,7 @@
                     </div>
                 </div>
 
-                <!-- BANTUAN PERKALIAN DI SAMPING (PENULISAN KE BAWAH) -->
+                <!-- BANTUAN PERKALIAN DI SAMPING -->
                 <div id="helper-multiples" class="helper-multiples-box">
                     <b>BANTUAN (<span id="helper-b-val"></span>)</b>
                     <div id="helper-multiples-list"></div>
@@ -502,35 +554,35 @@
             </div>
         </div>
 
-        <!-- Wadah Kepingan Drag (Hanya tampil di Easy & saat giliran aktif) -->
-        <div id="drag-source-wrapper" style="display:none;">
-            <p style="margin: 10px 0 5px 0; font-size: 16px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
+        <!-- Wadah Kepingan Drag -->
+        <div id="drag-source-wrapper" style="display:none; width: 100%;">
+            <p style="margin: 5px 0; font-size: 14px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
-        <!-- Bagian Kotak Penjumlahan (Terkunci awal hingga Number Bond lengkap) -->
+        <!-- Bagian Kotak Penjumlahan -->
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
             <!-- Input dinamis perkalian/pembagian distributif -->
         </div>
 
-        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">JAWAB! 🎯</button>
-        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none;">SOAL BERIKUTNYA ➡️</button>
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 5px;">JAWAB! 🎯</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none; margin-top: 5px;">SOAL BERIKUTNYA ➡️</button>
         <div id="feedback"></div>
         
         <!-- PAPAN SKOR KECIL DI BAWAH -->
-        <div id="scoreboard-footer" style="margin-top: 25px; background: #fffde7; border: 3px solid #fbc02d; padding: 15px; border-radius: 12px; font-size: 18px; font-weight: bold; color: #e65100;">
+        <div id="scoreboard-footer">
             Koin Skor: <span id="scoreboard-text"></span>
         </div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
-        <h1 style="color: var(--mario-red); font-size: 24px;">MISI SELESAI! 🎉</h1>
-        <p style="font-size: 20px; margin: 20px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
-        <div id="final-scores-list" style="font-size: 22px; font-weight: bold; margin: 25px 0; line-height: 2; color: #333;">
+        <h1 style="color: var(--mario-red); font-size: 22px;">MISI SELESAI! 🎉</h1>
+        <p style="font-size: 18px; margin: 10px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
+        <div id="final-scores-list" style="font-size: 20px; font-weight: bold; margin: 15px 0; line-height: 1.8; color: #333; background: #fffde7; border: 3px solid #fbc02d; padding: 15px; border-radius: 12px; width: 80%;">
             <!-- Daftar skor akhir anak -->
         </div>
-        <button class="btn" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
+        <button class="btn" style="width: 50%;" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
     </div>
 </div>
 
@@ -736,7 +788,7 @@
         answeredPlayersInThisQuestion = [];
 
         let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
-        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? '🍄 SUPER MATH BROS: PERKALIAN 🌟' : '🍄 SUPER MATH BROS: PEMBAGIAN 🌟';
+        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'PERKALIAN ✖️' : 'PEMBAGIAN ➗';
         document.getElementById('current-q-num').innerText = questionIndex + 1;
         document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
@@ -819,7 +871,7 @@
         document.getElementById('submit-btn').style.display = 'block';
 
         let feedback = document.getElementById('feedback');
-        feedback.innerText = `🍄 Giliran ${playerName}! Lengkapi Number Bond di atas terlebih dahulu.`;
+        feedback.innerText = `Giliran ${playerName}! Lengkapi Number Bond di atas.`;
         feedback.className = "correct";
 
         setupStandardGameplay();
@@ -874,14 +926,14 @@
 
         if (count === 3) {
             svgContainer.innerHTML = `
-                <line x1="160" y1="0" x2="45" y2="40" stroke="#e52521" stroke-width="4" />
-                <line x1="160" y1="0" x2="160" y2="40" stroke="#e52521" stroke-width="4" />
-                <line x1="160" y1="0" x2="275" y2="40" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="40" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="140" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="240" y2="35" stroke="#e52521" stroke-width="4" />
             `;
         } else {
             svgContainer.innerHTML = `
-                <line x1="160" y1="0" x2="80" y2="40" stroke="#e52521" stroke-width="4" />
-                <line x1="160" y1="0" x2="240" y2="40" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="70" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="210" y2="35" stroke="#e52521" stroke-width="4" />
             `;
         }
 
@@ -939,7 +991,7 @@
             if (index > 0) {
                 let plus = document.createElement('span');
                 plus.innerText = '+';
-                plus.style.fontSize = '24px';
+                plus.style.fontSize = '22px';
                 plus.style.fontWeight = 'bold';
                 plus.style.color = '#2e7d32';
                 container.appendChild(plus);
@@ -953,7 +1005,7 @@
 
         let equals = document.createElement('span');
         equals.innerText = '=';
-        equals.style.fontSize = '24px';
+        equals.style.fontSize = '22px';
         equals.style.fontWeight = 'bold';
         equals.style.color = '#2e7d32';
         container.appendChild(equals);
@@ -1072,7 +1124,7 @@
             let feedback = document.getElementById('feedback');
             
             if (!activePlayer) {
-                feedback.innerText = "⏰ Waktu habis memilih pahlawan! Lanjut ke soal berikutnya.";
+                feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
                 feedback.className = "incorrect";
                 document.getElementById('player-selector-container').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'block';
