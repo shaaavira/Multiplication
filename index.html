@@ -25,73 +25,53 @@
             background-position: 0 0, 30px 30px;
             color: #fff;
             text-align: center;
+            padding: 20px;
             margin: 0;
-            padding: 10px;
-            box-sizing: border-box;
             touch-action: manipulation;
             text-shadow: 2px 2px 0px #000;
-            /* Layout Landscape Penuh 1 Layar Tablet/Laptop */
-            width: 100vw;
-            height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .game-container {
-            width: 100%;
-            max-width: 960px;
-            height: 94vh;
-            max-height: 640px;
+            max-width: 620px;
+            margin: 20px auto;
             background: #ffffff;
             color: #333;
-            padding: 15px 25px;
+            padding: 25px;
             border-radius: 16px;
             border: 6px solid #000;
             box-shadow: 0 8px 0px #000, 0 15px 25px rgba(0,0,0,0.3);
             position: relative;
             text-shadow: none;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
         }
 
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--mario-red);
-            font-size: 16px;
-            margin: 5px 0 10px 0;
+            font-size: 18px;
+            margin-bottom: 8px;
             line-height: 1.4;
             text-shadow: 2px 2px 0px var(--mario-yellow);
         }
 
         p { 
             color: #444; 
-            font-size: 14px; 
+            font-size: 15px; 
             font-weight: 600;
-            margin: 5px 0;
         }
         
-        .screen { 
-            display: none; 
-            flex: 1;
-            flex-direction: column;
-            justify-content: center;
-            overflow-y: auto;
-        }
-        .screen.active { display: flex; }
+        .screen { display: none; }
+        .screen.active { display: block; }
 
         .score-board {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             background: #fff8e1;
             border: 3px solid #fbc02d;
-            padding: 8px 15px;
+            padding: 10px 15px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #e65100;
         }
         .timer-box { color: var(--mario-red); }
@@ -100,107 +80,79 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 5px 0;
+            margin: 10px 0;
         }
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 20px;
+            font-size: 24px;
             color: var(--mario-blue);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             width: 100%;
             background: #e3f2fd;
-            padding: 10px;
+            padding: 15px;
             border-radius: 10px;
             border: 3px dashed var(--mario-blue);
-            box-sizing: border-box;
         }
 
-        /* LAYOUT LANDSCAPE UTAMA DENGAN 2 KOLOM (KIRI & KANAN) */
+        /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
         .game-play-layout {
             display: flex;
-            gap: 20px;
-            align-items: stretch;
+            gap: 15px;
+            align-items: flex-start;
             justify-content: center;
             flex-wrap: nowrap;
-            margin-top: 5px;
-            width: 100%;
+            margin-top: 10px;
         }
-
-        /* KOLOM KIRI: NUMBER BOND & PEMAIN */
-        .left-game-column {
-            flex: 1.2;
+        .main-game-column {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #fdfefe;
-            border: 3px solid #b0bec5;
-            border-radius: 12px;
-            padding: 10px;
-            box-sizing: border-box;
-            justify-content: center;
+            min-width: 260px;
         }
 
-        /* KOLOM KANAN: BANTUAN & BREAKDOWN DISTRIBUTIF */
-        .right-game-column {
-            flex: 1.8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #f1f8e9;
-            border: 3px solid #81c784;
-            border-radius: 12px;
-            padding: 10px;
-            box-sizing: border-box;
-            justify-content: center;
-        }
-
-        /* KOTAK BANTUAN DI KANAN */
+        /* KOTAK BANTUAN DI SAMPING (PENULISAN KE BAWAH) */
         .helper-multiples-box {
             display: none;
             background: #fff9c4;
             border: 3px solid #fbc02d;
-            padding: 8px;
+            padding: 10px 8px;
             border-radius: 10px;
-            font-size: 11px;
+            font-size: 12px;
             color: #f57f17;
-            width: 100%;
-            max-width: 320px;
+            width: 110px;
             box-sizing: border-box;
-            text-align: center;
-            box-shadow: 0 3px 0px #fbc02d;
+            text-align: left;
+            flex-shrink: 0;
+            box-shadow: 0 4px 0px #fbc02d;
             font-weight: bold;
-            margin-bottom: 8px;
         }
         .helper-multiples-box b {
             color: #e65100;
-            display: inline-block;
-            margin-bottom: 4px;
+            display: block;
+            text-align: center;
+            margin-bottom: 6px;
             font-size: 11px;
-        }
-        .helper-grid-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
+            border-bottom: 2px dashed #ffe082;
+            padding-bottom: 3px;
         }
         .helper-list-item {
             font-family: 'Press Start 2P', monospace;
-            font-size: 8px;
-            background: #fff;
-            border: 2px solid #ffe082;
-            padding: 4px 6px;
-            border-radius: 4px;
+            font-size: 9px;
+            margin-bottom: 5px;
+            white-space: nowrap;
             color: #333;
         }
         
         /* NUMBER BOND CONTAINER */
         .number-bond-container {
             position: relative;
-            width: 200px;
+            width: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 5px;
+            margin-left: -100px;
         }
         
         .bond-circles {
@@ -211,16 +163,16 @@
         }
         
         .circle-dropzone {
-            width: 48px !important;
-            height: 48px !important;
-            min-width: 48px;
-            min-height: 48px;
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px;
+            min-height: 52px;
             border: 3px dashed var(--mario-red) !important;
             border-radius: 50% !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -237,31 +189,31 @@
             border-color: #d32f2f !important;
         }
 
-        /* KEPINGAN DRAG PILIHAN */
+        /* KEPINGAN DRAG PILIHAN (GAYA KOTAK ITEM / KCOIN) */
         .drag-source-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 8px 0;
-            min-height: 45px;
+            gap: 12px;
+            margin: 15px 0;
+            min-height: 55px;
             align-items: center;
         }
         .draggable-item {
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #ffeb3b, #fbc02d);
             border: 3px solid #f57f17;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
             color: #b71c1c;
             cursor: pointer;
             user-select: none;
             touch-action: none;
-            box-shadow: 0 3px 0px #e65100;
+            box-shadow: 0 4px 0px #e65100;
             transition: transform 0.1s;
         }
         .draggable-item.dragging {
@@ -273,14 +225,14 @@
         }
 
         .circle-input {
-            width: 48px !important;
-            height: 48px !important;
-            min-width: 48px;
-            min-height: 48px;
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px;
+            min-height: 52px;
             border: 3px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -298,8 +250,8 @@
         }
 
         .lines-svg {
-            width: 200px;
-            height: 30px;
+            width: 220px;
+            height: 35px;
         }
 
         .breakdown-section {
@@ -308,7 +260,11 @@
             gap: 8px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 8px 0;
+            margin: 15px 0;
+            background: #f1f8e9;
+            border: 3px solid #81c784;
+            padding: 15px;
+            border-radius: 12px;
             transition: opacity 0.3s;
             width: 100%;
             box-sizing: border-box;
@@ -324,15 +280,15 @@
             align-items: center;
         }
         .input-group label {
-            font-size: 10px;
+            font-size: 11px;
             color: #2e7d32;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             font-weight: bold;
         }
         input[type="text"], input[type="number"] {
-            width: 65px;
-            padding: 6px;
-            font-size: 15px;
+            width: 75px;
+            padding: 8px;
+            font-size: 16px;
             text-align: center;
             border: 3px solid #81c784;
             border-radius: 8px;
@@ -352,14 +308,13 @@
             background-color: var(--mario-red);
             color: white;
             border: 3px solid #000;
-            padding: 12px 18px;
-            font-size: 11px;
+            padding: 14px 20px;
+            font-size: 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             margin-top: 10px;
             width: 100%;
-            max-width: 300px;
             box-shadow: 0 4px 0px #900;
             transition: all 0.1s;
         }
@@ -374,11 +329,12 @@
             background-color: #78909c;
             color: white;
             border: 2px solid #000;
-            padding: 6px 10px;
-            font-size: 8px;
+            padding: 8px 12px;
+            font-size: 9px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            margin-bottom: 15px;
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -389,19 +345,18 @@
 
         .level-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 12px;
-            margin: 15px 0;
-            width: 100%;
+            margin: 20px 0;
         }
         .level-card {
             background: #fff;
             border: 3px solid #000;
-            padding: 12px;
+            padding: 15px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             transition: all 0.2s;
             text-align: left;
             color: #333;
@@ -418,14 +373,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            margin: 5px 0;
+            gap: 10px;
+            margin: 15px 0;
             width: 100%;
         }
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
             width: 100%;
         }
@@ -434,8 +389,8 @@
             background-color: var(--mario-yellow);
             color: #b71c1c;
             border: 3px solid #000;
-            padding: 8px 12px;
-            font-size: 9px;
+            padding: 10px 15px;
+            font-size: 10px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
@@ -446,10 +401,10 @@
         .btn-player-pick:hover { background-color: #ffeb3b; }
 
         #feedback {
-            margin-top: 8px;
-            font-size: 13px;
+            margin-top: 15px;
+            font-size: 15px;
             font-weight: bold;
-            min-height: 20px;
+            min-height: 24px;
         }
         .correct { color: #2e7d32; }
         .incorrect { color: #d32f2f; }
@@ -467,56 +422,51 @@
     <div id="screen-welcome" class="screen active">
         <h1>🍄 SUPER MATH BROS 🌟</h1>
         <p>Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
-        <div style="margin: 10px 0;">
-            <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="width: 70%; max-width: 400px; padding: 10px; font-size: 14px; border-radius: 8px; outline: none; resize: vertical; font-family: inherit;"></textarea>
+        <div style="margin: 20px 0;">
+            <textarea id="player-names-input" rows="5" placeholder="Mario&#10;Luigi&#10;Peach" style="width: 90%; padding: 12px; font-size: 16px; border-radius: 8px; outline: none; resize: vertical; font-family: inherit;"></textarea>
         </div>
-        <div>
-            <button class="btn" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
-        </div>
+        <button class="btn" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
     <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
         <h1>PILIH DUNIA PERMAINAN</h1>
         <p>Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
-        <div class="level-grid" style="max-width: 700px; margin: 15px auto;">
-            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 8px solid var(--mario-red); text-align: center; padding: 15px;">
-                <span style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
-                <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Dunia Perkalian Distributif</span>
+        <div class="level-grid" style="margin-top: 25px;">
+            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 8px solid var(--mario-red); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Dunia Perkalian Distributif & Number Bond</span>
             </div>
-            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 8px solid var(--mario-blue); text-align: center; padding: 15px;">
-                <span style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-blue);">➗ DIVISION</span>
-                <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Dunia Pembagian Distributif</span>
+            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 8px solid var(--mario-blue); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Dunia Pembagian Distributif & Number Bond</span>
             </div>
         </div>
-        <div>
-            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama Pemain</button>
-        </div>
+        <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 15px;">⬅️ Ganti Nama Pemain</button>
     </div>
 
     <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
-        <div style="text-align: left; margin-bottom: 5px;">
+        <div style="text-align: left;">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
         </div>
-        <h1 id="level-screen-title" style="font-size: 13px; margin: 5px 0;">PILIH LEVEL KESULITAN</h1>
+        <h1 id="level-screen-title" style="font-size: 14px;">PILIH LEVEL KESULITAN</h1>
         <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: var(--mario-red);"></span></p>
-        <div class="level-grid" style="margin: 10px auto; max-width: 800px;">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:11px; display:block; color:#666; font-weight:bold;">Drag & Drop Koin</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:11px; display:block; color:#666; font-weight:bold;">Number Bond Input</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan Dasar) <span style="font-size:11px; display:block; color:#666; font-weight:bold;">Tantangan Kastil</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle (>600) <span style="font-size:11px; display:block; color:#666; font-weight:bold;">Misi Penyelamatan</span></div>
+        <div class="level-grid">
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Drag & Drop Koin</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan Dasar) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Tantangan Kastil</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle (>600) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Misi Penyelamatan Utama</span></div>
         </div>
     </div>
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
-    <div id="screen-game" class="screen" style="justify-content: flex-start;">
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 5px;">
+    <div id="screen-game" class="screen">
+        <div style="text-align: left;">
             <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
-            <h1 id="game-title" style="font-size: 13px; margin: 0;">Super Math Bros</h1>
-            <div style="width: 80px;"></div>
         </div>
 
+        <h1 id="game-title" style="font-size: 14px;">Super Math Bros</h1>
         <div class="score-board">
             <div>Soal <span id="current-q-num">1</span>/5</div>
             <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
@@ -525,18 +475,17 @@
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
-            <!-- LAYOUT UTAMA LANDSCAPE 2 KOLOM -->
+            <!-- LAYOUT UTAMA: KOLOM GAME & KOTAK BANTUAN DI SAMPING -->
             <div class="game-play-layout">
-                <!-- KOLOM KIRI -->
-                <div class="left-game-column">
+                <div class="main-game-column">
                     <!-- TOMBOL REBUTAN NAMA PEMAIN -->
                     <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                        <p style="font-weight: bold; color: var(--mario-red); font-size: 11px; margin: 0; font-family:'Press Start 2P'; line-height: 1.4;">⭐ PILIH PAHLAWAN! ⭐</p>
+                        <p style="font-weight: bold; color: var(--mario-red); font-size: 13px; margin: 0; font-family:'Press Start 2P'; line-height: 1.5;">⭐ PILIH PAHLAWANMU! ⭐</p>
                         <div class="player-buttons-grid" id="player-buttons-box"></div>
                     </div>
 
                     <div class="number-bond-container" id="bond-container" style="display:none;">
-                        <svg class="lines-svg" viewBox="0 0 200 30" id="bond-lines">
+                        <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
                             <!-- Garis cabang SVG -->
                         </svg>
                         <div class="bond-circles" id="bond-circles-container">
@@ -545,51 +494,43 @@
                     </div>
                 </div>
 
-                <!-- KOLOM KANAN -->
-                <div class="right-game-column">
-                    <!-- BANTUAN PERKALIAN DI KANAN -->
-                    <div id="helper-multiples" class="helper-multiples-box">
-                        <b>BANTUAN (<span id="helper-b-val"></span>)</b>
-                        <div class="helper-grid-items" id="helper-multiples-list"></div>
-                    </div>
-
-                    <!-- Bagian Kotak Penjumlahan Distributif -->
-                    <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
-                        <!-- Input dinamis perkalian/pembagian distributif -->
-                    </div>
+                <!-- BANTUAN PERKALIAN DI SAMPING (PENULISAN KE BAWAH) -->
+                <div id="helper-multiples" class="helper-multiples-box">
+                    <b>BANTUAN (<span id="helper-b-val"></span>)</b>
+                    <div id="helper-multiples-list"></div>
                 </div>
             </div>
         </div>
 
         <!-- Wadah Kepingan Drag (Hanya tampil di Easy & saat giliran aktif) -->
-        <div id="drag-source-wrapper" style="display:none; margin-top: 5px;">
-            <p style="margin: 2px 0; font-size: 11px; color: #555;">Seret koin angka ke lingkaran jamur:</p>
+        <div id="drag-source-wrapper" style="display:none;">
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
-
-        <div style="display: flex; justify-content: center; margin-top: 5px;">
-            <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top:0;">JAWAB! 🎯</button>
-            <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none; margin-top:0;">SOAL BERIKUTNYA ➡️</button>
-        </div>
         
+        <!-- Bagian Kotak Penjumlahan (Terkunci awal hingga Number Bond lengkap) -->
+        <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
+            <!-- Input dinamis perkalian/pembagian distributif -->
+        </div>
+
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">JAWAB! 🎯</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none;">SOAL BERIKUTNYA ➡️</button>
         <div id="feedback"></div>
         
         <!-- PAPAN SKOR KECIL DI BAWAH -->
-        <div id="scoreboard-footer" style="margin-top: 8px; background: #fffde7; border: 2px solid #fbc02d; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; color: #e65100;">
+        <div id="scoreboard-footer" style="margin-top: 15px; background: #fffde7; border: 2px solid #fbc02d; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #e65100;">
             Koin Skor: <span id="scoreboard-text"></span>
         </div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
-        <h1 style="color: var(--mario-red); font-size: 15px;">MISI SELESAI! 🎉</h1>
-        <p style="font-size: 14px; margin: 10px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
-        <div id="final-scores-list" style="font-size: 15px; font-weight: bold; margin: 15px 0; line-height: 1.6; color: #333;">
+        <h1 style="color: var(--mario-red); font-size: 16px;">MISI SELESAI! 🎉</h1>
+        <p style="font-size: 15px; margin: 15px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
+        <div id="final-scores-list" style="font-size: 16px; font-weight: bold; margin: 20px 0; line-height: 1.8; color: #333;">
             <!-- Daftar skor akhir anak -->
         </div>
-        <div>
-            <button class="btn" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
-        </div>
+        <button class="btn" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
     </div>
 </div>
 
@@ -800,7 +741,7 @@
         document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
-        // Tampilkan kotak bantuan perkalian di kanan jika mode Division
+        // Tampilkan kotak bantuan perkalian di samping jika mode Division
         let helperBox = document.getElementById('helper-multiples');
         if (operationMode === 'division') {
             let b = currentQuestion.b;
@@ -879,7 +820,7 @@
         document.getElementById('submit-btn').style.display = 'block';
 
         let feedback = document.getElementById('feedback');
-        feedback.innerText = `🍄 Giliran ${playerName}! Lengkapi Number Bond terlebih dahulu.`;
+        feedback.innerText = `🍄 Giliran ${playerName}! Lengkapi Number Bond di atas terlebih dahulu.`;
         feedback.className = "correct";
 
         setupStandardGameplay();
@@ -934,14 +875,14 @@
 
         if (count === 3) {
             svgContainer.innerHTML = `
-                <line x1="100" y1="0" x2="25" y2="25" stroke="#e52521" stroke-width="3" />
-                <line x1="100" y1="0" x2="100" y2="25" stroke="#e52521" stroke-width="3" />
-                <line x1="100" y1="0" x2="175" y2="25" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="30" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="110" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="190" y2="30" stroke="#e52521" stroke-width="3" />
             `;
         } else {
             svgContainer.innerHTML = `
-                <line x1="100" y1="0" x2="50" y2="25" stroke="#e52521" stroke-width="3" />
-                <line x1="100" y1="0" x2="150" y2="25" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="55" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="165" y2="30" stroke="#e52521" stroke-width="3" />
             `;
         }
 
@@ -999,7 +940,7 @@
             if (index > 0) {
                 let plus = document.createElement('span');
                 plus.innerText = '+';
-                plus.style.fontSize = '16px';
+                plus.style.fontSize = '18px';
                 plus.style.fontWeight = 'bold';
                 plus.style.color = '#2e7d32';
                 container.appendChild(plus);
@@ -1013,7 +954,7 @@
 
         let equals = document.createElement('span');
         equals.innerText = '=';
-        equals.style.fontSize = '16px';
+        equals.style.fontSize = '18px';
         equals.style.fontWeight = 'bold';
         equals.style.color = '#2e7d32';
         container.appendChild(equals);
