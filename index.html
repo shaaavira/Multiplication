@@ -300,12 +300,12 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN (TEXTAREA) -->
     <div id="screen-welcome" class="screen active">
         <h1>Math Fun: Pecah Angka 🌟</h1>
-        <p>Masukkan nama-nama pemain (pisahkan dengan koma, contoh: Dawai, Nahda, Alif):</p>
+        <p>Ketik nama anak, satu nama per baris (Maksimal 10 anak):</p>
         <div style="margin: 20px 0;">
-            <input type="text" id="player-names-input" placeholder="Dawai, Nahda, Alif" style="width: 90%; padding: 12px; font-size: 16px;">
+            <textarea id="player-names-input" rows="5" placeholder="Nahda&#10;Dawai&#10;Alif" style="width: 90%; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; outline: none; resize: vertical; font-family: inherit;"></textarea>
         </div>
         <button class="btn" onclick="initPlayers()">Lanjut Pilih Level 🚀</button>
     </div>
@@ -453,12 +453,20 @@
     }
 
     function initPlayers() {
-        let input = document.getElementById('player-names-input').value.trim();
-        if(!input) {
+        let inputVal = document.getElementById('player-names-input').value.trim();
+        if(!inputVal) {
             alert("Masukkan minimal satu nama pemain!");
             return;
         }
-        players = input.split(',').map(n => n.trim()).filter(n => n.length > 0);
+
+        // Pisahkan berdasarkan baris baru (\n) agar format enter terbaca
+        players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+
+        if (players.length > 10) {
+            alert("Maksimal hanya 10 anak yang dapat dimasukkan!");
+            return;
+        }
+
         playerScores = {};
         players.forEach(p => playerScores[p] = 0);
 
@@ -518,7 +526,6 @@
         document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
-        // Sembunyikan elemen game sampai ada pemain yang mengklik namanya
         document.getElementById('bond-container').style.display = 'none';
         document.getElementById('inputs-container').style.display = 'none';
         document.getElementById('drag-source-wrapper').style.display = 'none';
@@ -526,7 +533,6 @@
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        // Tentukan waktu timer berdasarkan level
         if (currentLevel === 'easy') timer = 60;
         else if (currentLevel === 'medium') timer = 45;
         else if (currentLevel === 'expert') timer = 30;
@@ -563,7 +569,6 @@
             container.appendChild(btn);
         });
 
-        // Mulai hitung mundur waktu pemilihan
         timerInterval = setInterval(updateTimer, 1000);
     }
 
@@ -583,7 +588,6 @@
 
         setupStandardGameplay();
 
-        // Restart timer untuk proses pengerjaan soal
         if (currentLevel === 'easy') timer = 60;
         else if (currentLevel === 'medium') timer = 45;
         else if (currentLevel === 'expert') timer = 30;
