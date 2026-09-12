@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Pecah Perkalian & Number Bond Interaktif</title>
+    <title>Game Pecah Perkalian & Pembagian Interaktif</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -59,7 +59,7 @@
             margin-bottom: 10px;
         }
         
-        /* NUMBER BOND DIGESER KE KIRI */
+        /* NUMBER BOND CONTAINER */
         .number-bond-container {
             position: relative;
             width: 220px;
@@ -332,7 +332,7 @@
             </div>
             <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 6px solid #0288d1; text-align: center; padding: 20px;">
                 ➗ Division (Pembagian)
-                <span style="font-size:12px; display:block; color:#666; font-weight:normal; margin-top: 5px;">Segera Hadir / Mode Pembagian</span>
+                <span style="font-size:12px; display:block; color:#666; font-weight:normal; margin-top: 5px;">Pecah pembagian distributif & number bond</span>
             </div>
         </div>
         <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 15px;">⬅️ Ganti Nama Pemain</button>
@@ -343,13 +343,13 @@
         <div style="text-align: left;">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode Operasi</button>
         </div>
-        <h1>Pilih Level Kesulitan</h1>
+        <h1 id="level-screen-title">Pilih Level Kesulitan</h1>
         <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: #2e7d32;"></span></p>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Belasan (12-19) • Drag & Drop</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan (20-50) • Number Bond</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (60-200)</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Tinggi (>200)</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Dasar / Belasan • Drag & Drop</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan • Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Angka Tinggi (>600)</span></div>
         </div>
     </div>
 
@@ -359,7 +359,7 @@
             <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
         </div>
 
-        <h1>Math Fun: Pecah Angka</h1>
+        <h1 id="game-title">Math Fun: Pecah Angka</h1>
         <div class="score-board">
             <div>Soal <span id="current-q-num">1</span>/5</div>
             <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
@@ -386,13 +386,13 @@
 
         <!-- Wadah Kepingan Drag (Hanya tampil di Easy & saat giliran aktif) -->
         <div id="drag-source-wrapper" style="display:none;">
-            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret <b>Puluhan ke kiri</b> & <b>Satuan ke kanan</b>:</p>
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret kepingan angka ke lingkaran yang tepat:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
         <!-- Bagian Kotak Penjumlahan (Terkunci awal hingga Number Bond lengkap) -->
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
-            <!-- Input dinamis perkalian distributif -->
+            <!-- Input dinamis perkalian/pembagian distributif -->
         </div>
 
         <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">Jawab 🎯</button>
@@ -421,7 +421,7 @@
     let playerScores = {};
     let activePlayer = null;
     let currentLevel = "easy";
-    let operationMode = "multiplication";
+    let operationMode = "multiplication"; // 'multiplication' atau 'division'
     let questionIndex = 0;
     let questions = [];
     let currentQuestion = {};
@@ -429,7 +429,8 @@
     let timerInterval = null;
     let answeredPlayersInThisQuestion = [];
 
-    const levelBanks = {
+    // BANK SOAL PERKALIAN
+    const multiplicationLevelBanks = {
         easy: [
             { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
             { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
@@ -464,7 +465,7 @@
             { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
             { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
             { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
-            { a: 190, b: 5, decomp: [100, 90, 0], parts: [500, 450, 0], ans: 950 }
+            { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
         ],
         nightmare: [
             { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
@@ -477,6 +478,58 @@
             { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
             { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
             { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
+        ]
+    };
+
+    // BANK SOAL PEMBAGIAN (DIVISION) - DIPERBARUI SESUAI PERMINTAAN
+    const divisionLevelBanks = {
+        easy: [
+            { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
+            { a: 39, b: 3, decomp: [30, 9], parts: [10, 3], ans: 13 },
+            { a: 28, b: 2, decomp: [20, 8], parts: [10, 4], ans: 14 },
+            { a: 45, b: 3, decomp: [30, 15], parts: [10, 5], ans: 15 },
+            { a: 64, b: 4, decomp: [40, 24], parts: [10, 6], ans: 16 },
+            { a: 51, b: 3, decomp: [30, 21], parts: [10, 7], ans: 17 },
+            { a: 36, b: 2, decomp: [20, 16], parts: [10, 8], ans: 18 },
+            { a: 76, b: 4, decomp: [40, 36], parts: [10, 9], ans: 19 },
+            { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13 },
+            { a: 70, b: 5, decomp: [50, 20], parts: [10, 4], ans: 14 }
+        ],
+        medium: [
+            { a: 72, b: 3, decomp: [60, 12], parts: [20, 4], ans: 24 },
+            { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32 },
+            { a: 175, b: 5, decomp: [150, 25], parts: [30, 5], ans: 35 },
+            { a: 252, b: 6, decomp: [240, 12], parts: [40, 2], ans: 42 },
+            { a: 135, b: 3, decomp: [120, 15], parts: [40, 5], ans: 45 },
+            { a: 112, b: 4, decomp: [80, 32], parts: [20, 8], ans: 28 },
+            { a: 180, b: 5, decomp: [150, 30], parts: [30, 6], ans: 36 },
+            { a: 96, b: 2, decomp: [80, 16], parts: [40, 8], ans: 48 },
+            { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
+            { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 }
+        ],
+        expert: [
+            { a: 224, b: 4, decomp: [200, 24], parts: [50, 6], ans: 56 },
+            { a: 245, b: 5, decomp: [200, 45], parts: [40, 9], ans: 49 },
+            { a: 312, b: 6, decomp: [300, 12], parts: [50, 2], ans: 52 },
+            { a: 378, b: 7, decomp: [350, 28], parts: [50, 4], ans: 54 },
+            { a: 432, b: 8, decomp: [400, 32], parts: [50, 4], ans: 54 },
+            { a: 288, b: 9, decomp: [270, 18], parts: [30, 2], ans: 32 },
+            { a: 455, b: 5, decomp: [400, 55], parts: [80, 11], ans: 91 },
+            { a: 512, b: 8, decomp: [480, 32], parts: [60, 4], ans: 64 },
+            { a: 216, b: 3, decomp: [210, 6], parts: [70, 2], ans: 72 },
+            { a: 324, b: 6, decomp: [300, 24], parts: [50, 4], ans: 54 }
+        ],
+        nightmare: [
+            { a: 624, b: 4, decomp: [600, 24], parts: [150, 6], ans: 156 },
+            { a: 635, b: 5, decomp: [600, 35], parts: [120, 7], ans: 127 },
+            { a: 726, b: 6, decomp: [720, 6], parts: [120, 1], ans: 121 },
+            { a: 812, b: 7, decomp: [700, 112], parts: [100, 16], ans: 116 },
+            { a: 936, b: 8, decomp: [800, 136], parts: [100, 17], ans: 117 },
+            { a: 639, b: 9, decomp: [630, 9], parts: [70, 1], ans: 71 },
+            { a: 756, b: 6, decomp: [720, 36], parts: [120, 6], ans: 126 },
+            { a: 845, b: 5, decomp: [800, 45], parts: [160, 9], ans: 169 },
+            { a: 912, b: 8, decomp: [880, 32], parts: [110, 4], ans: 114 },
+            { a: 651, b: 3, decomp: [600, 51], parts: [200, 17], ans: 217 }
         ]
     };
 
@@ -511,11 +564,9 @@
 
     function selectOperationMode(mode) {
         operationMode = mode;
-        if (mode === 'division') {
-            alert("Mode Division (Pembagian) sedang dalam pengembangan! Mengarahkan ke mode Multiplication.");
-            operationMode = 'multiplication';
-        }
         goToScreen('screen-levels');
+        let titleText = operationMode === 'multiplication' ? 'Perkalian ✖️' : 'Pembagian ➗';
+        document.getElementById('level-screen-title').innerText = `Pilih Level (${titleText})`;
     }
 
     function returnToMenu() {
@@ -538,7 +589,7 @@
         questionIndex = 0;
         players.forEach(p => playerScores[p] = 0);
 
-        let sourceBank = levelBanks[level];
+        let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
         questions = shuffledBank.slice(0, 5);
 
@@ -566,8 +617,10 @@
         activePlayer = null;
         answeredPlayersInThisQuestion = [];
 
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'Math Fun: Pecah Perkalian 🌟' : 'Math Fun: Pecah Pembagian 🌟';
         document.getElementById('current-q-num').innerText = questionIndex + 1;
-        document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
+        document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
         document.getElementById('bond-container').style.display = 'none';
@@ -671,6 +724,7 @@
         let dragSourceWrapper = document.getElementById('drag-source-wrapper');
         let dragSourceBox = document.getElementById('drag-source-box');
         let breakdownSection = document.getElementById('inputs-container');
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
 
         circlesContainer.innerHTML = '';
         svgContainer.innerHTML = '';
@@ -755,7 +809,7 @@
             
             let group = document.createElement('div');
             group.className = 'input-group';
-            group.innerHTML = `<label id="label-part-${index}">[ ? ] × ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
+            group.innerHTML = `<label id="label-part-${index}">[ ? ] ${opSymbol} ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
             container.appendChild(group);
         });
 
@@ -821,17 +875,14 @@
                         e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
                         
                         let zoneIndex = parseInt(zone.dataset.index);
-                        let isPuluhan = val >= 10;
-                        let isSatuan = val < 10;
-                        let isValidPosition = (zoneIndex === 0 && isPuluhan) || (zoneIndex === 1 && isSatuan);
+                        let expectedVal = currentQuestion.decomp[zoneIndex];
+                        let isValidPosition = (val === expectedVal);
 
                         if (!isValidPosition) {
                             zone.classList.add('error-highlight');
                             setTimeout(() => zone.classList.remove('error-highlight'), 600);
                             
-                            feedback.innerText = zoneIndex === 0 
-                                ? "⚠️ Kotak kiri khusus untuk angka puluhan!" 
-                                : "⚠️ Kotak kanan khusus untuk angka satuan!";
+                            feedback.innerText = `⚠️ Angka ${val} kurang tepat untuk lingkaran ini!`;
                             feedback.className = "incorrect";
                             return;
                         }
@@ -857,6 +908,7 @@
     }
 
     function updateDistributiveLabels() {
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
         currentQuestion.decomp.forEach((_, index) => {
             let val;
             if (currentLevel === 'easy') {
@@ -868,7 +920,7 @@
             }
             let label = document.getElementById(`label-part-${index}`);
             if(label) {
-                label.innerText = `${val} × ${currentQuestion.b}`;
+                label.innerText = `${val} ${opSymbol} ${currentQuestion.b}`;
             }
         });
     }
