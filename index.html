@@ -177,7 +177,13 @@
             background: #f8fafc;
             padding: 15px;
             border-radius: 12px;
+            transition: opacity 0.3s;
         }
+        .breakdown-section.disabled-section {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
         .input-group {
             display: flex;
             flex-direction: column;
@@ -199,6 +205,11 @@
             outline: none;
             transition: border-color 0.2s;
         }
+        input:disabled, .breakdown-section.disabled-section input {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+
         .btn {
             background-color: #2e7d32;
             color: white;
@@ -300,7 +311,7 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN (TEXTAREA) -->
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
         <h1>Math Fun: Pecah Angka 🌟</h1>
         <p>Ketik nama anak, satu nama per baris (Maksimal 10 anak):</p>
@@ -359,7 +370,8 @@
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
-        <div class="breakdown-section" id="inputs-container" style="display:none;">
+        <!-- Bagian Kotak Penjumlahan (Terkunci awal hingga Number Bond lengkap) -->
+        <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
             <!-- Input dinamis perkalian distributif -->
         </div>
 
@@ -459,7 +471,6 @@
             return;
         }
 
-        // Pisahkan berdasarkan baris baru (\n) agar format enter terbaca
         players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
 
         if (players.length > 10) {
@@ -528,6 +539,7 @@
         
         document.getElementById('bond-container').style.display = 'none';
         document.getElementById('inputs-container').style.display = 'none';
+        document.getElementById('inputs-container').classList.add('disabled-section');
         document.getElementById('drag-source-wrapper').style.display = 'none';
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
@@ -583,7 +595,7 @@
         document.getElementById('submit-btn').style.display = 'block';
 
         let feedback = document.getElementById('feedback');
-        feedback.innerText = `✨ Giliran ${playerName}! Silakan selesaikan perhitungannya.`;
+        feedback.innerText = `✨ Giliran ${playerName}! Lengkapi Number Bond di atas terlebih dahulu.`;
         feedback.className = "correct";
 
         setupStandardGameplay();
@@ -597,15 +609,41 @@
         timerInterval = setInterval(updateTimer, 1000);
     }
 
+    function checkNumberBondCompletion() {
+        let decomp = currentQuestion.decomp;
+        let isComplete = true;
+
+        decomp.forEach((_, index) => {
+            let val;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                if (!zone.dataset.value) isComplete = false;
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                if (!input.value.trim()) isComplete = false;
+            }
+        });
+
+        let breakdownSection = document.getElementById('inputs-container');
+        if (isComplete) {
+            breakdownSection.classList.remove('disabled-section');
+            updateDistributiveLabels();
+        } else {
+            breakdownSection.classList.add('disabled-section');
+        }
+    }
+
     function setupStandardGameplay() {
         let circlesContainer = document.getElementById('bond-circles-container');
         let svgContainer = document.getElementById('bond-lines');
         let dragSourceWrapper = document.getElementById('drag-source-wrapper');
         let dragSourceBox = document.getElementById('drag-source-box');
+        let breakdownSection = document.getElementById('inputs-container');
 
         circlesContainer.innerHTML = '';
         svgContainer.innerHTML = '';
         dragSourceBox.innerHTML = '';
+        breakdownSection.classList.add('disabled-section');
 
         let decomp = currentQuestion.decomp;
         let count = decomp.length;
@@ -640,7 +678,7 @@
                         dropzone.dataset.value = "";
                         dropzone.innerText = "?";
                         createDraggableItem(val, dragSourceBox);
-                        updateDistributiveLabels();
+                        checkNumberBondCompletion();
                     }
                 });
 
@@ -661,6 +699,11 @@
                 inputCircle.className = 'circle-input';
                 inputCircle.id = `decomp-${index}`;
                 inputCircle.placeholder = '?';
+                
+                inputCircle.addEventListener('input', () => {
+                    checkNumberBondCompletion();
+                });
+
                 circlesContainer.appendChild(inputCircle);
             });
         }
@@ -695,16 +738,6 @@
         finalGroup.className = 'input-group';
         finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
         container.appendChild(finalGroup);
-
-        if (currentLevel !== 'easy') {
-            decomp.forEach((_, index) => {
-                let decompInput = document.getElementById(`decomp-${index}`);
-                decompInput.addEventListener('input', (e) => {
-                    let val = e.target.value || '?';
-                    document.getElementById(`label-part-${index}`).innerText = `${val} × ${currentQuestion.b}`;
-                });
-            });
-        }
     }
 
     function createDraggableItem(val, container) {
@@ -779,7 +812,7 @@
                         zone.innerText = val;
                         item.remove();
                         feedback.innerText = "";
-                        updateDistributiveLabels();
+                        checkNumberBondCompletion();
                     }
                 });
             }
@@ -793,8 +826,14 @@
 
     function updateDistributiveLabels() {
         currentQuestion.decomp.forEach((_, index) => {
-            let zone = document.getElementById(`decomp-${index}`);
-            let val = zone.dataset.value || '?';
+            let val;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                val = zone.dataset.value || '?';
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                val = input.value || '?';
+            }
             let label = document.getElementById(`label-part-${index}`);
             if(label) {
                 label.innerText = `${val} × ${currentQuestion.b}`;
