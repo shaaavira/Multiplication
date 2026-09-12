@@ -3,46 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Mario Math: Pecah Angka</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+    <title>Super Math Bros: Pecah Perkalian & Pembagian</title>
+    <!-- Memuat Google Fonts bergaya game retro (Press Start 2P & Fredoka) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --mario-red: #e52521;
+            --mario-blue: #002fbe;
+            --mario-yellow: #f8b800;
+            --mario-green: #43b3ae;
+            --mario-bg-sky: #5c94fc;
+        }
+
         body {
-            font-family: 'Fredoka', 'Segoe UI', sans-serif;
-            background-color: #5c94fc; /* Mario Sky Blue */
-            color: #222;
+            font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--mario-bg-sky);
+            background-image: 
+                radial-gradient(white 15%, transparent 16%),
+                radial-gradient(white 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: #fff;
             text-align: center;
             padding: 20px;
             margin: 0;
             touch-action: manipulation;
-            background-image: 
-                radial-gradient(circle, #ffffff 15%, transparent 16%),
-                radial-gradient(circle, #ffffff 15%, transparent 16%);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-            background-opacity: 0.2;
+            text-shadow: 2px 2px 0px #000;
         }
-        
+
         .game-container {
-            max-width: 650px;
+            max-width: 620px;
             margin: 20px auto;
-            background: #f8f9fa;
+            background: #ffffff;
+            color: #333;
             padding: 25px;
-            border-radius: 20px;
-            border: 6px solid #e52521; /* Mario Red Border */
-            box-shadow: 0 10px 0 #990000, 0 15px 25px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            border: 6px solid #000;
+            box-shadow: 0 8px 0px #000, 0 15px 25px rgba(0,0,0,0.3);
             position: relative;
+            text-shadow: none;
         }
 
         h1 {
             font-family: 'Press Start 2P', cursive;
-            color: #e52521;
-            font-size: 20px;
-            margin-bottom: 12px;
-            text-shadow: 2px 2px 0px #fbd000, 4px 4px 0px #000;
+            color: var(--mario-red);
+            font-size: 18px;
+            margin-bottom: 8px;
             line-height: 1.4;
+            text-shadow: 2px 2px 0px var(--mario-yellow);
         }
-        
-        p { color: #444; font-size: 15px; font-weight: 500; }
+
+        p { 
+            color: #444; 
+            font-size: 15px; 
+            font-weight: 600;
+        }
         
         .screen { display: none; }
         .screen.active { display: block; }
@@ -50,17 +65,16 @@
         .score-board {
             display: flex;
             justify-content: space-between;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
-            background: #43b047; /* Pipe Green */
-            padding: 12px 16px;
-            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            background: #fff8e1;
+            border: 3px solid #fbc02d;
+            padding: 10px 15px;
+            border-radius: 10px;
             margin-bottom: 15px;
-            color: white;
-            border: 4px solid #006600;
-            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+            color: #e65100;
         }
-        .timer-box { color: #fbd000; text-shadow: 1px 1px 0 #000; }
+        .timer-box { color: var(--mario-red); }
         
         .math-problem-area {
             display: flex;
@@ -68,21 +82,19 @@
             align-items: center;
             margin: 10px 0;
         }
-        
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 22px;
-            color: #e52521;
-            background: #fff;
+            font-size: 24px;
+            color: var(--mario-blue);
+            margin-bottom: 12px;
+            width: 100%;
+            background: #e3f2fd;
             padding: 15px;
-            border-radius: 12px;
-            border: 4px solid #000;
-            margin-bottom: 15px;
-            width: 90%;
-            box-shadow: 4px 4px 0 #000;
+            border-radius: 10px;
+            border: 3px dashed var(--mario-blue);
         }
 
-        /* LAYOUT GAMEPLAY UTAMA */
+        /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
         .game-play-layout {
             display: flex;
             gap: 15px;
@@ -90,9 +102,7 @@
             justify-content: center;
             flex-wrap: nowrap;
             margin-top: 10px;
-            width: 100%;
         }
-
         .main-game-column {
             flex: 1;
             display: flex;
@@ -101,49 +111,48 @@
             min-width: 260px;
         }
 
-        /* KOTAK BANTUAN QUESTION BLOCK (?) */
+        /* KOTAK BANTUAN DI SAMPING (PENULISAN KE BAWAH) */
         .helper-multiples-box {
             display: none;
-            background: #fbd000; /* Mario Coin Yellow */
-            border: 4px solid #000;
+            background: #fff9c4;
+            border: 3px solid #fbc02d;
             padding: 10px 8px;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 12px;
-            color: #000;
-            width: 120px;
+            color: #f57f17;
+            width: 110px;
             box-sizing: border-box;
             text-align: left;
             flex-shrink: 0;
-            box-shadow: 4px 4px 0 #000;
+            box-shadow: 0 4px 0px #fbc02d;
+            font-weight: bold;
         }
-
         .helper-multiples-box b {
-            font-family: 'Press Start 2P', cursive;
-            color: #e52521;
+            color: #e65100;
             display: block;
             text-align: center;
-            margin-bottom: 8px;
-            font-size: 9px;
-            border-bottom: 3px solid #000;
-            padding-bottom: 5px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            border-bottom: 2px dashed #ffe082;
+            padding-bottom: 3px;
         }
-
         .helper-list-item {
-            font-family: monospace;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 4px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            margin-bottom: 5px;
             white-space: nowrap;
+            color: #333;
         }
         
         /* NUMBER BOND CONTAINER */
         .number-bond-container {
             position: relative;
-            width: 230px;
+            width: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 5px;
+            margin-left: -10px;
         }
         
         .bond-circles {
@@ -154,35 +163,33 @@
         }
         
         .circle-dropzone {
-            width: 55px !important;
-            height: 55px !important;
-            min-width: 55px;
-            min-height: 55px;
-            border: 4px solid #000 !important;
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px;
+            min-height: 52px;
+            border: 3px dashed var(--mario-red) !important;
             border-radius: 50% !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 14px;
-            color: #e52521;
-            background-color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--mario-red);
+            background-color: #ffebee;
             box-sizing: border-box;
             cursor: pointer;
-            box-shadow: 0 4px 0 #999;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
         }
-
         .circle-dropzone.highlight {
-            background-color: #abdd64;
-            border-color: #43b047 !important;
+            background-color: #c8e6c9;
+            border-color: #2e7d32 !important;
         }
-
         .circle-dropzone.error-highlight {
-            background-color: #ff8d8d;
-            border-color: #e52521 !important;
+            background-color: #ffcdd2;
+            border-color: #d32f2f !important;
         }
 
-        /* KEPINGAN DRAG PILIHAN (MARIO COINS) */
+        /* KEPINGAN DRAG PILIHAN (GAYA KOTAK ITEM / KCOIN) */
         .drag-source-container {
             display: flex;
             justify-content: center;
@@ -191,26 +198,24 @@
             min-height: 55px;
             align-items: center;
         }
-
         .draggable-item {
-            width: 52px;
-            height: 52px;
-            background-color: #fbd000;
-            border: 3px solid #000;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            border: 3px solid #f57f17;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 13px;
-            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            color: #b71c1c;
             cursor: pointer;
             user-select: none;
             touch-action: none;
-            box-shadow: 0 4px 0 #b88600;
+            box-shadow: 0 4px 0px #e65100;
             transition: transform 0.1s;
         }
-
         .draggable-item.dragging {
             position: fixed;
             z-index: 1000;
@@ -220,25 +225,24 @@
         }
 
         .circle-input {
-            width: 55px !important;
-            height: 55px !important;
-            min-width: 55px;
-            min-height: 55px;
-            border: 4px solid #000 !important;
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px;
+            min-height: 52px;
+            border: 3px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 13px;
-            color: #e52521;
-            background-color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--mario-red);
+            background-color: #ffebee;
             outline: none;
             padding: 0;
             margin: 0;
             box-sizing: border-box;
-            box-shadow: inset 0 3px 0 #ccc;
             -moz-appearance: textfield;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
         }
-
         .circle-input::-webkit-outer-spin-button,
         .circle-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -246,7 +250,7 @@
         }
 
         .lines-svg {
-            width: 230px;
+            width: 220px;
             height: 35px;
         }
 
@@ -257,15 +261,14 @@
             align-items: center;
             flex-wrap: wrap;
             margin: 15px 0;
-            background: #e8eaed;
+            background: #f1f8e9;
+            border: 3px solid #81c784;
             padding: 15px;
             border-radius: 12px;
-            border: 3px solid #000;
             transition: opacity 0.3s;
             width: 100%;
             box-sizing: border-box;
         }
-
         .breakdown-section.disabled-section {
             opacity: 0.4;
             pointer-events: none;
@@ -276,85 +279,76 @@
             flex-direction: column;
             align-items: center;
         }
-
         .input-group label {
-            font-size: 12px;
-            color: #000;
+            font-size: 11px;
+            color: #2e7d32;
             margin-bottom: 4px;
             font-weight: bold;
         }
-
         input[type="text"], input[type="number"] {
             width: 75px;
             padding: 8px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
+            font-size: 16px;
             text-align: center;
-            border: 3px solid #000;
+            border: 3px solid #81c784;
             border-radius: 8px;
             outline: none;
+            font-weight: bold;
+            color: #333;
             background: #fff;
+            transition: border-color 0.2s;
         }
-
         input:disabled, .breakdown-section.disabled-section input {
-            background-color: #ccc;
+            background-color: #e2e8f0;
             cursor: not-allowed;
         }
 
-        /* BUTTONS (MARIO PIXEL STYLE) */
         .btn {
-            background-color: #e52521;
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--mario-red);
             color: white;
             border: 3px solid #000;
-            padding: 12px 24px;
-            font-family: 'Press Start 2P', cursive;
+            padding: 14px 20px;
             font-size: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
             margin-top: 10px;
             width: 100%;
-            box-shadow: 0 5px 0 #880000;
+            box-shadow: 0 4px 0px #900;
             transition: all 0.1s;
         }
-
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #880000;
-        }
-
-        .btn-secondary { 
-            background-color: #0099ff; 
-            box-shadow: 0 5px 0 #005599;
-        }
-
-        .btn-secondary:active {
-            box-shadow: 0 1px 0 #005599;
-        }
-
+        .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 6px 0px #900; }
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
+        
+        .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 4px 0px #001a75; }
+        .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 6px 0px #001a75; }
+        
         .btn-back-menu {
+            font-family: 'Press Start 2P', cursive;
             background-color: #78909c;
             color: white;
             border: 2px solid #000;
-            padding: 8px 14px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 13px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 9px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             margin-bottom: 15px;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            box-shadow: 0 3px 0 #37474f;
+            box-shadow: 0 3px 0px #455a64;
+            transition: background-color 0.2s;
         }
+        .btn-back-menu:hover { background-color: #90a4ae; }
 
         .level-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
+            gap: 12px;
             margin: 20px 0;
         }
-
         .level-card {
             background: #fff;
             border: 3px solid #000;
@@ -365,14 +359,14 @@
             font-size: 16px;
             transition: all 0.2s;
             text-align: left;
-            box-shadow: 4px 4px 0 #000;
+            color: #333;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
         }
-
-        .level-card:hover { transform: scale(1.02); }
-        .level-card.easy { border-left: 10px solid #43b047; }
-        .level-card.medium { border-left: 10px solid #fbd000; }
-        .level-card.expert { border-left: 10px solid #ff9800; }
-        .level-card.nightmare { border-left: 10px solid #e52521; }
+        .level-card:hover { transform: translateY(-2px); background: #fffde7; }
+        .level-card.easy { border-left: 8px solid #4caf50; }
+        .level-card.medium { border-left: 8px solid #ff9800; }
+        .level-card.expert { border-left: 8px solid #f44336; }
+        .level-card.nightmare { border-left: 8px solid #9c27b0; }
 
         /* PLAYER SELECTION ARENA */
         .player-selector-arena {
@@ -383,7 +377,6 @@
             margin: 15px 0;
             width: 100%;
         }
-
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
@@ -391,34 +384,35 @@
             justify-content: center;
             width: 100%;
         }
-
         .btn-player-pick {
-            background-color: #0099ff;
-            color: white;
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--mario-yellow);
+            color: #b71c1c;
             border: 3px solid #000;
-            padding: 10px 18px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 16px;
+            padding: 10px 15px;
+            font-size: 10px;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 0 #005599;
+            box-shadow: 0 3px 0px #f57f17;
+            transition: transform 0.1s;
         }
-
-        .btn-player-pick:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #005599;
-        }
+        .btn-player-pick:active { transform: scale(0.95); }
+        .btn-player-pick:hover { background-color: #ffeb3b; }
 
         #feedback {
             margin-top: 15px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             min-height: 24px;
         }
-
-        .correct { color: #43b047; text-shadow: 1px 1px 0 #000; }
-        .incorrect { color: #e52521; text-shadow: 1px 1px 0 #000; }
+        .correct { color: #2e7d32; }
+        .incorrect { color: #d32f2f; }
+        
+        textarea {
+            border: 3px solid #000 !important;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -426,53 +420,55 @@
 <div class="game-container">
     <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
-        <h1>SUPER MARIO MATH 🍄</h1>
-        <p>Ketik nama pemain (Maksimal 10 anak):</p>
+        <h1>🍄 SUPER MATH BROS 🌟</h1>
+        <p>Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
         <div style="margin: 20px 0;">
-            <textarea id="player-names-input" rows="5" placeholder="Nahda&#10;Dawai&#10;Alif" style="width: 90%; padding: 12px; font-size: 16px; border: 3px solid #000; border-radius: 10px; outline: none; resize: vertical; font-family: inherit;"></textarea>
+            <textarea id="player-names-input" rows="5" placeholder="Mario&#10;Luigi&#10;Peach" style="width: 90%; padding: 12px; font-size: 16px; border-radius: 8px; outline: none; resize: vertical; font-family: inherit;"></textarea>
         </div>
-        <button class="btn" onclick="initPlayers()">MULAI PETUALANGAN 🚀</button>
+        <button class="btn" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
     <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
-        <h1>PILIH MODE</h1>
-        <p>Pemain: <span id="display-players-list-menu" style="font-weight: bold; color: #e52521;"></span></p>
+        <h1>PILIH DUNIA PERMAINAN</h1>
+        <p>Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
         <div class="level-grid" style="margin-top: 25px;">
-            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 10px solid #e52521; text-align: center; padding: 20px;">
-                ✖️ Perkalian (Multiplication)
-                <span style="font-size:12px; display:block; color:#555; font-weight:normal; margin-top: 5px;">Pecah perkalian distributif & number bond</span>
+            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 8px solid var(--mario-red); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Dunia Perkalian Distributif & Number Bond</span>
             </div>
-            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 10px solid #0099ff; text-align: center; padding: 20px;">
-                ➗ Pembagian (Division)
-                <span style="font-size:12px; display:block; color:#555; font-weight:normal; margin-top: 5px;">Pecah pembagian distributif & number bond</span>
+            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 8px solid var(--mario-blue); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Dunia Pembagian Distributif & Number Bond</span>
             </div>
         </div>
-        <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 15px;">⬅️ Ganti Pemain</button>
+        <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 15px;">⬅️ Ganti Nama Pemain</button>
     </div>
 
-    <!-- SCREEN 2: PILIH LEVEL (HANYA EASY & MEDIUM) -->
+    <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
         <div style="text-align: left;">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
         </div>
-        <h1 id="level-screen-title">PILIH LEVEL</h1>
-        <p>Pemain: <span id="display-players-list" style="font-weight: bold; color: #e52521;"></span></p>
+        <h1 id="level-screen-title" style="font-size: 14px;">PILIH LEVEL KESULITAN</h1>
+        <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: var(--mario-red);"></span></p>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Dasar / Belasan • Drag & Drop Koin</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan • Number Bond Input</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Drag & Drop Koin</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan Dasar) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Tantangan Kastil</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle (>600) <span style="font-size:12px; display:block; color:#666; font-weight:bold;">Misi Penyelamatan Utama</span></div>
         </div>
     </div>
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
     <div id="screen-game" class="screen">
         <div style="text-align: left;">
-            <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Peta Level</button>
+            <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
         </div>
 
-        <h1 id="game-title">MARIO MATH</h1>
+        <h1 id="game-title" style="font-size: 14px;">Super Math Bros</h1>
         <div class="score-board">
-            <div>WORLD <span id="current-q-num">1</span>/5</div>
+            <div>Soal <span id="current-q-num">1</span>/5</div>
             <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
         </div>
         
@@ -484,12 +480,12 @@
                 <div class="main-game-column">
                     <!-- TOMBOL REBUTAN NAMA PEMAIN -->
                     <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                        <p style="font-weight: bold; color: #e52521; font-size: 14px; margin: 0;">⚡ TEKAN NAMAMU UNTUK MENJAWAB! ⚡</p>
+                        <p style="font-weight: bold; color: var(--mario-red); font-size: 13px; margin: 0; font-family:'Press Start 2P'; line-height: 1.5;">⭐ PILIH PAHLAWANMU! ⭐</p>
                         <div class="player-buttons-grid" id="player-buttons-box"></div>
                     </div>
 
                     <div class="number-bond-container" id="bond-container" style="display:none;">
-                        <svg class="lines-svg" viewBox="0 0 230 35" id="bond-lines">
+                        <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
                             <!-- Garis cabang SVG -->
                         </svg>
                         <div class="bond-circles" id="bond-circles-container">
@@ -498,43 +494,43 @@
                     </div>
                 </div>
 
-                <!-- BANTUAN QUESTION BLOCK DI SAMPING -->
+                <!-- BANTUAN PERKALIAN DI SAMPING (PENULISAN KE BAWAH) -->
                 <div id="helper-multiples" class="helper-multiples-box">
-                    <b id="helper-title-text">BANTUAN</b>
+                    <b>BANTUAN (<span id="helper-b-val"></span>)</b>
                     <div id="helper-multiples-list"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Wadah Kepingan Drag (Hanya tampil di Easy) -->
+        <!-- Wadah Kepingan Drag (Hanya tampil di Easy & saat giliran aktif) -->
         <div id="drag-source-wrapper" style="display:none;">
-            <p style="margin: 8px 0 2px 0; font-size: 13px; color: #333; font-weight: bold;">Seret Koin Angka ke Lingkaran:</p>
+            <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
-        <!-- Bagian Penjumlahan -->
+        <!-- Bagian Kotak Penjumlahan (Terkunci awal hingga Number Bond lengkap) -->
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
-            <!-- Input dinamis -->
+            <!-- Input dinamis perkalian/pembagian distributif -->
         </div>
 
-        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">JAWAB 🎯</button>
-        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none;">SOAL SELANJUTNYA ➡️</button>
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">JAWAB! 🎯</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none;">SOAL BERIKUTNYA ➡️</button>
         <div id="feedback"></div>
         
-        <!-- PAPAN SKOR KECIL -->
-        <div id="scoreboard-footer" style="margin-top: 15px; background: #fff; padding: 10px; border-radius: 10px; border: 3px solid #000; font-size: 13px; font-weight: bold;">
-            Skor: <span id="scoreboard-text"></span>
+        <!-- PAPAN SKOR KECIL DI BAWAH -->
+        <div id="scoreboard-footer" style="margin-top: 15px; background: #fffde7; border: 2px solid #fbc02d; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: #e65100;">
+            Koin Skor: <span id="scoreboard-text"></span>
         </div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
-        <h1 style="color: #43b047;">STAGE CLEAR! 🎉</h1>
-        <p style="font-size: 16px; margin: 15px 0;">Skor Akhir Pahlawan Matematika:</p>
-        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 20px 0; line-height: 1.8;">
-            <!-- Daftar skor akhir -->
+        <h1 style="color: var(--mario-red); font-size: 16px;">MISI SELESAI! 🎉</h1>
+        <p style="font-size: 15px; margin: 15px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
+        <div id="final-scores-list" style="font-size: 16px; font-weight: bold; margin: 20px 0; line-height: 1.8; color: #333;">
+            <!-- Daftar skor akhir anak -->
         </div>
-        <button class="btn" onclick="goToScreen('screen-levels')">MAIN LAGI 🗺️</button>
+        <button class="btn" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
     </div>
 </div>
 
@@ -543,7 +539,7 @@
     let playerScores = {};
     let activePlayer = null;
     let currentLevel = "easy";
-    let operationMode = "multiplication"; 
+    let operationMode = "multiplication"; // 'multiplication' atau 'division'
     let questionIndex = 0;
     let questions = [];
     let currentQuestion = {};
@@ -551,7 +547,7 @@
     let timerInterval = null;
     let answeredPlayersInThisQuestion = [];
 
-    // BANK SOAL PERKALIAN (Hanya Easy & Medium)
+    // BANK SOAL PERKALIAN
     const multiplicationLevelBanks = {
         easy: [
             { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
@@ -576,10 +572,34 @@
             { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
             { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
             { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
+        ],
+        expert: [
+            { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
+            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
+            { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
+            { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
+            { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
+            { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
+            { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
+            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
+            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+            { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
+        ],
+        nightmare: [
+            { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
+            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+            { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
+            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
+            { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
+            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
+            { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
+            { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
+            { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
         ]
     };
 
-    // BANK SOAL PEMBAGIAN (Hanya Easy & Medium)
+    // BANK SOAL PEMBAGIAN (DIVISION)
     const divisionLevelBanks = {
         easy: [
             { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
@@ -604,6 +624,30 @@
             { a: 96, b: 2, decomp: [80, 16], parts: [40, 8], ans: 48 },
             { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
             { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 }
+        ],
+        expert: [
+            { a: 224, b: 4, decomp: [200, 24], parts: [50, 6], ans: 56 },
+            { a: 245, b: 5, decomp: [200, 45], parts: [40, 9], ans: 49 },
+            { a: 312, b: 6, decomp: [300, 12], parts: [50, 2], ans: 52 },
+            { a: 378, b: 7, decomp: [350, 28], parts: [50, 4], ans: 54 },
+            { a: 432, b: 8, decomp: [400, 32], parts: [50, 4], ans: 54 },
+            { a: 288, b: 9, decomp: [270, 18], parts: [30, 2], ans: 32 },
+            { a: 455, b: 5, decomp: [400, 55], parts: [80, 11], ans: 91 },
+            { a: 512, b: 8, decomp: [480, 32], parts: [60, 4], ans: 64 },
+            { a: 216, b: 3, decomp: [210, 6], parts: [70, 2], ans: 72 },
+            { a: 324, b: 6, decomp: [300, 24], parts: [50, 4], ans: 54 }
+        ],
+        nightmare: [
+            { a: 624, b: 4, decomp: [600, 24], parts: [150, 6], ans: 156 },
+            { a: 635, b: 5, decomp: [600, 35], parts: [120, 7], ans: 127 },
+            { a: 726, b: 6, decomp: [720, 6], parts: [120, 1], ans: 121 },
+            { a: 812, b: 7, decomp: [700, 112], parts: [100, 16], ans: 116 },
+            { a: 936, b: 8, decomp: [800, 136], parts: [100, 17], ans: 117 },
+            { a: 639, b: 9, decomp: [630, 9], parts: [70, 1], ans: 71 },
+            { a: 756, b: 6, decomp: [720, 36], parts: [120, 6], ans: 126 },
+            { a: 845, b: 5, decomp: [800, 45], parts: [160, 9], ans: 169 },
+            { a: 912, b: 8, decomp: [880, 32], parts: [110, 4], ans: 114 },
+            { a: 651, b: 3, decomp: [600, 51], parts: [200, 17], ans: 217 }
         ]
     };
 
@@ -640,7 +684,7 @@
         operationMode = mode;
         goToScreen('screen-levels');
         let titleText = operationMode === 'multiplication' ? 'Perkalian ✖️' : 'Pembagian ➗';
-        document.getElementById('level-screen-title').innerText = `LEVEL (${titleText})`;
+        document.getElementById('level-screen-title').innerText = `PILIH LEVEL (${titleText})`;
     }
 
     function returnToMenu() {
@@ -672,7 +716,7 @@
     }
 
     function updateScoreboardText() {
-        let text = players.map(p => `${p}: ${playerScores[p]} PTS`).join(' | ');
+        let text = players.map(p => `${p}: ${playerScores[p]} Koin`).join(' | ');
         document.getElementById('scoreboard-text').innerText = text;
     }
 
@@ -680,7 +724,7 @@
         if (questionIndex >= questions.length) {
             let finalHtml = "";
             players.forEach(p => {
-                finalHtml += `👑 ${p}: <b>${playerScores[p]} PTS</b><br>`;
+                finalHtml += `🍄 ${p}: <b>${playerScores[p]} Koin</b><br>`;
             });
             document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
@@ -692,39 +736,31 @@
         answeredPlayersInThisQuestion = [];
 
         let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
-        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'MARIO PERKALIAN 🍄' : 'MARIO PEMBAGIAN 🍄';
+        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? '🍄 SUPER MATH BROS: PERKALIAN 🌟' : '🍄 SUPER MATH BROS: PEMBAGIAN 🌟';
         document.getElementById('current-q-num').innerText = questionIndex + 1;
-        document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ?`;
+        document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
-        // KOTAK BANTUAN DI SAMPING
+        // Tampilkan kotak bantuan perkalian di samping jika mode Division
         let helperBox = document.getElementById('helper-multiples');
-        let listContainer = document.getElementById('helper-multiples-list');
-        listContainer.innerHTML = '';
-        
-        let b = currentQuestion.b;
-        let titleEl = document.getElementById('helper-title-text');
+        if (operationMode === 'division') {
+            let b = currentQuestion.b;
+            let multipliers = [1, 2, 5, 10, 20, 50, 100];
+            let listContainer = document.getElementById('helper-multiples-list');
+            listContainer.innerHTML = '';
+            
+            multipliers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'helper-list-item';
+                div.innerText = `${b}×${m}=${b * m}`;
+                listContainer.appendChild(div);
+            });
 
-        if (operationMode === 'multiplication') {
-            titleEl.innerText = `BANTUAN (×${b})`;
-            let multipliers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            multipliers.forEach(m => {
-                let div = document.createElement('div');
-                div.className = 'helper-list-item';
-                div.innerText = `${b}x${m} = ${b * m}`;
-                listContainer.appendChild(div);
-            });
+            document.getElementById('helper-b-val').innerText = b;
+            helperBox.style.display = 'block';
         } else {
-            titleEl.innerText = `BANTUAN (÷${b})`;
-            let multipliers = [1, 2, 5, 10, 20, 50];
-            multipliers.forEach(m => {
-                let div = document.createElement('div');
-                div.className = 'helper-list-item';
-                div.innerText = `${b}×${m} = ${b * m}`;
-                listContainer.appendChild(div);
-            });
+            helperBox.style.display = 'none';
         }
-        helperBox.style.display = 'block';
 
         document.getElementById('bond-container').style.display = 'none';
         document.getElementById('inputs-container').style.display = 'none';
@@ -734,7 +770,10 @@
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        timer = currentLevel === 'easy' ? 60 : 45;
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20;
 
         document.getElementById('lbl-timer').innerText = timer;
         clearInterval(timerInterval);
@@ -750,7 +789,7 @@
 
         if (availablePlayers.length === 0) {
             document.getElementById('player-selector-container').style.display = 'none';
-            document.getElementById('feedback').innerText = "Semua pemain sudah mencoba! Lanjut soal berikutnya.";
+            document.getElementById('feedback').innerText = "Semua pahlawan sudah mencoba soal ini! Lanjut ke soal berikutnya.";
             document.getElementById('feedback').className = "incorrect";
             document.getElementById('next-btn').style.display = 'block';
             clearInterval(timerInterval);
@@ -762,7 +801,7 @@
         availablePlayers.forEach(p => {
             let btn = document.createElement('button');
             btn.className = 'btn-player-pick';
-            btn.innerText = `🍄 ${p}`;
+            btn.innerText = `⭐ ${p}`;
             btn.onclick = () => selectPlayerTurn(p);
             container.appendChild(btn);
         });
@@ -781,12 +820,16 @@
         document.getElementById('submit-btn').style.display = 'block';
 
         let feedback = document.getElementById('feedback');
-        feedback.innerText = `⭐ Giliran ${playerName}! Lengkapi lingkaran angka dulu ya.`;
+        feedback.innerText = `🍄 Giliran ${playerName}! Lengkapi Number Bond di atas terlebih dahulu.`;
         feedback.className = "correct";
 
         setupStandardGameplay();
 
-        timer = currentLevel === 'easy' ? 60 : 45;
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20;
+
         document.getElementById('lbl-timer').innerText = timer;
         timerInterval = setInterval(updateTimer, 1000);
     }
@@ -832,14 +875,14 @@
 
         if (count === 3) {
             svgContainer.innerHTML = `
-                <line x1="115" y1="0" x2="30" y2="30" stroke="#000" stroke-width="4" />
-                <line x1="115" y1="0" x2="115" y2="30" stroke="#000" stroke-width="4" />
-                <line x1="115" y1="0" x2="200" y2="30" stroke="#000" stroke-width="4" />
+                <line x1="110" y1="0" x2="30" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="110" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="190" y2="30" stroke="#e52521" stroke-width="3" />
             `;
         } else {
             svgContainer.innerHTML = `
-                <line x1="115" y1="0" x2="55" y2="30" stroke="#000" stroke-width="4" />
-                <line x1="115" y1="0" x2="175" y2="30" stroke="#000" stroke-width="4" />
+                <line x1="110" y1="0" x2="55" y2="30" stroke="#e52521" stroke-width="3" />
+                <line x1="110" y1="0" x2="165" y2="30" stroke="#e52521" stroke-width="3" />
             `;
         }
 
@@ -897,9 +940,9 @@
             if (index > 0) {
                 let plus = document.createElement('span');
                 plus.innerText = '+';
-                plus.style.fontSize = '20px';
+                plus.style.fontSize = '18px';
                 plus.style.fontWeight = 'bold';
-                plus.style.color = '#000';
+                plus.style.color = '#2e7d32';
                 container.appendChild(plus);
             }
             
@@ -911,9 +954,9 @@
 
         let equals = document.createElement('span');
         equals.innerText = '=';
-        equals.style.fontSize = '20px';
+        equals.style.fontSize = '18px';
         equals.style.fontWeight = 'bold';
-        equals.style.color = '#000';
+        equals.style.color = '#2e7d32';
         container.appendChild(equals);
 
         let finalGroup = document.createElement('div');
@@ -978,7 +1021,7 @@
                             zone.classList.add('error-highlight');
                             setTimeout(() => zone.classList.remove('error-highlight'), 600);
                             
-                            feedback.innerText = `⚠️ Koin ${val} posisinya kurang tepat!`;
+                            feedback.innerText = `⚠️ Koin angka ${val} kurang tepat di sini!`;
                             feedback.className = "incorrect";
                             return;
                         }
@@ -1030,12 +1073,12 @@
             let feedback = document.getElementById('feedback');
             
             if (!activePlayer) {
-                feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
+                feedback.innerText = "⏰ Waktu habis memilih pahlawan! Lanjut ke soal berikutnya.";
                 feedback.className = "incorrect";
                 document.getElementById('player-selector-container').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'block';
             } else {
-                feedback.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 PTS). Kesempatan direbut!`;
+                feedback.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 Koin). Giliran direbut pahlawan lain!`;
                 feedback.className = "incorrect";
                 playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
                 updateScoreboardText();
@@ -1076,7 +1119,7 @@
         clearInterval(timerInterval);
 
         if (allCorrect) {
-            feedback.innerText = `HEBAT! +10 PTS untuk ${activePlayer}! 🌟`;
+            feedback.innerText = `HEBAT! +10 Koin untuk ${activePlayer}! 🍄🎉`;
             feedback.className = "correct";
             playerScores[activePlayer] += 10;
             updateScoreboardText();
@@ -1087,7 +1130,7 @@
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            feedback.innerText = `Jawaban ${activePlayer} salah! (-5 PTS) Giliran direbut!`;
+            feedback.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 Koin) Giliran direbut teman lain!`;
             feedback.className = "incorrect";
             
             document.getElementById('bond-container').style.display = 'none';
