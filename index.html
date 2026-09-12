@@ -58,6 +58,23 @@
             color: #1f2937;
             margin-bottom: 10px;
         }
+
+        /* BANTUAN DAFTAR PERKALIAN KECIL UNTUK PEMBAGIAN */
+        .helper-multiples-box {
+            display: none;
+            background: #e1f5fe;
+            border: 2px dashed #0288d1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #01579b;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .helper-multiples-box b {
+            color: #0277bd;
+        }
         
         /* NUMBER BOND CONTAINER */
         .number-bond-container {
@@ -368,6 +385,11 @@
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
+            <!-- BANTUAN DAFTAR PERKALIAN KECIL (KHUSUS PEMBAGIAN) -->
+            <div id="helper-multiples" class="helper-multiples-box">
+                💡 Bantuan perkalian <span id="helper-b-val"></span>: <span id="helper-multiples-list"></span>
+            </div>
+
             <!-- TOMBOL REBUTAN NAMA PEMAIN -->
             <div id="player-selector-container" class="player-selector-arena" style="display:none;">
                 <p style="font-weight: bold; color: #d32f2f; font-size: 14px; margin: 0;">⚡ KLIK NAMAMU UNTUK MENJAWAB! ⚡</p>
@@ -481,7 +503,7 @@
         ]
     };
 
-    // BANK SOAL PEMBAGIAN (DIVISION) - DIPERBARUI SESUAI PERMINTAAN
+    // BANK SOAL PEMBAGIAN (DIVISION)
     const divisionLevelBanks = {
         easy: [
             { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
@@ -623,6 +645,18 @@
         document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
+        // Tampilkan kotak bantuan perkalian kecil jika mode Division
+        let helperBox = document.getElementById('helper-multiples');
+        if (operationMode === 'division') {
+            let b = currentQuestion.b;
+            let multiplesText = `${b}×1=${b*1}, ${b}×2=${b*2}, ${b}×5=${b*5}, ${b}×10=${b*10}, ${b}×20=${b*20}, ${b}×50=${b*50}, ${b}×100=${b*100}`;
+            document.getElementById('helper-b-val').innerText = `(${b})`;
+            document.getElementById('helper-multiples-list').innerText = multiplesText;
+            helperBox.style.display = 'block';
+        } else {
+            helperBox.style.display = 'none';
+        }
+
         document.getElementById('bond-container').style.display = 'none';
         document.getElementById('inputs-container').style.display = 'none';
         document.getElementById('inputs-container').classList.add('disabled-section');
