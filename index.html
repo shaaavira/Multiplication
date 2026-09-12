@@ -318,11 +318,31 @@
         <div style="margin: 20px 0;">
             <textarea id="player-names-input" rows="5" placeholder="Nahda&#10;Dawai&#10;Alif" style="width: 90%; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; outline: none; resize: vertical; font-family: inherit;"></textarea>
         </div>
-        <button class="btn" onclick="initPlayers()">Lanjut Pilih Level 🚀</button>
+        <button class="btn" onclick="initPlayers()">Lanjut Pilih Mode Operasi 🚀</button>
+    </div>
+
+    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
+    <div id="screen-main-menu" class="screen">
+        <h1>Pilih Mode Operasi</h1>
+        <p>Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: #2e7d32;"></span></p>
+        <div class="level-grid" style="margin-top: 25px;">
+            <div class="level-card easy" onclick="selectOperationMode('multiplication')" style="border-left: 6px solid #2e7d32; text-align: center; padding: 20px;">
+                ✖️ Multiplication (Perkalian)
+                <span style="font-size:12px; display:block; color:#666; font-weight:normal; margin-top: 5px;">Pecah perkalian distributif & number bond</span>
+            </div>
+            <div class="level-card medium" onclick="selectOperationMode('division')" style="border-left: 6px solid #0288d1; text-align: center; padding: 20px;">
+                ➗ Division (Pembagian)
+                <span style="font-size:12px; display:block; color:#666; font-weight:normal; margin-top: 5px;">Segera Hadir / Mode Pembagian</span>
+            </div>
+        </div>
+        <button class="btn-back-menu" onclick="goToScreen('screen-welcome')" style="margin-top: 15px;">⬅️ Ganti Nama Pemain</button>
     </div>
 
     <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
+        <div style="text-align: left;">
+            <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode Operasi</button>
+        </div>
         <h1>Pilih Level Kesulitan</h1>
         <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: #2e7d32;"></span></p>
         <div class="level-grid">
@@ -401,6 +421,7 @@
     let playerScores = {};
     let activePlayer = null;
     let currentLevel = "easy";
+    let operationMode = "multiplication";
     let questionIndex = 0;
     let questions = [];
     let currentQuestion = {};
@@ -481,7 +502,19 @@
         playerScores = {};
         players.forEach(p => playerScores[p] = 0);
 
-        document.getElementById('display-players-list').innerText = players.join(', ');
+        let namesStr = players.join(', ');
+        document.getElementById('display-players-list-menu').innerText = namesStr;
+        document.getElementById('display-players-list').innerText = namesStr;
+        
+        goToScreen('screen-main-menu');
+    }
+
+    function selectOperationMode(mode) {
+        operationMode = mode;
+        if (mode === 'division') {
+            alert("Mode Division (Pembagian) sedang dalam pengembangan! Mengarahkan ke mode Multiplication.");
+            operationMode = 'multiplication';
+        }
         goToScreen('screen-levels');
     }
 
@@ -614,7 +647,6 @@
         let isComplete = true;
 
         decomp.forEach((_, index) => {
-            let val;
             if (currentLevel === 'easy') {
                 let zone = document.getElementById(`decomp-${index}`);
                 if (!zone.dataset.value) isComplete = false;
