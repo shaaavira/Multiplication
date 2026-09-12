@@ -56,6 +56,7 @@
             font-size: 28px;
             font-weight: bold;
             color: #1f2937;
+            margin-bottom: 10px;
         }
         
         /* NUMBER BOND DIGESER KE KIRI */
@@ -255,6 +256,37 @@
         .level-card.expert { border-left: 6px solid #f44336; }
         .level-card.nightmare { border-left: 6px solid #9c27b0; }
 
+        /* PLAYER SELECTION ARENA */
+        .player-selector-arena {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            width: 100%;
+        }
+        .player-buttons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+        }
+        .btn-player-pick {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        .btn-player-pick:active { transform: scale(0.95); }
+        .btn-player-pick:hover { background-color: #01579b; }
+
         #feedback {
             margin-top: 15px;
             font-size: 16px;
@@ -268,26 +300,25 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: NAMA PEMAIN -->
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
         <h1>Math Fun: Pecah Angka 🌟</h1>
-        <p>Asah kemampuan perkalian distributifmu dengan seru!</p>
-        <div style="margin: 25px 0;">
-            <label for="player-name" style="font-weight: bold; display: block; margin-bottom: 8px;">Masukkan Nama Player:</label>
-            <input type="text" id="player-name" placeholder="Nama Kamu..." maxlength="15" style="width: 80%;">
+        <p>Masukkan nama-nama pemain (pisahkan dengan koma, contoh: Dawai, Nahda, Alif):</p>
+        <div style="margin: 20px 0;">
+            <input type="text" id="player-names-input" placeholder="Dawai, Nahda, Alif" style="width: 90%; padding: 12px; font-size: 16px;">
         </div>
-        <button class="btn" onclick="setPlayerName()">Mulai Bermain 🚀</button>
+        <button class="btn" onclick="initPlayers()">Lanjut Pilih Level 🚀</button>
     </div>
 
     <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
         <h1>Pilih Level Kesulitan</h1>
-        <p>Halo, <span id="display-player" style="font-weight: bold; color: #2e7d32;"></span>! Pilih tingkat tantanganmu:</p>
+        <p>Pemain Aktif: <span id="display-players-list" style="font-weight: bold; color: #2e7d32;"></span></p>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Belasan (12-19) • Waktu: 60s</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan (20-50) • Waktu: 45s</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (60-200) • Waktu: 30s</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Tinggi (>200) • Waktu: 20s</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level Easy <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Belasan (12-19) • Drag & Drop</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level Medium <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Puluhan (20-50) • Number Bond</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level Expert <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Ratusan Dasar (60-200)</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level Nightmare <span style="font-size:12px; display:block; color:#666; font-weight:normal;">Tinggi (>200)</span></div>
         </div>
     </div>
 
@@ -299,14 +330,20 @@
 
         <h1>Math Fun: Pecah Angka</h1>
         <div class="score-board">
-            <div>Soal <span id="current-q-num">1</span>/5 | Skor: <span id="score">0</span></div>
+            <div>Soal <span id="current-q-num">1</span>/5</div>
             <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
         </div>
         
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
-            <div class="number-bond-container" id="bond-container">
+            <!-- TOMBOL REBUTAN NAMA PEMAIN -->
+            <div id="player-selector-container" class="player-selector-arena" style="display:none;">
+                <p style="font-weight: bold; color: #d32f2f; font-size: 14px; margin: 0;">⚡ KLIK NAMAMU UNTUK MENJAWAB! ⚡</p>
+                <div class="player-buttons-grid" id="player-buttons-box"></div>
+            </div>
+
+            <div class="number-bond-container" id="bond-container" style="display:none;">
                 <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
                     <!-- Garis cabang SVG -->
                 </svg>
@@ -316,39 +353,48 @@
             </div>
         </div>
 
-        <!-- Wadah Kepingan Drag (Hanya tampil di Easy) -->
+        <!-- Wadah Kepingan Drag (Hanya tampil di Easy & saat giliran aktif) -->
         <div id="drag-source-wrapper" style="display:none;">
             <p style="margin: 5px 0 2px 0; font-size: 12px; color: #555;">Seret <b>Puluhan ke kiri</b> & <b>Satuan ke kanan</b>:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
         
-        <div class="breakdown-section" id="inputs-container">
+        <div class="breakdown-section" id="inputs-container" style="display:none;">
             <!-- Input dinamis perkalian distributif -->
         </div>
 
-        <button id="submit-btn" class="btn" onclick="checkAnswer()">Jawab 🎯</button>
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none;">Jawab 🎯</button>
         <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none;">Soal Berikutnya ➡️</button>
         <div id="feedback"></div>
+        
+        <!-- PAPAN SKOR KECIL DI BAWAH -->
+        <div id="scoreboard-footer" style="margin-top: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold;">
+            Skor: <span id="scoreboard-text"></span>
+        </div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
-        <h1 style="color: #2e7d32;">Selamat, <span id="final-player-name"></span>! 🎉</h1>
-        <p style="font-size: 16px; margin: 15px 0;">Kamu telah menyelesaikan level ini dengan sangat baik.</p>
-        <p style="font-size: 22px; font-weight: bold; margin: 20px 0;">Skor Akhirmu: <span id="final-score">0</span> XP</p>
+        <h1 style="color: #2e7d32;">Permainan Selesai! 🎉</h1>
+        <p style="font-size: 16px; margin: 15px 0;">Hasil perolehan skor akhir:</p>
+        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 20px 0; line-height: 1.8;">
+            <!-- Daftar skor akhir anak -->
+        </div>
         <button class="btn" onclick="goToScreen('screen-levels')">Pilih Level Lain 🗺️</button>
     </div>
 </div>
 
 <script>
-    let playerName = "";
+    let players = [];
+    let playerScores = {};
+    let activePlayer = null;
     let currentLevel = "easy";
-    let score = 0;
     let questionIndex = 0;
     let questions = [];
     let currentQuestion = {};
     let timer = 60;
     let timerInterval = null;
+    let answeredPlayersInThisQuestion = [];
 
     const levelBanks = {
         easy: [
@@ -363,7 +409,7 @@
             { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
             { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 }
         ],
-        medium: [ // Angka depan berkisar 20 - 50
+        medium: [
             { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
             { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
             { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
@@ -375,7 +421,7 @@
             { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
             { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
         ],
-        expert: [ // Angka depan berkisar 60 - 200 (3 Bagian)
+        expert: [
             { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
             { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
             { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
@@ -387,7 +433,7 @@
             { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
             { a: 190, b: 5, decomp: [100, 90, 0], parts: [500, 450, 0], ans: 950 }
         ],
-        nightmare: [ // Angka depan di atas 200 (3 Bagian)
+        nightmare: [
             { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
             { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
             { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
@@ -406,14 +452,17 @@
         document.getElementById(screenId).classList.add('active');
     }
 
-    function setPlayerName() {
-        const input = document.getElementById('player-name').value.trim();
+    function initPlayers() {
+        let input = document.getElementById('player-names-input').value.trim();
         if(!input) {
-            alert("Tulis nama kamu dulu ya!");
+            alert("Masukkan minimal satu nama pemain!");
             return;
         }
-        playerName = input;
-        document.getElementById('display-player').innerText = playerName;
+        players = input.split(',').map(n => n.trim()).filter(n => n.length > 0);
+        playerScores = {};
+        players.forEach(p => playerScores[p] = 0);
+
+        document.getElementById('display-players-list').innerText = players.join(', ');
         goToScreen('screen-levels');
     }
 
@@ -434,39 +483,50 @@
 
     function startLevel(level) {
         currentLevel = level;
-        score = 0;
         questionIndex = 0;
+        players.forEach(p => playerScores[p] = 0);
 
         let sourceBank = levelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
         questions = shuffledBank.slice(0, 5);
 
-        if (level === 'easy') timer = 60;
-        else if (level === 'medium') timer = 45;
-        else if (level === 'expert') timer = 30;
-        else timer = 20;
-
         goToScreen('screen-game');
         loadQuestion();
     }
 
+    function updateScoreboardText() {
+        let text = players.map(p => `${p}: ${playerScores[p]} XP`).join(' | ');
+        document.getElementById('scoreboard-text').innerText = text;
+    }
+
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            document.getElementById('final-player-name').innerText = playerName;
-            document.getElementById('final-score').innerText = score;
+            let finalHtml = "";
+            players.forEach(p => {
+                finalHtml += `🏆 ${p}: <b>${playerScores[p]} XP</b><br>`;
+            });
+            document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
             return;
         }
 
         currentQuestion = questions[questionIndex];
+        activePlayer = null;
+        answeredPlayersInThisQuestion = [];
+
         document.getElementById('current-q-num').innerText = questionIndex + 1;
-        document.getElementById('score').innerText = score;
         document.getElementById('question-text').innerText = `${currentQuestion.a} × ${currentQuestion.b} = ...`;
+        updateScoreboardText();
         
-        document.getElementById('submit-btn').style.display = 'block';
+        // Sembunyikan elemen game sampai ada pemain yang mengklik namanya
+        document.getElementById('bond-container').style.display = 'none';
+        document.getElementById('inputs-container').style.display = 'none';
+        document.getElementById('drag-source-wrapper').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
+        // Tentukan waktu timer berdasarkan level
         if (currentLevel === 'easy') timer = 60;
         else if (currentLevel === 'medium') timer = 45;
         else if (currentLevel === 'expert') timer = 30;
@@ -474,8 +534,66 @@
 
         document.getElementById('lbl-timer').innerText = timer;
         clearInterval(timerInterval);
-        timerInterval = setInterval(updateTimer, 1000);
 
+        renderPlayerSelector();
+    }
+
+    function renderPlayerSelector() {
+        let container = document.getElementById('player-buttons-box');
+        container.innerHTML = '';
+        
+        let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
+
+        if (availablePlayers.length === 0) {
+            document.getElementById('player-selector-container').style.display = 'none';
+            document.getElementById('feedback').innerText = "Semua pemain sudah mencoba soal ini! Lanjut ke soal berikutnya.";
+            document.getElementById('feedback').className = "incorrect";
+            document.getElementById('next-btn').style.display = 'block';
+            clearInterval(timerInterval);
+            return;
+        }
+
+        document.getElementById('player-selector-container').style.display = 'flex';
+
+        availablePlayers.forEach(p => {
+            let btn = document.createElement('button');
+            btn.className = 'btn-player-pick';
+            btn.innerText = `🙋‍♂️ ${p}`;
+            btn.onclick = () => selectPlayerTurn(p);
+            container.appendChild(btn);
+        });
+
+        // Mulai hitung mundur waktu pemilihan
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function selectPlayerTurn(playerName) {
+        clearInterval(timerInterval);
+        activePlayer = playerName;
+        answeredPlayersInThisQuestion.push(playerName);
+
+        document.getElementById('player-selector-container').style.display = 'none';
+        document.getElementById('bond-container').style.display = 'flex';
+        document.getElementById('inputs-container').style.display = 'flex';
+        document.getElementById('submit-btn').style.display = 'block';
+
+        let feedback = document.getElementById('feedback');
+        feedback.innerText = `✨ Giliran ${playerName}! Silakan selesaikan perhitungannya.`;
+        feedback.className = "correct";
+
+        setupStandardGameplay();
+
+        // Restart timer untuk proses pengerjaan soal
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20;
+
+        document.getElementById('lbl-timer').innerText = timer;
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function setupStandardGameplay() {
         let circlesContainer = document.getElementById('bond-circles-container');
         let svgContainer = document.getElementById('bond-lines');
         let dragSourceWrapper = document.getElementById('drag-source-wrapper');
@@ -509,7 +627,7 @@
                 dropzone.className = 'circle-dropzone';
                 dropzone.id = `decomp-${index}`;
                 dropzone.dataset.value = "";
-                dropzone.dataset.index = index; // 0 = Kiri (Puluhan), 1 = Kanan (Satuan)
+                dropzone.dataset.index = index;
                 dropzone.innerText = "?";
 
                 dropzone.addEventListener('click', () => {
@@ -625,7 +743,6 @@
                 item.style.left = '';
                 item.style.top = '';
 
-                let dropped = false;
                 let feedback = document.getElementById('feedback');
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
@@ -634,26 +751,22 @@
                     if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
                         e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
                         
-                        let zoneIndex = parseInt(zone.dataset.index); // 0 = Kiri (Puluhan), 1 = Kanan (Satuan)
+                        let zoneIndex = parseInt(zone.dataset.index);
                         let isPuluhan = val >= 10;
                         let isSatuan = val < 10;
-
-                        // Validasi posisi: Kiri harus puluhan, Kanan harus satuan
                         let isValidPosition = (zoneIndex === 0 && isPuluhan) || (zoneIndex === 1 && isSatuan);
 
                         if (!isValidPosition) {
-                            // Ditolak / Mental
                             zone.classList.add('error-highlight');
                             setTimeout(() => zone.classList.remove('error-highlight'), 600);
                             
                             feedback.innerText = zoneIndex === 0 
-                                ? "⚠️ Kotak kiri khusus untuk angka puluhan (contoh: 10)!" 
+                                ? "⚠️ Kotak kiri khusus untuk angka puluhan!" 
                                 : "⚠️ Kotak kanan khusus untuk angka satuan!";
                             feedback.className = "incorrect";
                             return;
                         }
 
-                        // Jika valid dan zona sudah terisi, kembalikan isi lama ke bawah
                         if (zone.dataset.value) {
                             createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
                         }
@@ -662,7 +775,6 @@
                         zone.innerText = val;
                         item.remove();
                         feedback.innerText = "";
-                        dropped = true;
                         updateDistributiveLabels();
                     }
                 });
@@ -693,10 +805,25 @@
         } else {
             clearInterval(timerInterval);
             let feedback = document.getElementById('feedback');
-            feedback.innerText = "⏰ Waktu habis! Silakan bahas bersama guru.";
-            feedback.className = "incorrect";
-            document.getElementById('submit-btn').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'block';
+            
+            if (!activePlayer) {
+                feedback.innerText = "⏰ Waktu habis untuk memilih! Lanjut ke soal berikutnya.";
+                feedback.className = "incorrect";
+                document.getElementById('player-selector-container').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'block';
+            } else {
+                feedback.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Kesempatan direbut teman lain!`;
+                feedback.className = "incorrect";
+                playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+                updateScoreboardText();
+
+                document.getElementById('bond-container').style.display = 'none';
+                document.getElementById('inputs-container').style.display = 'none';
+                document.getElementById('drag-source-wrapper').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'none';
+                
+                renderPlayerSelector();
+            }
         }
     }
 
@@ -726,18 +853,26 @@
         clearInterval(timerInterval);
 
         if (allCorrect) {
-            feedback.innerText = "Benar! Hebat banget! 🎉";
+            feedback.innerText = `Benar! +10 XP untuk ${activePlayer}! 🎉`;
             feedback.className = "correct";
-            score += 10;
-            document.getElementById('score').innerText = score;
+            playerScores[activePlayer] += 10;
+            updateScoreboardText();
             
             document.getElementById('submit-btn').style.display = 'none';
             document.getElementById('next-btn').style.display = 'block';
         } else {
-            score = Math.max(0, score - 5);
-            document.getElementById('score').innerText = score;
-            feedback.innerText = "Ups, masih ada yang kurang tepat. Coba teliti lagi ya! 💡 (-5 XP)";
+            playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+            updateScoreboardText();
+            
+            feedback.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 XP) Giliran direbut teman lain!`;
             feedback.className = "incorrect";
+            
+            document.getElementById('bond-container').style.display = 'none';
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('drag-source-wrapper').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            renderPlayerSelector();
         }
     }
 
