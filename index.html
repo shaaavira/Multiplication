@@ -15,7 +15,7 @@
             touch-action: manipulation;
         }
         .game-container {
-            max-width: 550px;
+            max-width: 620px;
             margin: 30px auto;
             background: white;
             padding: 30px;
@@ -50,30 +50,62 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 15px 0;
+            margin: 10px 0;
         }
         .question-box {
             font-size: 28px;
             font-weight: bold;
             color: #1f2937;
             margin-bottom: 10px;
+            width: 100%;
         }
 
-        /* BANTUAN DAFTAR PERKALIAN KECIL UNTUK PEMBAGIAN */
+        /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
+        .game-play-layout {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: nowrap;
+            margin-top: 10px;
+        }
+        .main-game-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 260px;
+        }
+
+        /* KOTAK BANTUAN DI SAMPING (PENULISAN KE BAWAH) */
         .helper-multiples-box {
             display: none;
             background: #e1f5fe;
             border: 2px dashed #0288d1;
-            padding: 8px 12px;
+            padding: 10px 8px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 13px;
+            font-size: 12px;
             color: #01579b;
-            max-width: 100%;
+            width: 110px;
             box-sizing: border-box;
+            text-align: left;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .helper-multiples-box b {
             color: #0277bd;
+            display: block;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 11px;
+            border-bottom: 1px solid #b3e5fc;
+            padding-bottom: 3px;
+        }
+        .helper-list-item {
+            font-family: monospace;
+            font-size: 12px;
+            margin-bottom: 3px;
+            white-space: nowrap;
         }
         
         /* NUMBER BOND CONTAINER */
@@ -84,7 +116,7 @@
             flex-direction: column;
             align-items: center;
             margin-top: 5px;
-            margin-left: -100px;
+            margin-left: -10px;
         }
         
         .bond-circles {
@@ -195,6 +227,8 @@
             padding: 15px;
             border-radius: 12px;
             transition: opacity 0.3s;
+            width: 100%;
+            box-sizing: border-box;
         }
         .breakdown-section.disabled-section {
             opacity: 0.4;
@@ -385,23 +419,29 @@
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
-            <!-- BANTUAN DAFTAR PERKALIAN KECIL (KHUSUS PEMBAGIAN) -->
-            <div id="helper-multiples" class="helper-multiples-box">
-                💡 Bantuan perkalian <span id="helper-b-val"></span>: <span id="helper-multiples-list"></span>
-            </div>
+            <!-- LAYOUT UTAMA: KOLOM GAME & KOTAK BANTUAN DI SAMPING -->
+            <div class="game-play-layout">
+                <div class="main-game-column">
+                    <!-- TOMBOL REBUTAN NAMA PEMAIN -->
+                    <div id="player-selector-container" class="player-selector-arena" style="display:none;">
+                        <p style="font-weight: bold; color: #d32f2f; font-size: 14px; margin: 0;">⚡ KLIK NAMAMU UNTUK MENJAWAB! ⚡</p>
+                        <div class="player-buttons-grid" id="player-buttons-box"></div>
+                    </div>
 
-            <!-- TOMBOL REBUTAN NAMA PEMAIN -->
-            <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                <p style="font-weight: bold; color: #d32f2f; font-size: 14px; margin: 0;">⚡ KLIK NAMAMU UNTUK MENJAWAB! ⚡</p>
-                <div class="player-buttons-grid" id="player-buttons-box"></div>
-            </div>
+                    <div class="number-bond-container" id="bond-container" style="display:none;">
+                        <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
+                            <!-- Garis cabang SVG -->
+                        </svg>
+                        <div class="bond-circles" id="bond-circles-container">
+                            <!-- Lingkaran dropzone -->
+                        </div>
+                    </div>
+                </div>
 
-            <div class="number-bond-container" id="bond-container" style="display:none;">
-                <svg class="lines-svg" viewBox="0 0 220 35" id="bond-lines">
-                    <!-- Garis cabang SVG -->
-                </svg>
-                <div class="bond-circles" id="bond-circles-container">
-                    <!-- Lingkaran dropzone -->
+                <!-- BANTUAN PERKALIAN DI SAMPING (PENULISAN KE BAWAH) -->
+                <div id="helper-multiples" class="helper-multiples-box">
+                    <b>Bantuan (×<span id="helper-b-val"></span>)</b>
+                    <div id="helper-multiples-list"></div>
                 </div>
             </div>
         </div>
@@ -645,13 +685,22 @@
         document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
         
-        // Tampilkan kotak bantuan perkalian kecil jika mode Division
+        // Tampilkan kotak bantuan perkalian di samping jika mode Division
         let helperBox = document.getElementById('helper-multiples');
         if (operationMode === 'division') {
             let b = currentQuestion.b;
-            let multiplesText = `${b}×1=${b*1}, ${b}×2=${b*2}, ${b}×5=${b*5}, ${b}×10=${b*10}, ${b}×20=${b*20}, ${b}×50=${b*50}, ${b}×100=${b*100}`;
-            document.getElementById('helper-b-val').innerText = `(${b})`;
-            document.getElementById('helper-multiples-list').innerText = multiplesText;
+            let multipliers = [1, 2, 5, 10, 20, 50, 100];
+            let listContainer = document.getElementById('helper-multiples-list');
+            listContainer.innerHTML = '';
+            
+            multipliers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'helper-list-item';
+                div.innerText = `${b}×${m} = ${b * m}`;
+                listContainer.appendChild(div);
+            });
+
+            document.getElementById('helper-b-val').innerText = b;
             helperBox.style.display = 'block';
         } else {
             helperBox.style.display = 'none';
