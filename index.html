@@ -64,6 +64,33 @@
             gap: 6px !important;
         }
 
+        /* GAYA DEKORASI ALA MARIO (BLOCKS & CLOUDS) */
+        .arcade-header-decor {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 26px;
+            color: var(--mario-red);
+            text-shadow: 4px 4px 0px var(--mario-yellow), 6px 6px 0px #000;
+            margin: 10px 0;
+            animation: bounceTitle 2s infinite alternate;
+        }
+        @keyframes bounceTitle {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-4px); }
+        }
+
+        .mario-badge {
+            background: var(--mario-yellow);
+            border: 3px solid #000;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            color: #b71c1c;
+            display: inline-block;
+            box-shadow: 0 4px 0px #e65100;
+            margin-bottom: 8px;
+        }
+
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--mario-red);
@@ -255,17 +282,17 @@
             color: #333;
         }
         
-        /* NUMBER BOND CONTAINER YANG DIPERBESAR SEDIKIT */
+        /* NUMBER BOND CONTAINER */
         .number-bond-container, .drop-zone-container {
             position: relative;
-            width: 310px; /* Diperbesar dari 260px */
+            width: 310px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: -20px; /* Geser ke atas */
-            margin-left: -40px; /* Geser ke kiri */
+            margin-top: -20px;
+            margin-left: -40px;
             margin-bottom: 2px !important;
-            transform: scale(1.05); /* Sedikit diperbesar dari 0.92 */
+            transform: scale(1.05);
             transform-origin: top center;
         }
         
@@ -277,8 +304,8 @@
         }
         
         .circle-dropzone {
-            width: 60px !important; /* Diperbesar dari 50px */
-            height: 60px !important; /* Diperbesar dari 50px */
+            width: 60px !important;
+            height: 60px !important;
             min-width: 60px;
             min-height: 60px;
             border: 4px dashed var(--mario-red) !important;
@@ -286,7 +313,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 21px; /* Diperbesar dari 18px */
+            font-size: 21px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -313,7 +340,7 @@
             align-items: center;
         }
         .draggable-item {
-            width: 52px; /* Diperbesar agar seimbang */
+            width: 52px;
             height: 52px;
             background: linear-gradient(135deg, #ffeb3b, #fbc02d);
             border: 4px solid #f57f17;
@@ -339,14 +366,14 @@
         }
 
         .circle-input {
-            width: 60px !important; /* Diperbesar dari 50px */
-            height: 60px !important; /* Diperbesar dari 50px */
+            width: 60px !important;
+            height: 60px !important;
             min-width: 60px;
             min-height: 60px;
             border: 4px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 21px; /* Diperbesar dari 18px */
+            font-size: 21px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -365,7 +392,7 @@
 
         .lines-svg {
             width: 100%;
-            height: 42px; /* Disesuaikan untuk wadah yang lebih lebar */
+            height: 42px;
         }
 
         .breakdown-section {
@@ -394,7 +421,7 @@
             align-items: center;
         }
         .input-group label {
-            font-size: 20px; /* Diubah menjadi 20px */
+            font-size: 20px;
             color: #2e7d32;
             margin-bottom: 2px;
             font-weight: bold;
@@ -463,6 +490,7 @@
             margin-bottom: 4px;
         }
 
+        /* PERBARUI TAMPILAN KARTU LEVEL & DUNIA AGAR LEBIH MERIAH */
         .level-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -471,23 +499,33 @@
             width: 100%;
         }
         .level-card {
-            background: #fff;
+            background: linear-gradient(135deg, #ffffff, #f7f9fc);
             border: 4px solid #000;
             padding: 16px;
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             font-weight: bold;
             font-size: 16px;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: left;
             color: #333;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 0px #000, 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
-        .level-card:hover { transform: translateY(-3px); background: #fffde7; }
-        .level-card.easy { border-left: 12px solid #4caf50; }
-        .level-card.medium { border-left: 12px solid #ff9800; }
-        .level-card.expert { border-left: 12px solid #f44336; }
-        .level-card.nightmare { border-left: 12px solid #9c27b0; }
+        .level-card:hover { 
+            transform: translateY(-4px) scale(1.02); 
+            background: #fffde7; 
+            box-shadow: 0 10px 0px #000, 0 15px 25px rgba(0,0,0,0.15);
+        }
+        .level-card:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #000;
+        }
+        .level-card.easy { border-left: 14px solid #4caf50; background: linear-gradient(135deg, #f1f8e9, #ffffff); }
+        .level-card.medium { border-left: 14px solid #ff9800; background: linear-gradient(135deg, #fffde7, #ffffff); }
+        .level-card.expert { border-left: 14px solid #f44336; background: linear-gradient(135deg, #ffebee, #ffffff); }
+        .level-card.nightmare { border-left: 14px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ffffff); }
 
         /* PLAYER SELECTION ARENA */
         .player-selector-arena {
@@ -550,49 +588,62 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN (DIPERCANTIK) -->
     <div id="screen-welcome" class="screen active">
-        <h1>🍄 SUPER MATH BROS 🌟</h1>
-        <p style="font-size: 16px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
-        <div style="margin: 10px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 12px; border-radius: 12px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;"></textarea>
+        <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
+        <div class="mario-badge">✨ PETUALANGAN MATEMATIKA SERU ✨</div>
+        <p style="font-size: 15px; font-weight: bold; color: #333;">Masukkan nama pahlawan, satu nama per baris (Maksimal 10 anak):</p>
+        <div style="margin: 8px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <textarea id="player-names-input" rows="3" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 12px; border-radius: 14px; outline: none; resize: none; font-family: inherit; box-sizing: border-box; background: #fffde7;"></textarea>
             
-            <div id="tv-peringatan" style="color: var(--mario-red); font-size: 14px; font-weight: bold; margin-top: 6px; display: none;"></div>
+            <div id="tv-peringatan" style="color: var(--mario-red); font-size: 13px; font-weight: bold; margin-top: 4px; display: none;"></div>
         </div>
-        <button class="btn" style="width: 40%; font-size: 16px;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+        <button class="btn" style="width: 45%; font-size: 15px; background: linear-gradient(135deg, #e52521, #c62828); box-shadow: 0 6px 0px #790000;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
-    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
+    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) (DIPERCANTIK) -->
     <div id="screen-main-menu" class="screen">
-        <h1>PILIH DUNIA PERMAINAN</h1>
-        <p style="font-size: 15px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
-        <div class="level-grid" style="margin-top: 20px; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 12px solid var(--mario-red); text-align: center; padding: 20px;">
-                <span style="font-family:'Press Start 2P'; font-size: 15px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
-                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Perkalian Distributif</span>
+        <div class="arcade-header-decor" style="font-size: 22px;">PILIH DUNIA PERMAINAN</div>
+        <p style="font-size: 14px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <div class="level-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 14px solid var(--mario-red); text-align: center; padding: 22px; background: linear-gradient(135deg, #ffebee, #ffffff);">
+                <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:13px; display:block; color:#555; font-weight:bold; margin-top: 10px;">Dunia Perkalian Distributif 🍄</span>
             </div>
-            <div class="level-card" onclick="selectOperationMode('division')" style="border-left: 12px solid var(--mario-blue); text-align: center; padding: 20px;">
-                <span style="font-family:'Press Start 2P'; font-size: 15px; color: var(--mario-blue);">➗ DIVISION</span>
-                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Pembagian Distributif</span>
+            <div class="level-card" onclick="selectOperationMode('division')" style="border-left: 14px solid var(--mario-blue); text-align: center; padding: 22px; background: linear-gradient(135deg, #e3f2fd, #ffffff);">
+                <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:13px; display:block; color:#555; font-weight:bold; margin-top: 10px;">Dunia Pembagian Distributif 🌟</span>
             </div>
         </div>
-        <div style="margin-top: 15px;">
+        <div style="margin-top: 10px;">
             <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama Pemain</button>
         </div>
     </div>
 
-    <!-- SCREEN 2: PILIH LEVEL -->
+    <!-- SCREEN 2: PILIH LEVEL (DIPERCANTIK) -->
     <div id="screen-levels" class="screen">
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
-            <span style="font-size: 15px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
+            <span style="font-size: 14px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
         </div>
-        <h1 id="level-screen-title" style="font-size: 18px; margin: 6px 0;">PILIH LEVEL KESULITAN</h1>
+        <h1 id="level-screen-title" style="font-size: 18px; margin: 4px 0; font-family: 'Press Start 2P'; color: #333;">PILIH LEVEL KESULITAN</h1>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Drag & Drop Koin</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Number Bond Input</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Tantangan Kastil</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Misi Penyelamatan Utama</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">
+                <div style="font-family:'Press Start 2P'; font-size: 13px; color: #2e7d32; margin-bottom: 4px;">🟢 Level 1: World 1-1</div>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Belasan (Drag & Drop Koin)</span>
+            </div>
+            <div class="level-card medium" onclick="startLevel('medium')">
+                <div style="font-family:'Press Start 2P'; font-size: 13px; color: #ef6c00; margin-bottom: 4px;">🟡 Level 2: World 2-2</div>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Puluhan (Number Bond Input)</span>
+            </div>
+            <div class="level-card expert" onclick="startLevel('expert')">
+                <div style="font-family:'Press Start 2P'; font-size: 13px; color: #c62828; margin-bottom: 4px;">🟠 Level 3: World 3-3</div>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Kastil Ratusan</span>
+            </div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">
+                <div style="font-family:'Press Start 2P'; font-size: 13px; color: #6a1b9a; margin-bottom: 4px;">🟣 Level 4: Bowser's Castle</div>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Misi Penyelamatan Utama (Expert Plus)</span>
+            </div>
         </div>
     </div>
 
@@ -882,7 +933,6 @@
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        // Reset timer display before player selection
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
 
@@ -915,7 +965,6 @@
             container.appendChild(btn);
         });
 
-        // Timer tidak berjalan di tahap pemilihan nama pemain
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
     }
@@ -939,7 +988,7 @@
         if (currentLevel === 'easy') timer = 180;
         else if (currentLevel === 'medium') timer = 120;
         else if (currentLevel === 'expert') timer = 100;
-        else timer = 90; // Ini untuk level Nightmare
+        else timer = 90;
 
         document.getElementById('lbl-timer').innerText = timer;
         timerInterval = setInterval(updateTimer, 1000);
@@ -1186,7 +1235,6 @@
             let feedback = document.getElementById('feedback');
             
             if (!activePlayer) {
-                // Seharusnya tidak terpanggil karena timer hanya menyala setelah activePlayer dipilih
                 feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
                 feedback.className = "incorrect";
                 document.getElementById('player-selector-container').style.display = 'none';
