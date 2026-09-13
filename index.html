@@ -613,7 +613,7 @@
                 <div class="score-display-kids" id="scoreboard-text"></div>
             </div>
             <div class="board-column-timer">
-                ⏱️ <span id="lbl-timer">60</span>s
+                ⏱️ <span id="lbl-timer">-</span>s
             </div>
         </div>
         
@@ -882,13 +882,9 @@
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        if (currentLevel === 'easy') timer = 180;
-        else if (currentLevel === 'medium') timer = 120;
-        else if (currentLevel === 'expert') timer = 100;
-        else timer = 90; // Ini untuk level Nightmare
-
-        document.getElementById('lbl-timer').innerText = timer;
+        // Reset timer display before player selection
         clearInterval(timerInterval);
+        document.getElementById('lbl-timer').innerText = '-';
 
         renderPlayerSelector();
     }
@@ -905,6 +901,7 @@
             document.getElementById('feedback').className = "incorrect";
             document.getElementById('next-btn').style.display = 'block';
             clearInterval(timerInterval);
+            document.getElementById('lbl-timer').innerText = '-';
             return;
         }
 
@@ -918,7 +915,9 @@
             container.appendChild(btn);
         });
 
-        timerInterval = setInterval(updateTimer, 1000);
+        // Timer tidak berjalan di tahap pemilihan nama pemain
+        clearInterval(timerInterval);
+        document.getElementById('lbl-timer').innerText = '-';
     }
 
     function selectPlayerTurn(playerName) {
@@ -1187,6 +1186,7 @@
             let feedback = document.getElementById('feedback');
             
             if (!activePlayer) {
+                // Seharusnya tidak terpanggil karena timer hanya menyala setelah activePlayer dipilih
                 feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
                 feedback.className = "incorrect";
                 document.getElementById('player-selector-container').style.display = 'none';
@@ -1201,6 +1201,7 @@
                 document.getElementById('inputs-container').style.display = 'none';
                 document.getElementById('drag-source-wrapper').style.display = 'none';
                 document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('lbl-timer').innerText = '-';
                 
                 renderPlayerSelector();
             }
@@ -1231,6 +1232,7 @@
 
         let feedback = document.getElementById('feedback');
         clearInterval(timerInterval);
+        document.getElementById('lbl-timer').innerText = '-';
 
         if (allCorrect) {
             feedback.innerText = `HEBAT! +10 Koin untuk ${activePlayer}! 🍄🎉`;
