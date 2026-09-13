@@ -560,8 +560,6 @@
             transition: transform 0.1s;
         }
         .btn-player-pick img {
-            width: 36px;
-            height: 36px;
             object-fit: contain;
         }
         .btn-player-pick:active { transform: scale(0.95); }
@@ -629,8 +627,6 @@
             box-shadow: 0 3px 0px #000;
         }
         .char-row-btn img {
-            width: 32px;
-            height: 32px;
             object-fit: contain;
         }
         .char-row-btn.selected-mario {
@@ -648,64 +644,26 @@
             transform: translateY(-2px);
         }
 
-        /* UKURAN AVATAR MARIO DIPERBESAR, LUIGI TETAP STANDARD */
-        .player-avatar-icon.mario-avatar {
-            width: 48px;
-            height: 48px;
+        /* PENGATURAN UKURAN SPESIFIK: MARIO DIPERBESAR, LUIGI TETAP STANDARD */
+        .mario-avatar {
+            width: 46px !important;
+            height: 46px !important;
             object-fit: contain;
         }
-        .player-avatar-icon.luigi-avatar {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-        }
-
-        .row-avatar-img.mario-avatar {
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-        }
-        .row-avatar-img.luigi-avatar {
-            width: 32px;
-            height: 32px;
+        .luigi-avatar {
+            width: 32px !important;
+            height: 32px !important;
             object-fit: contain;
         }
 
-        .btn-player-pick img.mario-avatar {
-            width: 46px;
-            height: 46px;
-            object-fit: contain;
+        /* Pengecualian khusus ukuran di papan skor atas agar pas */
+        .score-display-kids .mario-avatar {
+            width: 38px !important;
+            height: 38px !important;
         }
-        .btn-player-pick img.luigi-avatar {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-        }
-
-        .char-row-btn img.mario-avatar {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-        }
-        .char-row-btn img.luigi-avatar {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-
-        .scoreboard-avatar.mario-avatar {
-            width: 38px;
-            height: 38px;
-            vertical-align: middle;
-            object-fit: contain;
-            margin-right: 4px;
-        }
-        .scoreboard-avatar.luigi-avatar {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            object-fit: contain;
-            margin-right: 4px;
+        .score-display-kids .luigi-avatar {
+            width: 30px !important;
+            height: 30px !important;
         }
 
         #feedback {
