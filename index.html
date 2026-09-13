@@ -882,10 +882,10 @@
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
 
-        if (currentLevel === 'easy') timer = 60;
-        else if (currentLevel === 'medium') timer = 45;
-        else if (currentLevel === 'expert') timer = 30;
-        else timer = 20;
+        if (currentLevel === 'easy') timer = 180;
+        else if (currentLevel === 'medium') timer = 120;
+        else if (currentLevel === 'expert') timer = 100;
+        else timer = 90; // Ini untuk level Nightmare
 
         document.getElementById('lbl-timer').innerText = timer;
         clearInterval(timerInterval);
@@ -937,10 +937,10 @@
 
         setupStandardGameplay();
 
-        if (currentLevel === 'easy') timer = 60;
-        else if (currentLevel === 'medium') timer = 45;
-        else if (currentLevel === 'expert') timer = 30;
-        else timer = 20;
+        if (currentLevel === 'easy') timer = 180;
+        else if (currentLevel === 'medium') timer = 120;
+        else if (currentLevel === 'expert') timer = 100;
+        else timer = 90; // Ini untuk level Nightmare
 
         document.getElementById('lbl-timer').innerText = timer;
         timerInterval = setInterval(updateTimer, 1000);
