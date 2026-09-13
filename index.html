@@ -573,7 +573,7 @@
             flex-direction: column;
             gap: 10px;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             max-height: 420px;
             overflow-y: auto;
@@ -581,27 +581,26 @@
         }
         .player-row-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
             background: #fffde7;
             border: 3px solid #000;
             padding: 10px 16px;
             border-radius: 14px;
             box-shadow: 0 4px 0px rgba(0,0,0,0.15);
-            gap: 8px;
+            gap: 12px;
             width: 100%;
             box-sizing: border-box;
         }
-        .player-row-top {
+        .player-row-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
+            gap: 10px;
+            flex: 1;
         }
         .player-row-item input[type="text"] {
-            width: 220px;
-            max-width: 100%;
+            width: 100%;
+            max-width: 240px;
             font-size: 16px;
             padding: 8px 12px;
             border: 3px solid #fbc02d;
@@ -610,27 +609,28 @@
         }
         .char-choice-group-row {
             display: flex;
-            gap: 10px;
-            justify-content: center;
+            gap: 8px;
+            justify-content: flex-end;
+            flex-shrink: 0;
         }
         .char-row-btn {
             border: 3px solid #000;
             border-radius: 12px;
-            padding: 6px 14px;
+            padding: 6px 12px;
             background: #fff;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 10px;
             font-weight: bold;
             font-family: 'Press Start 2P', cursive;
             transition: all 0.2s;
             box-shadow: 0 3px 0px #000;
         }
         .char-row-btn img {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             object-fit: contain;
         }
         .char-row-btn.selected-mario {
@@ -649,8 +649,8 @@
         }
 
         .player-avatar-icon {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             object-fit: contain;
         }
 
@@ -679,15 +679,15 @@
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
         <div class="mario-badge">✨ DAFTARKAN NAMA & KOSTUM PAHLAWAN ✨</div>
-        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px;">Setiap pemain dapat memilih nama dan kostumnya sendiri:</p>
+        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px;">Setiap pemain dapat mengetik nama dan memilih kostumnya sendiri:</p>
 
         <div class="name-setup-container" id="player-inputs-list-box">
             <!-- Baris input pemain 1 -->
             <div class="player-row-item" data-char="mario">
-                <div class="player-row-top">
+                <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
                     <img src="mario.png" class="player-avatar-icon row-avatar-img">
-                    <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="Mario">
+                    <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
@@ -700,10 +700,10 @@
             </div>
             <!-- Baris input pemain 2 -->
             <div class="player-row-item" data-char="luigi">
-                <div class="player-row-top">
+                <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#2</span>
                     <img src="luigi.png" class="player-avatar-icon row-avatar-img">
-                    <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="Luigi">
+                    <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'mario')">
@@ -959,10 +959,10 @@
         div.className = 'player-row-item';
         div.dataset.char = 'mario';
         div.innerHTML = `
-            <div class="player-row-top">
+            <div class="player-row-left">
                 <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count}</span>
                 <img src="mario.png" class="player-avatar-icon row-avatar-img">
-                <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}">
+                <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}" value="">
             </div>
             <div class="char-choice-group-row">
                 <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
@@ -990,24 +990,20 @@
         playerScores = {};
         playerCharacters = {};
 
-        rows.forEach(row => {
-            let inputName = row.querySelector('.p-name-input').value.trim();
-            let chosenChar = row.dataset.char || 'mario';
-            if (inputName) {
-                players.push(inputName);
-                playerScores[inputName] = 0;
-                playerCharacters[inputName] = chosenChar;
+        rows.forEach((row, index) => {
+            let inputField = row.querySelector('.p-name-input');
+            let inputName = inputField.value.trim();
+            if (!inputName) {
+                inputName = `Pahlawan ${index + 1}`;
             }
+            let chosenChar = row.dataset.char || 'mario';
+            
+            players.push(inputName);
+            playerScores[inputName] = 0;
+            playerCharacters[inputName] = chosenChar;
         });
 
-        if (players.length === 0) {
-            tvPeringatan.innerText = "Minimal masukkan 1 nama pahlawan yang valid!";
-            tvPeringatan.style.display = "block";
-            if ("vibrate" in navigator) navigator.vibrate(200);
-            return;
-        } else {
-            tvPeringatan.style.display = "none";
-        }
+        tvPeringatan.style.display = "none";
 
         let namesStr = players.map(p => `${playerCharacters[p] === 'mario' ? '🍄' : '⭐'} ${p}`).join(', ');
         document.getElementById('display-players-list-menu').innerText = namesStr;
