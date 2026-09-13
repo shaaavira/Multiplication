@@ -89,21 +89,63 @@
         }
         .screen.active { display: flex; }
 
-        /* SKOR BOARD UTAMA DI ATAS */
+        /* WADAH UTAMA 3 KOLOM TERPISAH (SOAL, SKOR, WAKTU) */
         .score-board-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(135deg, #fff8e1, #ffecb3);
-            border: 4px solid #fbc02d;
-            padding: 12px 20px;
-            border-radius: 14px;
+            align-items: stretch;
+            gap: 15px;
             margin-bottom: 8px;
-            color: #e65100;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        /* KOLOM 1: NOMOR SOAL */
+        .board-column-question {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 4px solid var(--mario-blue);
+            padding: 10px 16px;
+            border-radius: 14px;
+            color: var(--mario-blue);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        /* KOLOM 2: PAPAN SKOR */
+        .board-column-score {
+            flex: 1;
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border: 4px solid #fbc02d;
+            padding: 10px 16px;
+            border-radius: 14px;
+            color: #e65100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.1);
         }
+
+        /* KOLOM 3: WAKTU / TIMER */
+        .board-column-timer {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 4px solid var(--mario-red);
+            padding: 10px 16px;
+            border-radius: 14px;
+            color: var(--mario-red);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
         .score-display-kids {
             font-family: 'Press Start 2P', cursive;
             font-size: 13px;
@@ -112,11 +154,6 @@
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
-        }
-        .timer-box { 
-            color: var(--mario-red); 
-            font-family: 'Press Start 2P', cursive;
-            font-size: 16px;
         }
         
         .math-problem-area {
@@ -531,13 +568,19 @@
             <div style="width: 90px;"></div>
         </div>
 
-        <!-- PAPAN SKOR UTAMA DI ATAS -->
+        <!-- 3 KOLOM TERPISAH: NOMOR SOAL, PAPAN SKOR, TIMER -->
         <div class="score-board-top">
-            <div style="font-family: 'Press Start 2P'; font-size: 13px;">Soal <span id="current-q-num">1</span>/5</div>
-            <div class="score-display-kids" id="scoreboard-text">
-                <!-- Daftar skor anak-anak -->
+            <div class="board-column-question">
+                Soal no <span id="current-q-num">1</span>/10
             </div>
-            <div class="timer-box">⏱️ <span id="lbl-timer">60</span>s</div>
+            <div class="board-column-score">
+                <div class="score-display-kids" id="scoreboard-text">
+                    <!-- Daftar skor anak-anak -->
+                </div>
+            </div>
+            <div class="board-column-timer">
+                ⏱️ <span id="lbl-timer">60</span>s
+            </div>
         </div>
         
         <div class="math-problem-area">
@@ -729,7 +772,6 @@
             tvPeringatan.innerText = "Minimal isi nama pemain satu!";
             tvPeringatan.style.display = "block";
 
-            // Memicu efek getar perangkat (didukung browser HP / WebView Android)
             if ("vibrate" in navigator) {
                 navigator.vibrate(200);
             }
@@ -789,7 +831,7 @@
 
         let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
-        questions = shuffledBank.slice(0, 5);
+        questions = shuffledBank.slice(0, 10); // Menampilkan 10 soal per game
 
         goToScreen('screen-game');
         loadQuestion();
@@ -952,7 +994,6 @@
         let decomp = currentQuestion.decomp;
         let count = decomp.length;
 
-        // Penyesuaian layout SVG cabang berdasarkan jumlah elemen (2 atau 3 cabang)
         if (count === 3) {
             svgContainer.setAttribute('viewBox', '0 0 320 40');
             svgContainer.innerHTML = `
