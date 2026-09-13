@@ -580,7 +580,7 @@
         .player-row-item {
             display: flex;
             flex-direction: column;
-            align-items: stretch;
+            align-items: center; /* Mengatur posisi ke tengah */
             background: #fffde7;
             border: 3px solid #000;
             padding: 10px 16px;
@@ -591,11 +591,13 @@
         .player-row-top {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             width: 100%;
         }
         .player-row-item input[type="text"] {
-            flex: 1;
+            width: 220px; /* Lebar tetap yang lebih pendek dan pas */
+            max-width: 100%;
             font-size: 16px;
             padding: 8px 12px;
             border: 3px solid #fbc02d;
