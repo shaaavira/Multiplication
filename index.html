@@ -7,674 +7,680 @@
     <!-- Memuat Google Fonts bergaya game retro (Press Start 2P & Fredoka) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --mario-red: #e52521;
-            --mario-blue: #002fbe;
-            --mario-yellow: #f8b800;
-            --mario-green: #43b3ae;
-            --mario-bg-sky: #5c94fc;
-        }
+    :root {
+        --mario-red: #e52521;
+        --mario-blue: #002fbe;
+        --mario-yellow: #f8b800;
+        --mario-green: #43b3ae;
+        --mario-bg-sky: #5c94fc;
+    }
 
-        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
-        html, body {
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
+    /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
+    html, body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--mario-bg-sky);
-            background-image: 
-                radial-gradient(white 15%, transparent 16%),
-                radial-gradient(white 15%, transparent 16%);
-            background-size: 80px 80px;
-            background-position: 0 0, 40px 40px;
-            color: #fff;
-            text-align: center;
-            touch-action: manipulation;
-            text-shadow: 2px 2px 0px #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    body {
+        font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--mario-bg-sky);
+        background-image: 
+            radial-gradient(white 15%, transparent 16%),
+            radial-gradient(white 15%, transparent 16%);
+        background-size: 80px 80px;
+        background-position: 0 0, 40px 40px;
+        color: #fff;
+        text-align: center;
+        touch-action: manipulation;
+        text-shadow: 2px 2px 0px #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .game-container {
-            width: 98vw;
-            height: 97vh;
-            max-width: 1450px;
-            max-height: 900px;
-            margin: auto;
-            background: #ffffff;
-            color: #333;
-            padding: 15px 25px;
-            border-radius: 28px;
-            border: 8px solid #000;
-            box-shadow: 0 16px 0px #000, 0 25px 50px rgba(0,0,0,0.5);
-            position: relative;
-            text-shadow: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
-            box-sizing: border-box;
-            gap: 6px !important;
-        }
+    .game-container {
+        width: 96vw;
+        height: 95vh;
+        max-width: 1400px;
+        max-height: 880px;
+        margin: auto;
+        background: #ffffff;
+        color: #333;
+        /* PERBAIKAN: Padding diperkecil agar ruang internal lebih lega */
+        padding: 12px 20px;
+        border-radius: 28px;
+        border: 8px solid #000;
+        box-shadow: 0 16px 0px #000, 0 25px 50px rgba(0,0,0,0.5);
+        position: relative;
+        text-shadow: none;
+        display: flex;
+        flex-direction: column;
+        /* PERBAIKAN: Mengganti space-between ekstrem dengan flex-start + gap proporsional */
+        justify-content: flex-start;
+        align-items: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        /* PERBAIKAN: Jarak antar elemen utama dibuat lebih longgar dan nyaman */
+        gap: 14px !important; 
+    }
 
-        /* GAYA DEKORASI ALA MARIO (BLOCKS & CLOUDS) */
-        .arcade-header-decor {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 26px;
-            color: var(--mario-red);
-            text-shadow: 4px 4px 0px var(--mario-yellow), 6px 6px 0px #000;
-            margin: 6px 0;
-            animation: bounceTitle 2s infinite alternate;
-        }
-        @keyframes bounceTitle {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-4px); }
-        }
+    /* GAYA DEKORASI ALA MARIO (BLOCKS & CLOUDS) */
+    .arcade-header-decor {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 24px;
+        color: var(--mario-red);
+        text-shadow: 4px 4px 0px var(--mario-yellow), 6px 6px 0px #000;
+        margin: 4px 0;
+        animation: bounceTitle 2s infinite alternate;
+    }
+    @keyframes bounceTitle {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-4px); }
+    }
 
-        .mario-badge {
-            background: var(--mario-yellow);
-            border: 3px solid #000;
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
-            color: #b71c1c;
-            display: inline-block;
-            box-shadow: 0 4px 0px #e65100;
-            margin-bottom: 4px;
-        }
+    .mario-badge {
+        background: var(--mario-yellow);
+        border: 3px solid #000;
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 11px;
+        color: #b71c1c;
+        display: inline-block;
+        box-shadow: 0 4px 0px #e65100;
+        margin-bottom: 8px;
+    }
 
-        h1 {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--mario-red);
-            font-size: 24px;
-            margin: 2px 0 6px 0;
-            line-height: 1.4;
-            text-shadow: 3px 3px 0px var(--mario-yellow);
-        }
+    h1 {
+        font-family: 'Press Start 2P', cursive;
+        color: var(--mario-red);
+        font-size: 22px;
+        margin: 4px 0;
+        line-height: 1.4;
+        text-shadow: 3px 3px 0px var(--mario-yellow);
+    }
 
-        p { 
-            color: #444; 
-            font-size: 15px; 
-            font-weight: 600;
-            margin: 2px 0;
-        }
-        
-        .screen { 
-            display: none; 
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-        }
-        .screen.active { display: flex; }
+    p { 
+        color: #444; 
+        font-size: 15px; 
+        font-weight: 600;
+        margin: 4px 0;
+    }
+    
+    .screen { 
+        display: none; 
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
+        width: 100%;
+        gap: 10px;
+    }
+    .screen.active { display: flex; }
 
-        /* WADAH UTAMA 3 KOLOM TERPISAH (SOAL, SKOR, WAKTU) */
-        .score-board-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 15px;
-            margin-bottom: 4px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    /* WADAH UTAMA 3 KOLOM TERPISAH (SOAL, SKOR, WAKTU) */
+    .score-board-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 15px;
+        margin-bottom: 6px;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-        /* KOLOM 1: NOMOR SOAL */
-        .board-column-question {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            border: 4px solid var(--mario-blue);
-            padding: 8px 14px;
-            border-radius: 12px;
-            color: var(--mario-blue);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.1);
-            white-space: nowrap;
-        }
+    /* KOLOM 1: NOMOR SOAL */
+    .board-column-question {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border: 4px solid var(--mario-blue);
+        padding: 10px 16px;
+        border-radius: 12px;
+        color: var(--mario-blue);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+        white-space: nowrap;
+    }
 
-        /* KOLOM 2: PAPAN SKOR */
-        .board-column-score {
-            flex: 1;
-            background: linear-gradient(135deg, #fff8e1, #ffecb3);
-            border: 4px solid #fbc02d;
-            padding: 8px 14px;
-            border-radius: 12px;
-            color: #e65100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.1);
-        }
+    /* KOLOM 2: PAPAN SKOR */
+    .board-column-score {
+        flex: 1;
+        background: linear-gradient(135deg, #fff8e1, #ffecb3);
+        border: 4px solid #fbc02d;
+        padding: 10px 16px;
+        border-radius: 12px;
+        color: #e65100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+    }
 
-        /* KOLOM 3: WAKTU / TIMER */
-        .board-column-timer {
-            background: linear-gradient(135deg, #ffebee, #ffcdd2);
-            border: 4px solid var(--mario-red);
-            padding: 8px 14px;
-            border-radius: 12px;
-            color: var(--mario-red);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.1);
-            white-space: nowrap;
-        }
+    /* KOLOM 3: WAKTU / TIMER */
+    .board-column-timer {
+        background: linear-gradient(135deg, #ffebee, #ffcdd2);
+        border: 4px solid var(--mario-red);
+        padding: 10px 16px;
+        border-radius: 12px;
+        color: var(--mario-red);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+        white-space: nowrap;
+    }
 
-        .score-display-kids {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
-            color: #b71c1c;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .math-problem-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 2px 0;
-            width: 100%;
-        }
+    .score-display-kids {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 11px;
+        color: #b71c1c;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .math-problem-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 4px 0;
+        width: 100%;
+        gap: 12px;
+    }
 
-        .question-box {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 24px;
-            color: var(--mario-blue);
-            margin-bottom: 8px;
-            width: 100%;
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 12px;
-            border: 4px dashed var(--mario-blue);
-            box-sizing: border-box;
-        }
+    .question-box {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 24px;
+        color: var(--mario-blue);
+        margin-bottom: 4px;
+        width: 100%;
+        background: #e3f2fd;
+        padding: 12px;
+        border-radius: 12px;
+        border: 4px dashed var(--mario-blue);
+        box-sizing: border-box;
+    }
 
-        /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
-        .game-play-layout {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: nowrap;
-            width: 100%;
-        }
-        .main-game-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 480px;
-        }
+    /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
+    .game-play-layout {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+    .main-game-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 480px;
+        gap: 10px;
+    }
 
-        /* KOTAK BANTUAN KHUSUS PEMBAGIAN (DI SAMPING) */
-        .helper-multiples-box {
-            display: none;
-            background: #e0f7fa;
-            border: 4px solid #00acc1;
-            padding: 10px 10px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: #006064;
-            width: 180px;
-            box-sizing: border-box;
-            text-align: left;
-            flex-shrink: 0;
-            box-shadow: 0 4px 0px #00838f;
-            font-weight: bold;
-        }
-        .helper-multiples-box b {
-            color: #006064;
-            display: block;
-            text-align: center;
-            margin-bottom: 6px;
-            font-size: 10px;
-            border-bottom: 2px dashed #b2ebf2;
-            padding-bottom: 4px;
-        }
+    /* KOTAK BANTUAN KHUSUS PEMBAGIAN (DI SAMPING) */
+    .helper-multiples-box {
+        display: none;
+        background: #e0f7fa;
+        border: 4px solid #00acc1;
+        padding: 12px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: #006064;
+        width: 190px;
+        box-sizing: border-box;
+        text-align: left;
+        flex-shrink: 0;
+        box-shadow: 0 4px 0px #00838f;
+        font-weight: bold;
+    }
+    .helper-multiples-box b {
+        color: #006064;
+        display: block;
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 10px;
+        border-bottom: 2px dashed #b2ebf2;
+        padding-bottom: 6px;
+    }
 
-        /* KOTAK BANTUAN KHUSUS PERKALIAN (DI SAMPING) */
-        .helper-multiplication-box {
-            display: none;
-            background: #ffebee;
-            border: 4px solid var(--mario-red);
-            padding: 10px 10px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: #b71c1c;
-            width: 180px;
-            box-sizing: border-box;
-            text-align: left;
-            flex-shrink: 0;
-            box-shadow: 0 4px 0px #c62828;
-            font-weight: bold;
-        }
-        .helper-multiplication-box b {
-            color: #b71c1c;
-            display: block;
-            text-align: center;
-            margin-bottom: 6px;
-            font-size: 10px;
-            border-bottom: 2px dashed #ffcdd2;
-            padding-bottom: 4px;
-        }
+    /* KOTAK BANTUAN KHUSUS PERKALIAN (DI SAMPING) */
+    .helper-multiplication-box {
+        display: none;
+        background: #ffebee;
+        border: 4px solid var(--mario-red);
+        padding: 12px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: #b71c1c;
+        width: 190px;
+        box-sizing: border-box;
+        text-align: left;
+        flex-shrink: 0;
+        box-shadow: 0 4px 0px #c62828;
+        font-weight: bold;
+    }
+    .helper-multiplication-box b {
+        color: #b71c1c;
+        display: block;
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 10px;
+        border-bottom: 2px dashed #ffcdd2;
+        padding-bottom: 6px;
+    }
 
-        .helper-list-item {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 9px;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            color: #333;
-        }
-        
-        /* NUMBER BOND CONTAINER */
-        .number-bond-container, .drop-zone-container {
-            position: relative;
-            width: 310px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: -20px;
-            margin-left: -40px;
-            margin-bottom: 2px !important;
-            transform: scale(1.05);
-            transform-origin: top center;
-        }
-        
-        .bond-circles {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: -2px;
-        }
-        
-        .circle-dropzone {
-            width: 60px !important;
-            height: 60px !important;
-            min-width: 60px;
-            min-height: 60px;
-            border: 4px dashed var(--mario-red) !important;
-            border-radius: 50% !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-            font-weight: bold;
-            color: var(--mario-red);
-            background-color: #ffebee;
-            box-sizing: border-box;
-            cursor: pointer;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
-        }
-        .circle-dropzone.highlight {
-            background-color: #c8e6c9;
-            border-color: #2e7d32 !important;
-        }
-        .circle-dropzone.error-highlight {
-            background-color: #ffcdd2;
-            border-color: #d32f2f !important;
-        }
+    .helper-list-item {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 9px;
+        margin-bottom: 6px;
+        white-space: nowrap;
+        color: #333;
+    }
+    
+    /* NUMBER BOND CONTAINER */
+    .number-bond-container, .drop-zone-container {
+        position: relative;
+        width: 310px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -10px;
+        margin-bottom: 6px !important;
+        transform: scale(1.05);
+        transform-origin: top center;
+    }
+    
+    .bond-circles {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: -2px;
+    }
+    
+    .circle-dropzone {
+        width: 60px !important;
+        height: 60px !important;
+        min-width: 60px;
+        min-height: 60px;
+        border: 4px dashed var(--mario-red) !important;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        font-weight: bold;
+        color: var(--mario-red);
+        background-color: #ffebee;
+        box-sizing: border-box;
+        cursor: pointer;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+    }
+    .circle-dropzone.highlight {
+        background-color: #c8e6c9;
+        border-color: #2e7d32 !important;
+    }
+    .circle-dropzone.error-highlight {
+        background-color: #ffcdd2;
+        border-color: #d32f2f !important;
+    }
 
-        /* KEPINGAN DRAG PILIHAN */
-        .drag-source-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 6px 0;
-            min-height: 52px;
-            align-items: center;
-        }
-        .draggable-item {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
-            border: 4px solid #f57f17;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 24px;
-            color: #b71c1c;
-            cursor: pointer;
-            user-select: none;
-            touch-action: none;
-            box-shadow: 0 4px 0px #e65100;
-            transition: transform 0.1s;
-        }
-        .draggable-item.dragging {
-            position: fixed;
-            z-index: 1000;
-            opacity: 0.9;
-            pointer-events: none;
-            transform: scale(1.15);
-        }
+    /* KEPINGAN DRAG PILIHAN */
+    .drag-source-container {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin: 8px 0;
+        min-height: 56px;
+        align-items: center;
+    }
+    .draggable-item {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+        border: 4px solid #f57f17;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: #b71c1c;
+        cursor: pointer;
+        user-select: none;
+        touch-action: none;
+        box-shadow: 0 4px 0px #e65100;
+        transition: transform 0.1s;
+    }
+    .draggable-item.dragging {
+        position: fixed;
+        z-index: 1000;
+        opacity: 0.9;
+        pointer-events: none;
+        transform: scale(1.15);
+    }
 
-        .circle-input {
-            width: 60px !important;
-            height: 60px !important;
-            min-width: 60px;
-            min-height: 60px;
-            border: 4px solid var(--mario-red) !important;
-            border-radius: 50% !important;
-            text-align: center;
-            font-size: 21px;
-            font-weight: bold;
-            color: var(--mario-red);
-            background-color: #ffebee;
-            outline: none;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            -moz-appearance: textfield;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
-        }
-        .circle-input::-webkit-outer-spin-button,
-        .circle-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+    .circle-input {
+        width: 60px !important;
+        height: 60px !important;
+        min-width: 60px;
+        min-height: 60px;
+        border: 4px solid var(--mario-red) !important;
+        border-radius: 50% !important;
+        text-align: center;
+        font-size: 21px;
+        font-weight: bold;
+        color: var(--mario-red);
+        background-color: #ffebee;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        -moz-appearance: textfield;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+    }
+    .circle-input::-webkit-outer-spin-button,
+    .circle-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
-        .lines-svg {
-            width: 100%;
-            height: 42px;
-        }
+    .lines-svg {
+        width: 100%;
+        height: 42px;
+    }
 
-        .breakdown-section {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin: 6px 0;
-            background: #f1f8e9;
-            border: 4px solid #81c784;
-            padding: 10px 16px;
-            border-radius: 14px;
-            transition: opacity 0.3s;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .breakdown-section.disabled-section {
-            opacity: 0.4;
-            pointer-events: none;
-        }
+    .breakdown-section {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 8px 0;
+        background: #f1f8e9;
+        border: 4px solid #81c784;
+        padding: 12px 18px;
+        border-radius: 14px;
+        transition: opacity 0.3s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .breakdown-section.disabled-section {
+        opacity: 0.4;
+        pointer-events: none;
+    }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .input-group label {
-            font-size: 20px;
-            color: #2e7d32;
-            margin-bottom: 2px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="number"] {
-            width: 100px;
-            padding: 8px;
-            font-size: 20px;
-            text-align: center;
-            border: 4px solid #81c784;
-            border-radius: 10px;
-            outline: none;
-            font-weight: bold;
-            color: #333;
-            background: #fff;
-        }
-        input:disabled, .breakdown-section.disabled-section input {
-            background-color: #e2e8f0;
-            cursor: not-allowed;
-        }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .input-group label {
+        font-size: 18px;
+        color: #2e7d32;
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+        width: 100px;
+        padding: 8px;
+        font-size: 18px;
+        text-align: center;
+        border: 4px solid #81c784;
+        border-radius: 10px;
+        outline: none;
+        font-weight: bold;
+        color: #333;
+        background: #fff;
+    }
+    input:disabled, .breakdown-section.disabled-section input {
+        background-color: #e2e8f0;
+        cursor: not-allowed;
+    }
 
-        .btn {
-            font-family: 'Press Start 2P', cursive;
-            background-color: var(--mario-red);
-            color: white;
-            border: 4px solid #000;
-            padding: 12px 20px;
-            font-size: 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 6px;
-            width: 100%;
-            box-shadow: 0 4px 0px #900;
-            transition: all 0.1s;
-        }
-        .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 6px 0px #900; }
-        .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
-        
-        .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 4px 0px #001a75; }
-        .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 6px 0px #001a75; }
-        
-        .btn-back-menu {
-            font-family: 'Press Start 2P', cursive;
-            background-color: #78909c;
-            color: white;
-            border: 3px solid #000;
-            padding: 8px 12px;
-            font-size: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 3px 0px #455a64;
-            transition: background-color 0.2s;
-        }
-        .btn-back-menu:hover { background-color: #90a4ae; }
+    .btn {
+        font-family: 'Press Start 2P', cursive;
+        background-color: var(--mario-red);
+        color: white;
+        border: 4px solid #000;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: 0 4px 0px #900;
+        transition: all 0.1s;
+    }
+    .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 6px 0px #900; }
+    .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
+    
+    .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 4px 0px #001a75; }
+    .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 6px 0px #001a75; }
+    
+    .btn-back-menu {
+        font-family: 'Press Start 2P', cursive;
+        background-color: #78909c;
+        color: white;
+        border: 3px solid #000;
+        padding: 8px 12px;
+        font-size: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 3px 0px #455a64;
+        transition: background-color 0.2s;
+    }
+    .btn-back-menu:hover { background-color: #90a4ae; }
 
-        .top-nav-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 4px;
-        }
+    .top-nav-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 6px;
+    }
 
-        .level-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin: 12px 0;
-            width: 100%;
-        }
-        .level-card {
-            background: linear-gradient(135deg, #ffffff, #f7f9fc);
-            border: 4px solid #000;
-            padding: 16px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: left;
-            color: #333;
-            box-shadow: 0 6px 0px #000, 0 10px 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .level-card:hover { 
-            transform: translateY(-4px) scale(1.02); 
-            background: #fffde7; 
-            box-shadow: 0 10px 0px #000, 0 15px 25px rgba(0,0,0,0.15);
-        }
-        .level-card:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0px #000;
-        }
-        .level-card.easy { border-left: 14px solid #4caf50; background: linear-gradient(135deg, #f1f8e9, #ffffff); }
-        .level-card.medium { border-left: 14px solid #ff9800; background: linear-gradient(135deg, #fffde7, #ffffff); }
-        .level-card.expert { border-left: 14px solid #f44336; background: linear-gradient(135deg, #ffebee, #ffffff); }
-        .level-card.nightmare { border-left: 14px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ffffff); }
+    .level-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 10px 0;
+        width: 100%;
+    }
+    .level-card {
+        background: linear-gradient(135deg, #ffffff, #f7f9fc);
+        border: 4px solid #000;
+        padding: 18px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-align: left;
+        color: #333;
+        box-shadow: 0 6px 0px #000, 0 10px 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    .level-card:hover { 
+        transform: translateY(-4px) scale(1.02); 
+        background: #fffde7; 
+        box-shadow: 0 10px 0px #000, 0 15px 25px rgba(0,0,0,0.15);
+    }
+    .level-card:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0px #000;
+    }
+    .level-card.easy { border-left: 14px solid #4caf50; background: linear-gradient(135deg, #f1f8e9, #ffffff); }
+    .level-card.medium { border-left: 14px solid #ff9800; background: linear-gradient(135deg, #fffde7, #ffffff); }
+    .level-card.expert { border-left: 14px solid #f44336; background: linear-gradient(135deg, #ffebee, #ffffff); }
+    .level-card.nightmare { border-left: 14px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ffffff); }
 
-        /* PLAYER SELECTION ARENA */
-        .player-selector-arena {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin: 6px 0;
-            width: 100%;
-        }
-        .player-buttons-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            width: 100%;
-        }
-        .btn-player-pick {
-            font-family: 'Press Start 2P', cursive;
-            background-color: var(--mario-yellow);
-            color: #b71c1c;
-            border: 4px solid #000;
-            padding: 12px 20px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 0px #f57f17;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.1s;
-        }
-        .btn-player-pick img {
-            object-fit: contain;
-        }
-        .btn-player-pick:active { transform: scale(0.95); }
-        .btn-player-pick:hover { background-color: #ffeb3b; }
+    /* PLAYER SELECTION ARENA */
+    .player-selector-arena {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin: 8px 0;
+        width: 100%;
+    }
+    .player-buttons-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        width: 100%;
+    }
+    .btn-player-pick {
+        font-family: 'Press Start 2P', cursive;
+        background-color: var(--mario-yellow);
+        color: #b71c1c;
+        border: 4px solid #000;
+        padding: 12px 20px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 4px 0px #f57f17;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.1s;
+    }
+    .btn-player-pick img {
+        object-fit: contain;
+    }
+    .btn-player-pick:active { transform: scale(0.95); }
+    .btn-player-pick:hover { background-color: #ffeb3b; }
 
-        /* TABEL INPUT NAMA & PILIH KARAKTER MENYAMPING (LAYOUT LAPTOP) */
-        .name-setup-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto;
-            max-height: 420px;
-            overflow-y: auto;
-            padding: 4px;
-        }
-        .player-row-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fffde7;
-            border: 3px solid #000;
-            padding: 10px 16px;
-            border-radius: 14px;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
-            gap: 12px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .player-row-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-        .player-row-item input[type="text"] {
-            width: 100%;
-            max-width: 240px;
-            font-size: 16px;
-            padding: 8px 12px;
-            border: 3px solid #fbc02d;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        .char-choice-group-row {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            flex-shrink: 0;
-        }
-        .char-row-btn {
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 6px 12px;
-            background: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            font-weight: bold;
-            font-family: 'Press Start 2P', cursive;
-            transition: all 0.2s;
-            box-shadow: 0 3px 0px #000;
-        }
-        .char-row-btn img {
-            object-fit: contain;
-        }
-        .char-row-btn.selected-mario {
-            border-color: var(--mario-red);
-            background: #ffebee;
-            color: var(--mario-red);
-            box-shadow: 0 4px 0px var(--mario-red);
-            transform: translateY(-2px);
-        }
-        .char-row-btn.selected-luigi {
-            border-color: var(--mario-blue);
-            background: #e3f2fd;
-            color: var(--mario-blue);
-            box-shadow: 0 4px 0px var(--mario-blue);
-            transform: translateY(-2px);
-        }
+    /* TABEL INPUT NAMA & PILIH KARAKTER MENYAMPING (LAYOUT LAPTOP) */
+    .name-setup-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 650px;
+        margin: 0 auto;
+        max-height: 380px;
+        overflow-y: auto;
+        padding: 4px;
+    }
+    .player-row-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fffde7;
+        border: 3px solid #000;
+        padding: 10px 16px;
+        border-radius: 14px;
+        box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .player-row-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+    .player-row-item input[type="text"] {
+        width: 100%;
+        max-width: 240px;
+        font-size: 15px;
+        padding: 8px 12px;
+        border: 3px solid #fbc02d;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+    .char-choice-group-row {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-shrink: 0;
+    }
+    .char-row-btn {
+        border: 3px solid #000;
+        border-radius: 12px;
+        padding: 6px 12px;
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: 'Press Start 2P', cursive;
+        transition: all 0.2s;
+        box-shadow: 0 3px 0px #000;
+    }
+    .char-row-btn img {
+        object-fit: contain;
+    }
+    .char-row-btn.selected-mario {
+        border-color: var(--mario-red);
+        background: #ffebee;
+        color: var(--mario-red);
+        box-shadow: 0 4px 0px var(--mario-red);
+        transform: translateY(-2px);
+    }
+    .char-row-btn.selected-luigi {
+        border-color: var(--mario-blue);
+        background: #e3f2fd;
+        color: var(--mario-blue);
+        box-shadow: 0 4px 0px var(--mario-blue);
+        transform: translateY(-2px);
+    }
 
-        /* PENGATURAN UKURAN SPESIFIK: MARIO & LUIGI DIBUAT SAMA BESAR */
-        .mario-avatar {
-            width: 46px !important;
-            height: 46px !important;
-            object-fit: contain;
-        }
-        .luigi-avatar {
-            width: 46px !important; 
-            height: 46px !important; 
-            object-fit: contain;
-        }
+    /* PENGATURAN UKURAN SPESIFIK: MARIO & LUIGI DIBUAT SAMA BESAR */
+    .mario-avatar {
+        width: 42px !important;
+        height: 42px !important;
+        object-fit: contain;
+    }
+    .luigi-avatar {
+        width: 42px !important; 
+        height: 42px !important; 
+        object-fit: contain;
+    }
 
-        /* Pengecualian khusus ukuran di papan skor atas agar pas */
-        .score-display-kids .mario-avatar {
-            width: 38px !important;
-            height: 38px !important;
-        }
-        .score-display-kids .luigi-avatar {
-            width: 38px !important; 
-            height: 38px !important; 
-        }
+    /* Pengecualian khusus ukuran di papan skor atas agar pas */
+    .score-display-kids .mario-avatar {
+        width: 34px !important;
+        height: 34px !important;
+    }
+    .score-display-kids .luigi-avatar {
+        width: 34px !important; 
+        height: 34px !important; 
+    }
 
-        #feedback {
-            margin-top: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            min-height: 22px;
-        }
-        .correct { color: #2e7d32; }
-        .incorrect { color: #d32f2f; }
-    </style>
+    #feedback {
+        margin-top: 4px;
+        font-size: 15px;
+        font-weight: bold;
+        min-height: 20px;
+    }
+    .correct { color: #2e7d32; }
+    .incorrect { color: #d32f2f; }
+</style>
 </head>
 <body>
 
@@ -839,8 +845,8 @@
         <!-- Bagian Kotak Penjumlahan Distributif -->
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;"></div>
 
-        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 6px; width: 35%;">JAWAB! 🎯</button>
-        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none; margin-top: 6px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 4px; width: 35%;">JAWAB! 🎯</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none; margin-top: 4px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
         <div id="feedback"></div>
     </div>
 
