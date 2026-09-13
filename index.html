@@ -602,23 +602,20 @@
             border-radius: 10px;
             font-weight: bold;
         }
-        
-        /* TOMBOL PILIH KARAKTER DI BAWAH MASING-MASING INPUT NAMA */
         .char-choice-group-row {
             display: flex;
             gap: 10px;
-            justify-content: flex-start;
-            padding-left: 30px;
+            justify-content: center;
         }
         .char-row-btn {
             border: 3px solid #000;
-            border-radius: 10px;
-            padding: 4px 12px;
+            border-radius: 12px;
+            padding: 6px 14px;
             background: #fff;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 11px;
             font-weight: bold;
             font-family: 'Press Start 2P', cursive;
@@ -626,8 +623,8 @@
             box-shadow: 0 3px 0px #000;
         }
         .char-row-btn img {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             object-fit: contain;
         }
         .char-row-btn.selected-mario {
@@ -635,19 +632,19 @@
             background: #ffebee;
             color: var(--mario-red);
             box-shadow: 0 4px 0px var(--mario-red);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         .char-row-btn.selected-luigi {
             border-color: var(--mario-blue);
             background: #e3f2fd;
             color: var(--mario-blue);
             box-shadow: 0 4px 0px var(--mario-blue);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .player-avatar-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
         }
 
@@ -676,37 +673,37 @@
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
         <div class="mario-badge">✨ DAFTARKAN NAMA & KOSTUM PAHLAWAN ✨</div>
-        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px;">Atur nama dan kostum masing-masing pahlawan:</p>
+        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px;">Setiap pemain dapat memilih nama dan kostumnya sendiri:</p>
 
         <div class="name-setup-container" id="player-inputs-list-box">
             <!-- Baris input pemain 1 -->
-            <div class="player-row-item" data-index="0">
+            <div class="player-row-item" data-char="mario">
                 <div class="player-row-top">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
                     <img src="mario.png" class="player-avatar-icon row-avatar-img">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="Mario">
                 </div>
                 <div class="char-choice-group-row">
-                    <div class="char-row-btn selected-mario" onclick="setRowCharacter(0, 'mario')">
+                    <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
                         <img src="mario.png"> Mario
                     </div>
-                    <div class="char-row-btn" onclick="setRowCharacter(0, 'luigi')">
+                    <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'luigi')">
                         <img src="luigi.png"> Luigi
                     </div>
                 </div>
             </div>
             <!-- Baris input pemain 2 -->
-            <div class="player-row-item" data-index="1">
+            <div class="player-row-item" data-char="luigi">
                 <div class="player-row-top">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#2</span>
                     <img src="luigi.png" class="player-avatar-icon row-avatar-img">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="Luigi">
                 </div>
                 <div class="char-choice-group-row">
-                    <div class="char-row-btn" onclick="setRowCharacter(1, 'mario')">
+                    <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'mario')">
                         <img src="mario.png"> Mario
                     </div>
-                    <div class="char-row-btn selected-luigi" onclick="setRowCharacter(1, 'luigi')">
+                    <div class="char-row-btn selected-luigi" onclick="setPlayerRowCharacter(this, 'luigi')">
                         <img src="luigi.png"> Luigi
                     </div>
                 </div>
@@ -929,13 +926,12 @@
         document.getElementById(screenId).classList.add('active');
     }
 
-    function setRowCharacter(rowIndex, charName) {
-        let rowItem = document.querySelectorAll('.player-row-item')[rowIndex];
-        if (!rowItem) return;
+    function setPlayerRowCharacter(btnElement, charName) {
+        let rowItem = btnElement.closest('.player-row-item');
+        rowItem.dataset.char = charName;
 
-        let btnMario = rowItem.querySelectorAll('.char-row-btn')[0];
-        let btnLuigi = rowItem.querySelectorAll('.char-row-btn')[1];
-        let avatarImg = rowItem.querySelector('.row-avatar-img');
+        let btnMario = rowItem.querySelector('.char-row-btn:nth-child(1)');
+        let btnLuigi = rowItem.querySelector('.char-row-btn:nth-child(2)');
 
         if (charName === 'mario') {
             btnMario.className = 'char-row-btn selected-mario';
@@ -944,31 +940,29 @@
             btnMario.className = 'char-row-btn';
             btnLuigi.className = 'char-row-btn selected-luigi';
         }
-        avatarImg.src = `${charName}.png`;
+
+        rowItem.querySelector('.row-avatar-img').src = `${charName}.png`;
     }
 
     function addPlayerRow() {
         let container = document.getElementById('player-inputs-list-box');
-        let count = container.children.length;
-        if (count >= 10) return;
-
-        let defaultChar = count % 2 === 0 ? 'mario' : 'luigi';
-        let defaultName = defaultChar === 'mario' ? `Mario ${count + 1}` : `Luigi ${count + 1}`;
+        let count = container.children.length + 1;
+        if (count > 10) return;
 
         let div = document.createElement('div');
         div.className = 'player-row-item';
-        div.dataset.index = count;
+        div.dataset.char = 'mario';
         div.innerHTML = `
             <div class="player-row-top">
-                <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count + 1}</span>
-                <img src="${defaultChar}.png" class="player-avatar-icon row-avatar-img">
-                <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count + 1}" value="${defaultName}">
+                <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count}</span>
+                <img src="mario.png" class="player-avatar-icon row-avatar-img">
+                <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}">
             </div>
             <div class="char-choice-group-row">
-                <div class="char-row-btn ${defaultChar === 'mario' ? 'selected-mario' : ''}" onclick="setRowCharacter(${count}, 'mario')">
+                <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
                     <img src="mario.png"> Mario
                 </div>
-                <div class="char-row-btn ${defaultChar === 'luigi' ? 'selected-luigi' : ''}" onclick="setRowCharacter(${count}, 'luigi')">
+                <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'luigi')">
                     <img src="luigi.png"> Luigi
                 </div>
             </div>
@@ -990,15 +984,13 @@
         playerScores = {};
         playerCharacters = {};
 
-        rows.forEach((row, index) => {
+        rows.forEach(row => {
             let inputName = row.querySelector('.p-name-input').value.trim();
-            let selectedBtn = row.querySelector('.char-row-btn.selected-mario, .char-row-btn.selected-luigi');
-            let charName = selectedBtn && selectedBtn.classList.contains('selected-luigi') ? 'luigi' : 'mario';
-
+            let chosenChar = row.dataset.char || 'mario';
             if (inputName) {
                 players.push(inputName);
                 playerScores[inputName] = 0;
-                playerCharacters[inputName] = charName;
+                playerCharacters[inputName] = chosenChar;
             }
         });
 
