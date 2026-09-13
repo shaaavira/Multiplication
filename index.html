@@ -198,7 +198,6 @@
             flex-direction: column;
             align-items: center;
             margin-top: 5px;
-            margin-left: -140px;
         }
         
         .bond-circles {
@@ -933,17 +932,22 @@
         let decomp = currentQuestion.decomp;
         let count = decomp.length;
 
+        // Penyesuaian layout SVG cabang berdasarkan jumlah elemen (2 atau 3 cabang)
         if (count === 3) {
+            svgContainer.setAttribute('viewBox', '0 0 320 40');
             svgContainer.innerHTML = `
-                <line x1="140" y1="0" x2="40" y2="35" stroke="#e52521" stroke-width="4" />
-                <line x1="140" y1="0" x2="140" y2="35" stroke="#e52521" stroke-width="4" />
-                <line x1="140" y1="0" x2="240" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="160" y1="0" x2="60" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="160" y1="0" x2="160" y2="35" stroke="#e52521" stroke-width="4" />
+                <line x1="160" y1="0" x2="260" y2="35" stroke="#e52521" stroke-width="4" />
             `;
+            circlesContainer.style.justifyContent = 'space-around';
         } else {
+            svgContainer.setAttribute('viewBox', '0 0 280 40');
             svgContainer.innerHTML = `
                 <line x1="140" y1="0" x2="70" y2="35" stroke="#e52521" stroke-width="4" />
                 <line x1="140" y1="0" x2="210" y2="35" stroke="#e52521" stroke-width="4" />
             `;
+            circlesContainer.style.justifyContent = 'space-between';
         }
 
         if (currentLevel === 'easy') {
