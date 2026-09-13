@@ -545,6 +545,57 @@
             margin-top: 0 !important;
             padding-bottom: 5px;
         }
+
+        /* STYLING TAMBAHAN UNTUK JUDUL DENGAN IKON PIKSEL */
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .title-container h1 {
+            margin: 0;
+        }
+
+        .pixel-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .coin-icon {
+            background-color: var(--mario-yellow);
+            border: 3px solid #000;
+            border-radius: 8px;
+            box-shadow: 0 4px 0px #f57f17;
+            animation: coinSpin 1.2s infinite steps(4);
+        }
+
+        @keyframes coinSpin {
+            0% { transform: scaleX(1); background-color: var(--mario-yellow); }
+            50% { transform: scaleX(0.2); background-color: #ffd54f; }
+            100% { transform: scaleX(1); background-color: var(--mario-yellow); }
+        }
+
+        .mushroom-icon {
+            background: 
+                radial-gradient(circle at 30% 30%, #fff 4px, transparent 5px),
+                radial-gradient(circle at 70% 30%, #fff 4px, transparent 5px),
+                var(--mario-red);
+            border: 3px solid #000;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 4px 0px #900;
+            animation: mushroomBounce 0.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes mushroomBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
     </style>
 </head>
 <body>
@@ -552,7 +603,11 @@
 <div class="game-container">
     <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
-        <h1>🍄 SUPER MATH BROS 🌟</h1>
+        <div class="title-container">
+            <div class="pixel-icon coin-icon"></div>
+            <h1>SUPER MATH BROS</h1>
+            <div class="pixel-icon mushroom-icon"></div>
+        </div>
         <p style="font-size: 16px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
         <div style="margin: 10px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
             <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 12px; border-radius: 12px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;"></textarea>
