@@ -480,8 +480,11 @@
     <div id="screen-welcome" class="screen active">
         <h1>🍄 SUPER MATH BROS 🌟</h1>
         <p style="font-size: 18px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
-        <div style="margin: 15px 0; width: 100%; display: flex; justify-content: center;">
+        <div style="margin: 15px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
             <textarea id="player-names-input" rows="5" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 14px; border-radius: 12px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <!-- Tambahan Elemen Peringatan Validasi & Getar -->
+            <div id="tv-peringatan" style="color: var(--mario-red); font-size: 15px; font-weight: bold; margin-top: 8px; display: none;"></div>
         </div>
         <button class="btn" style="width: 40%; font-size: 18px;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
@@ -717,16 +720,33 @@
     }
 
     function initPlayers() {
-        let inputVal = document.getElementById('player-names-input').value.trim();
-        if(!inputVal) {
-            alert("Masukkan minimal satu nama pemain!");
+        let inputField = document.getElementById('player-names-input');
+        let tvPeringatan = document.getElementById('tv-peringatan');
+        let inputVal = inputField.value.trim();
+
+        // Validasi jika kolom kosong
+        if (!inputVal) {
+            tvPeringatan.innerText = "Minimal isi nama pemain satu!";
+            tvPeringatan.style.display = "block";
+
+            // Memicu efek getar perangkat (didukung browser HP / WebView Android)
+            if ("vibrate" in navigator) {
+                navigator.vibrate(200);
+            }
             return;
+        } else {
+            tvPeringatan.style.display = "none";
         }
 
         players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
 
+        // Validasi batasan maksimal 10 pemain
         if (players.length > 10) {
-            alert("Maksimal hanya 10 anak yang dapat dimasukkan!");
+            tvPeringatan.innerText = "Maksimal hanya 10 anak yang dapat dimasukkan!";
+            tvPeringatan.style.display = "block";
+            if ("vibrate" in navigator) {
+                navigator.vibrate(200);
+            }
             return;
         }
 
