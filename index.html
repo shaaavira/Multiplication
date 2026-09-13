@@ -200,16 +200,28 @@
             border: 4px dashed var(--mario-blue);
             box-sizing: border-box;
             text-align: center;
+            transition: all 0.3s ease;
         }
         
         .question-box.highlight-big-question {
             font-size: 42px;
             color: #b71c1c;
-            background: #e8f5e9; /* Diubah dari #fffde7 (kuning) menjadi hijau muda #e8f5e9 */
-            border: 6px solid #43b3ae; /* Diubah dari #fbc02d (kuning) menjadi teal/hijau #43b3ae */
+            background: #e8f5e9;
+            border: 6px solid #43b3ae;
             box-shadow: 0 8px 0px rgba(0,0,0,0.15);
             animation: pulseQuestion 1.5s infinite alternate;
         }
+
+        /* KELAS KHUSUS UNTUK MEMBUAT KOTAK SOAL FIT DI TENGAH SAAT REBUTAN */
+        .question-box.rebutan-mode {
+            width: auto !important;
+            max-width: 600px !important;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 16px 30px !important;
+            font-size: 36px !important;
+        }
+
         @keyframes pulseQuestion {
             0% { transform: scale(1); }
             100% { transform: scale(1.02); }
@@ -231,7 +243,6 @@
             min-width: 480px;
         }
 
-        /* PERUBAHAN WARNA: Kotak Bantuan Pembagian (Hijau Mint/Teal) */
         .helper-multiples-box {
             display: none;
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -257,7 +268,6 @@
             padding-bottom: 4px;
         }
 
-        /* PERUBAHAN WARNA: Kotak Bantuan Perkalian (Biru Muda/Cyan) */
         .helper-multiplication-box {
             display: none;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
@@ -544,11 +554,11 @@
         }
         .level-card:hover { 
             transform: translateY(-4px) scale(1.02); 
-            background: #e8f5e9; /* Diubah dari #fffde7 (kuning) menjadi hijau muda #e8f5e9 */
+            background: #e8f5e9;
             box-shadow: 0 10px 0px #000, 0 15px 25px rgba(0,0,0,0.15);
         }
         .level-card.easy { border-left: 16px solid #4caf50; background: linear-gradient(135deg, #f1f8e9, #ffffff); }
-        .level-card.medium { border-left: 16px solid #ff9800; background: linear-gradient(135deg, #e0f7fa, #ffffff); /* Diubah dari #fffde7 (kuning) menjadi biru muda #e0f7fa */ }
+        .level-card.medium { border-left: 16px solid #ff9800; background: linear-gradient(135deg, #e0f7fa, #ffffff); }
         .level-card.expert { border-left: 16px solid #f44336; background: linear-gradient(135deg, #ffebee, #ffffff); }
         .level-card.nightmare { border-left: 16px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ffffff); }
 
@@ -569,15 +579,15 @@
         }
         .btn-player-pick {
             font-family: 'Press Start 2P', cursive;
-            background-color: var(--mario-blue); /* Diubah dari var(--mario-yellow) menjadi biru */
-            color: #ffffff; /* Diubah dari teks merah menjadi putih agar kontras dengan biru */
+            background-color: var(--mario-blue);
+            color: #ffffff;
             border: 4px solid #000;
             padding: 16px 24px;
             font-size: 14px;
             font-weight: bold;
             border-radius: 16px;
             cursor: pointer;
-            box-shadow: 0 6px 0px #001a75; /* Diubah dari bayangan oranye ke bayangan biru gelap */
+            box-shadow: 0 6px 0px #001a75;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -606,7 +616,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #e3f2fd; /* Diubah dari #fffde7 (kuning) menjadi biru muda #e3f2fd */
+            background: #e3f2fd;
             border: 4px solid #000;
             padding: 14px 20px;
             border-radius: 18px;
@@ -626,7 +636,7 @@
             max-width: 240px;
             font-size: 16px;
             padding: 10px 14px;
-            border: 3px solid var(--mario-blue); /* Diubah dari #fbc02d (kuning) menjadi biru */
+            border: 3px solid var(--mario-blue);
             border-radius: 12px;
             font-weight: bold;
         }
@@ -861,7 +871,7 @@
     <div id="screen-score" class="screen">
         <h1 style="color: var(--mario-red); font-size: 22px;">MISI SELESAI! 🎉</h1>
         <p style="font-size: 16px; margin: 8px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
-        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 10px 0; line-height: 1.6; color: #333; background: #e8f5e9; border: 4px solid #43b3ae; padding: 14px; border-radius: 14px; width: 70%;"></div> <!-- Diubah dari kuning ke nuansa hijau/teal -->
+        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 10px 0; line-height: 1.6; color: #333; background: #e8f5e9; border: 4px solid #43b3ae; padding: 14px; border-radius: 14px; width: 70%;"></div>
         <button class="btn" style="width: 40%; font-size: 15px;" onclick="playMarioSound('click'); goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
     </div>
 </div>
@@ -1248,7 +1258,9 @@
         
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
-        qBox.className = "question-box highlight-big-question";
+        
+        // TERAPKAN KELAS REBUTAN AGAR KOTAK SOAL FIT DI TENGAH DAN PAS SAAT PEMILIHAN PEMAIN
+        qBox.className = "question-box highlight-big-question rebutan-mode";
 
         updateScoreboardText();
         
@@ -1309,6 +1321,7 @@
         document.getElementById('player-selector-container').style.display = 'none';
         
         let qBox = document.getElementById('question-text');
+        // KEMBALIKAN KE KOTAK SOAL NORMAL SETELAH PEMAIN DIPILIH
         qBox.className = "question-box";
 
         document.getElementById('bond-container').style.display = 'flex';
