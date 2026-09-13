@@ -162,7 +162,7 @@
             min-width: 380px;
         }
 
-        /* KOTAK BANTUAN DISESUAIKAN (TIDAK TERLALU PANJANG) */
+        /* KOTAK BANTUAN DISESUAIKAN (NILAI SESUAI DENGAN PEMBAGI YANG RELEVAN) */
         .helper-multiples-box {
             display: none;
             background: #fff9c4;
@@ -171,7 +171,7 @@
             border-radius: 12px;
             font-size: 13px;
             color: #f57f17;
-            width: 145px;
+            width: 155px;
             box-sizing: border-box;
             text-align: left;
             flex-shrink: 0;
@@ -183,13 +183,13 @@
             display: block;
             text-align: center;
             margin-bottom: 6px;
-            font-size: 11px;
+            font-size: 10px;
             border-bottom: 2px dashed #ffe082;
             padding-bottom: 4px;
         }
         .helper-list-item {
             font-family: 'Press Start 2P', monospace;
-            font-size: 10px;
+            font-size: 9px;
             margin-bottom: 5px;
             white-space: nowrap;
             color: #333;
@@ -564,9 +564,9 @@
                     </div>
                 </div>
 
-                <!-- BANTUAN DISESUAIKAN (TIDAK TERLALU PANJANG, HANYA KELIPATAN UTAMA YANG SERING DIPAKAI) -->
+                <!-- BANTUAN DISESUAIKAN (MENAMPILKAN PERKALIAN PEMBAGI DENGAN ANGKA BESAR YANG RELEVAN) -->
                 <div id="helper-multiples" class="helper-multiples-box">
-                    <b>KELIPATAN (<span id="helper-b-val"></span>)</b>
+                    <b>BANTUAN (<span id="helper-b-val"></span>)</b>
                     <div id="helper-multiples-list"></div>
                 </div>
             </div>
@@ -809,15 +809,15 @@
         let helperBox = document.getElementById('helper-multiples');
         if (operationMode === 'division') {
             let b = currentQuestion.b;
-            // Bantuan dipangkas agar tidak terlalu panjang (hanya pengali utama 1, 2, 5, 10 saja yang paling esensial)
-            let multipliers = [1, 2, 5, 10];
+            // BANTUAN DISESUAIKAN: Menampilkan kelipatan besar (misal 10, 20, 50, 100) yang langsung membantu pembagian distributif
+            let multipliers = [10, 20, 30, 40, 50, 100];
             let listContainer = document.getElementById('helper-multiples-list');
             listContainer.innerHTML = '';
             
             multipliers.forEach(m => {
                 let div = document.createElement('div');
                 div.className = 'helper-list-item';
-                div.innerText = `${b}×${m}=${b * m}`;
+                div.innerText = `${b}×${m} = ${b * m}`;
                 listContainer.appendChild(div);
             });
 
