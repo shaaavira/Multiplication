@@ -559,6 +559,40 @@
         .btn-player-pick:active { transform: scale(0.95); }
         .btn-player-pick:hover { background-color: #ffeb3b; }
 
+        /* PILIHAN KARAKTER (MARIO & LUIGI) */
+        .character-options-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .character-card {
+            background: #fdfdfd;
+            border: 4px solid #333;
+            border-radius: 16px;
+            padding: 12px;
+            width: 110px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0px #000;
+            text-align: center;
+        }
+        .character-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 6px;
+        }
+        .character-card:hover {
+            transform: translateY(-4px);
+            background: #fffde7;
+        }
+        .character-card.selected {
+            border-color: var(--mario-red);
+            background: #ffebee;
+            box-shadow: 0 6px 0px var(--mario-red);
+        }
+
         #feedback {
             margin-top: 6px;
             font-size: 16px;
@@ -588,7 +622,7 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN (DIPERCANTIK) -->
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
         <div class="mario-badge">✨ PETUALANGAN MATEMATIKA SERU ✨</div>
@@ -598,13 +632,35 @@
             
             <div id="tv-peringatan" style="color: var(--mario-red); font-size: 13px; font-weight: bold; margin-top: 4px; display: none;"></div>
         </div>
-        <button class="btn" style="width: 45%; font-size: 15px; background: linear-gradient(135deg, #e52521, #c62828); box-shadow: 0 6px 0px #790000;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+        <button class="btn" style="width: 45%; font-size: 15px; background: linear-gradient(135deg, #e52521, #c62828); box-shadow: 0 6px 0px #790000;" onclick="goToCharacterSelection()">LANJUT PILIH KARAKTER ➡️</button>
     </div>
 
-    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) (DIPERCANTIK) -->
+    <!-- SCREEN 1.2: PILIH KARAKTER (MARIO ATAU LUIGI) -->
+    <div id="screen-character" class="screen">
+        <div class="arcade-header-decor" style="font-size: 22px;">PILIH KARAKTER UTAMA</div>
+        <p style="font-size: 14px;">Pilih kostum pahlawanmu untuk bertualang:</p>
+        
+        <div class="character-options-grid">
+            <div class="character-card selected" id="char-mario" onclick="selectCharacter('mario')">
+                <img src="mario.png" alt="Mario">
+                <div style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-red);">MARIO</div>
+            </div>
+            <div class="character-card" id="char-luigi" onclick="selectCharacter('luigi')">
+                <img src="luigi.png" alt="Luigi">
+                <div style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-blue);">LUIGI</div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; width: 50%; justify-content: center; margin-top: 15px;">
+            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Kembali</button>
+            <button class="btn" style="margin-top: 0;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
         <div class="arcade-header-decor" style="font-size: 22px;">PILIH DUNIA PERMAINAN</div>
-        <p style="font-size: 14px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <p style="font-size: 14px;">Pemain & Karakter: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
         <div class="level-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 14px solid var(--mario-red); text-align: center; padding: 22px; background: linear-gradient(135deg, #ffebee, #ffffff);">
                 <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
@@ -616,11 +672,11 @@
             </div>
         </div>
         <div style="margin-top: 10px;">
-            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama Pemain</button>
+            <button class="btn-back-menu" onclick="goToScreen('screen-character')">⬅️ Ganti Karakter</button>
         </div>
     </div>
 
-    <!-- SCREEN 2: PILIH LEVEL (DIPERCANTIK) -->
+    <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
@@ -728,6 +784,7 @@
 <script>
     let players = [];
     let playerScores = {};
+    let selectedCharacter = "mario";
     let activePlayer = null;
     let currentLevel = "easy";
     let operationMode = "multiplication"; 
@@ -807,7 +864,7 @@
         document.getElementById(screenId).classList.add('active');
     }
 
-    function initPlayers() {
+    function goToCharacterSelection() {
         let inputField = document.getElementById('player-names-input');
         let tvPeringatan = document.getElementById('tv-peringatan');
         let inputVal = inputField.value.trim();
@@ -821,19 +878,35 @@
             tvPeringatan.style.display = "none";
         }
 
-        players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+        let tempPlayers = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
 
-        if (players.length > 10) {
+        if (tempPlayers.length > 10) {
             tvPeringatan.innerText = "Maksimal hanya 10 anak yang dapat dimasukkan!";
             tvPeringatan.style.display = "block";
             if ("vibrate" in navigator) navigator.vibrate(200);
             return;
         }
 
+        goToScreen('screen-character');
+    }
+
+    function selectCharacter(charName) {
+        selectedCharacter = charName;
+        document.getElementById('char-mario').classList.remove('selected');
+        document.getElementById('char-luigi').classList.remove('selected');
+        document.getElementById(`char-${charName}`).classList.add('selected');
+    }
+
+    function initPlayers() {
+        let inputField = document.getElementById('player-names-input');
+        let inputVal = inputField.value.trim();
+        players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+
         playerScores = {};
         players.forEach(p => playerScores[p] = 0);
 
-        let namesStr = players.join(', ');
+        let charTitle = selectedCharacter === 'mario' ? '🍄 Mario' : '⭐ Luigi';
+        let namesStr = `${players.join(', ')} (${charTitle})`;
         document.getElementById('display-players-list-menu').innerText = namesStr;
         document.getElementById('display-players-list').innerText = namesStr;
         
@@ -884,7 +957,7 @@
         if (questionIndex >= questions.length) {
             let finalHtml = "";
             players.forEach(p => {
-                finalHtml += `🍄 ${p}: <b>${playerScores[p]} Koin</b><br>`;
+                finalHtml += `🪙 ${p}: <b>${playerScores[p]} Koin</b><br>`;
             });
             document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
