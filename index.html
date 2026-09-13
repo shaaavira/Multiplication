@@ -258,13 +258,14 @@
         /* NUMBER BOND CONTAINER YANG DIPERBESAR SEDIKIT */
         .number-bond-container, .drop-zone-container {
             position: relative;
-            width: 310px; /* Diperbesar dari 260px */
+            width: 310px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 2px;
+            margin-top: -15px; /* Geser ke atas */
+            margin-left: -20px; /* Geser ke kiri */
             margin-bottom: 2px !important;
-            transform: scale(1.05); /* Sedikit diperbesar dari 0.92 */
+            transform: scale(1.05);
             transform-origin: top center;
         }
         
@@ -276,8 +277,8 @@
         }
         
         .circle-dropzone {
-            width: 60px !important; /* Diperbesar dari 50px */
-            height: 60px !important; /* Diperbesar dari 50px */
+            width: 60px !important;
+            height: 60px !important;
             min-width: 60px;
             min-height: 60px;
             border: 4px dashed var(--mario-red) !important;
@@ -285,7 +286,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 21px; /* Diperbesar dari 18px */
+            font-size: 21px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -312,7 +313,7 @@
             align-items: center;
         }
         .draggable-item {
-            width: 52px; /* Diperbesar agar seimbang */
+            width: 52px;
             height: 52px;
             background: linear-gradient(135deg, #ffeb3b, #fbc02d);
             border: 4px solid #f57f17;
@@ -338,14 +339,14 @@
         }
 
         .circle-input {
-            width: 60px !important; /* Diperbesar dari 50px */
-            height: 60px !important; /* Diperbesar dari 50px */
+            width: 60px !important;
+            height: 60px !important;
             min-width: 60px;
             min-height: 60px;
             border: 4px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 21px; /* Diperbesar dari 18px */
+            font-size: 21px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -364,7 +365,7 @@
 
         .lines-svg {
             width: 100%;
-            height: 42px; /* Disesuaikan untuk wadah yang lebih lebar */
+            height: 42px;
         }
 
         .breakdown-section {
@@ -1249,6 +1250,7 @@
             document.getElementById('bond-container').style.display = 'none';
             document.getElementById('inputs-container').style.display = 'none';
             document.getElementById('drag-source-wrapper').style.display = 'none';
+            document.getElementById('submit-dfin').style.display = 'none'; // tetap aman
             document.getElementById('submit-btn').style.display = 'none';
             
             renderPlayerSelector();
