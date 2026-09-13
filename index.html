@@ -231,53 +231,55 @@
             min-width: 480px;
         }
 
+        /* PERUBAHAN WARNA: Kotak Bantuan Pembagian (Hijau Mint/Teal) */
         .helper-multiples-box {
             display: none;
-            background: #e0f7fa;
-            border: 4px solid #00acc1;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 4px solid #2e7d32;
             padding: 10px 10px;
             border-radius: 14px;
             font-size: 14px;
-            color: #006064;
+            color: #1b5e20;
             width: 180px;
             box-sizing: border-box;
             text-align: left;
             flex-shrink: 0;
-            box-shadow: 0 4px 0px #00838f;
+            box-shadow: 0 4px 0px #1b5e20;
             font-weight: bold;
         }
         .helper-multiples-box b {
+            color: #1b5e20;
+            display: block;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 10px;
+            border-bottom: 2px dashed #a5d6a7;
+            padding-bottom: 4px;
+        }
+
+        /* PERUBAHAN WARNA: Kotak Bantuan Perkalian (Biru Muda/Cyan) */
+        .helper-multiplication-box {
+            display: none;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border: 4px solid #00838f;
+            padding: 10px 10px;
+            border-radius: 14px;
+            font-size: 14px;
+            color: #006064;
+            width: 180px;
+            box-sizing: border-box;
+            text-align: left;
+            flex-shrink: 0;
+            box-shadow: 0 4px 0px #006064;
+            font-weight: bold;
+        }
+        .helper-multiplication-box b {
             color: #006064;
             display: block;
             text-align: center;
             margin-bottom: 6px;
             font-size: 10px;
-            border-bottom: 2px dashed #b2ebf2;
-            padding-bottom: 4px;
-        }
-
-        .helper-multiplication-box {
-            display: none;
-            background: #ffebee;
-            border: 4px solid var(--mario-red);
-            padding: 10px 10px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: #b71c1c;
-            width: 180px;
-            box-sizing: border-box;
-            text-align: left;
-            flex-shrink: 0;
-            box-shadow: 0 4px 0px #c62828;
-            font-weight: bold;
-        }
-        .helper-multiplication-box b {
-            color: #b71c1c;
-            display: block;
-            text-align: center;
-            margin-bottom: 6px;
-            font-size: 10px;
-            border-bottom: 2px dashed #ffcdd2;
+            border-bottom: 2px dashed #80deea;
             padding-bottom: 4px;
         }
 
@@ -286,7 +288,7 @@
             font-size: 9px;
             margin-bottom: 5px;
             white-space: nowrap;
-            color: #333;
+            color: #1b5e20;
         }
         
         .number-bond-container, .drop-zone-container {
@@ -699,7 +701,7 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA & PILIH KARAKTER INDIVIDUAL -->
+    <!-- SCREEN 1: INPUT NAMA & PILIH KOTAK PAHLAWAN -->
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
         <div class="mario-badge">✨ DAFTARKAN NAMA & KOSTUM PAHLAWAN ✨</div>
@@ -865,7 +867,7 @@
 </div>
 
 <script>
-    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API - DIKERASKAN) ================= */
+    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API) ================= */
     let audioCtx = null;
     let bgmInterval = null;
 
@@ -878,7 +880,6 @@
         }
     }
 
-    // Memulai Musik Latar Belakang (BGM) Retro Chiptune Berulang
     function startBGM() {
         if (bgmInterval) return; 
         initAudio();
@@ -902,7 +903,6 @@
                 osc.type = 'triangle'; 
                 osc.frequency.setValueAtTime(melody[noteIndex], now);
                 
-                // Volume BGM diperbesar agar terdengar jelas
                 gain.gain.setValueAtTime(0.18, now); 
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
                 
@@ -913,13 +913,10 @@
                 osc.stop(now + 0.25);
 
                 noteIndex = (noteIndex + 1) % melody.length;
-            } catch(e) {
-                // Ignore audio context issues
-            }
+            } catch(e) {}
         }, 300); 
     }
 
-    // Listener otomatis menyalakan BGM saat pertama kali pengguna berinteraksi
     window.addEventListener('pointerdown', () => {
         initAudio();
         startBGM();
@@ -928,7 +925,6 @@
     function playMarioSound(type) {
         try {
             initAudio();
-            
             const now = audioCtx.currentTime;
 
             if (type === 'click') {
@@ -937,7 +933,7 @@
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(440, now);
                 osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-                gain.gain.setValueAtTime(0.3, now); // Dinaikkan volumenya
+                gain.gain.setValueAtTime(0.3, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -950,7 +946,7 @@
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(300, now);
                 osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
-                gain.gain.setValueAtTime(0.35, now); // Dinaikkan volumenya
+                gain.gain.setValueAtTime(0.35, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -966,7 +962,7 @@
                     let duration = 0.08;
                     osc.type = 'square';
                     osc.frequency.setValueAtTime(freq, startTime);
-                    gain.gain.setValueAtTime(0.3, startTime); // Dinaikkan volumenya
+                    gain.gain.setValueAtTime(0.3, startTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -980,7 +976,7 @@
                 osc1.type = 'square';
                 osc1.frequency.setValueAtTime(987.77, now);
                 osc1.frequency.setValueAtTime(1318.51, now + 0.08);
-                gain1.gain.setValueAtTime(0.35, now); // Dinaikkan volumenya
+                gain1.gain.setValueAtTime(0.35, now);
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
                 osc1.connect(gain1);
                 gain1.connect(audioCtx.destination);
@@ -996,7 +992,7 @@
                     let duration = 0.12;
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(freq, startTime);
-                    gain.gain.setValueAtTime(0.4, startTime); // Dinaikkan volumenya
+                    gain.gain.setValueAtTime(0.4, startTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -1010,16 +1006,14 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, now);
                 osc.frequency.linearRampToValueAtTime(80, now + 0.25);
-                gain.gain.setValueAtTime(0.4, now); // Dinaikkan volumenya
+                gain.gain.setValueAtTime(0.4, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start(now);
                 osc.stop(now + 0.25);
             }
-        } catch(e) {
-            console.log("Audio skipped", e);
-        }
+        } catch(e) {}
     }
 
     let players = []; 
@@ -1252,14 +1246,12 @@
         document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'PERKALIAN ✖️' : 'PEMBAGIAN ➗';
         document.getElementById('current-q-num').innerText = questionIndex + 1;
         
-        // Tampilkan soal besar di tengah layar saat menunggu pemilihan nama
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
         
-        // Sembunyikan kotak bantuan tips saat memilih nama pemain
         document.getElementById('helper-division').style.display = 'none';
         document.getElementById('helper-multiplication').style.display = 'none';
 
@@ -1316,7 +1308,6 @@
 
         document.getElementById('player-selector-container').style.display = 'none';
         
-        // Kembalikan ukuran kotak soal ke normal saat pemain mulai mengerjakan
         let qBox = document.getElementById('question-text');
         qBox.className = "question-box";
 
@@ -1324,7 +1315,6 @@
         document.getElementById('inputs-container').style.display = 'flex';
         document.getElementById('submit-btn').style.display = 'block';
 
-        // Munculkan kembali kotak bantuan tips perkalian / pembagian setelah nama dipilih
         let helperDivision = document.getElementById('helper-division');
         let helperMultiplication = document.getElementById('helper-multiplication');
 
@@ -1639,7 +1629,6 @@
                 document.getElementById('submit-btn').style.display = 'none';
                 document.getElementById('lbl-timer').innerText = '-';
                 
-                // Sembunyikan kembali kotak bantuan jika waktu habis
                 document.getElementById('helper-division').style.display = 'none';
                 document.getElementById('helper-multiplication').style.display = 'none';
 
@@ -1716,7 +1705,6 @@
             document.getElementById('drag-source-wrapper').style.display = 'none';
             document.getElementById('submit-btn').style.display = 'none';
             
-            // Sembunyikan kembali kotak bantuan jika salah
             document.getElementById('helper-division').style.display = 'none';
             document.getElementById('helper-multiplication').style.display = 'none';
 
