@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Math Bros: Misi Bilangan Pecahan</title>
+    <title>Super Math Bros: Pecah Perkalian & Pembagian</title>
     <!-- Memuat Google Fonts bergaya game retro (Press Start 2P & Fredoka) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -70,7 +70,7 @@
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--mario-red);
-            font-size: 20px;
+            font-size: 22px;
             margin: 2px 0 6px 0;
             line-height: 1.4;
             text-shadow: 3px 3px 0px var(--mario-yellow);
@@ -78,7 +78,7 @@
 
         p { 
             color: #444; 
-            font-size: 15px; 
+            font-size: 16px; 
             font-weight: 600;
             margin: 6px 0;
         }
@@ -110,7 +110,7 @@
         }
         .score-display-kids {
             font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
+            font-size: 12px;
             color: #b71c1c;
             display: flex;
             gap: 15px;
@@ -134,7 +134,7 @@
         /* UKURAN SOAL DIPERKECIL AGAR TIDAK TERLALU BESAR */
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 18px;
+            font-size: 20px;
             color: var(--mario-blue);
             margin-bottom: 6px;
             width: 100%;
@@ -162,89 +162,159 @@
             min-width: 380px;
         }
 
-        /* VISUAL PECAHAN / KUE / PIZZA */
-        .fraction-visual-box {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 8px 0;
-        }
-        .pizza-pie {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 4px solid #000;
-            background: #ffeb3b;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
-        }
-        .pizza-slice {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            background: #ff9800;
-            border: 1px solid #d84315;
-            top: 0;
-            left: 50%;
-            transform-origin: bottom left;
-        }
-
-        /* FORMAT PECAHAN MATEMATIKA */
-        .fraction-inline {
-            display: inline-flex;
-            flex-direction: column;
-            vertical-align: middle;
-            text-align: center;
+        /* KOTAK BANTUAN DISESUAIKAN (NILAI SESUAI DENGAN PEMBAGI YANG RELEVAN) */
+        .helper-multiples-box {
+            display: none;
+            background: #fff9c4;
+            border: 4px solid #fbc02d;
+            padding: 10px 8px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #f57f17;
+            width: 155px;
+            box-sizing: border-box;
+            text-align: left;
+            flex-shrink: 0;
+            box-shadow: 0 4px 0px #fbc02d;
             font-weight: bold;
-            padding: 0 4px;
         }
-        .fraction-inline .numerator {
-            border-bottom: 3px solid currentColor;
-            padding-bottom: 2px;
+        .helper-multiples-box b {
+            color: #e65100;
+            display: block;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 10px;
+            border-bottom: 2px dashed #ffe082;
+            padding-bottom: 4px;
         }
-        .fraction-inline .denominator {
-            padding-top: 2px;
+        .helper-list-item {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            color: #333;
         }
-
-        /* INPUT PECAHAN */
-        .fraction-input-group {
-            display: inline-flex;
+        
+        /* NUMBER BOND CONTAINER */
+        .number-bond-container {
+            position: relative;
+            width: 220px;
+            display: flex;
             flex-direction: column;
             align-items: center;
-            vertical-align: middle;
-            margin: 0 4px;
+            margin-top: -2px;
+            margin-left: -110px;
         }
-        .fraction-input-group input {
-            width: 50px;
-            padding: 4px;
-            font-size: 16px;
-            text-align: center;
-            border: 3px solid #81c784;
-            border-radius: 6px;
-            outline: none;
+        
+        .bond-circles {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: -2px;
+        }
+        
+        .circle-dropzone {
+            width: 62px !important;
+            height: 62px !important;
+            min-width: 62px;
+            min-height: 62px;
+            border: 4px dashed var(--mario-red) !important;
+            border-radius: 50% !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
             font-weight: bold;
-            color: #333;
-            background: #fff;
+            color: var(--mario-red);
+            background-color: #ffebee;
+            box-sizing: border-box;
+            cursor: pointer;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
         }
-        .fraction-input-group .input-num {
-            border-bottom: 3px solid #2e7d32;
-            margin-bottom: 2px;
+        .circle-dropzone.highlight {
+            background-color: #c8e6c9;
+            border-color: #2e7d32 !important;
         }
-        .fraction-input-group .input-den {
-            margin-top: 2px;
+        .circle-dropzone.error-highlight {
+            background-color: #ffcdd2;
+            border-color: #d32f2f !important;
+        }
+
+        /* KEPINGAN DRAG PILIHAN */
+        .drag-source-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 6px 0;
+            min-height: 55px;
+            align-items: center;
+        }
+        .draggable-item {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            border: 4px solid #f57f17;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 22px;
+            color: #b71c1c;
+            cursor: pointer;
+            user-select: none;
+            touch-action: none;
+            box-shadow: 0 4px 0px #e65100;
+            transition: transform 0.1s;
+        }
+        .draggable-item.dragging {
+            position: fixed;
+            z-index: 1000;
+            opacity: 0.9;
+            pointer-events: none;
+            transform: scale(1.15);
+        }
+
+        .circle-input {
+            width: 62px !important;
+            height: 62px !important;
+            min-width: 62px;
+            min-height: 62px;
+            border: 4px solid var(--mario-red) !important;
+            border-radius: 50% !important;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--mario-red);
+            background-color: #ffebee;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            -moz-appearance: textfield;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+        }
+        .circle-input::-webkit-outer-spin-button,
+        .circle-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .lines-svg {
+            width: 100%;
+            height: 32px;
         }
 
         .breakdown-section {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 8px 0;
+            margin: 6px 0;
             background: #f1f8e9;
             border: 3px solid #81c784;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             transition: opacity 0.3s;
             width: 100%;
@@ -255,13 +325,41 @@
             pointer-events: none;
         }
 
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label {
+            font-size: 12px;
+            color: #2e7d32;
+            margin-bottom: 2px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 90px;
+            padding: 8px;
+            font-size: 18px;
+            text-align: center;
+            border: 3px solid #81c784;
+            border-radius: 8px;
+            outline: none;
+            font-weight: bold;
+            color: #333;
+            background: #fff;
+        }
+        input:disabled, .breakdown-section.disabled-section input {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+
         .btn {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--mario-red);
             color: white;
             border: 4px solid #000;
             padding: 12px 20px;
-            font-size: 13px;
+            font-size: 14px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
@@ -312,11 +410,11 @@
         .level-card {
             background: #fff;
             border: 4px solid #000;
-            padding: 14px;
+            padding: 15px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             transition: all 0.2s;
             text-align: left;
             color: #333;
@@ -362,7 +460,7 @@
 
         #feedback {
             margin-top: 6px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             min-height: 22px;
         }
@@ -385,7 +483,7 @@
 <div class="game-container">
     <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
     <div id="screen-welcome" class="screen active">
-        <h1>🍄 SUPER MATH BROS: PECAHAN 🌟</h1>
+        <h1>🍄 SUPER MATH BROS 🌟</h1>
         <p style="font-size: 15px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
         <div style="margin: 10px 0; width: 100%; display: flex; justify-content: center;">
             <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 10px; font-size: 16px; border-radius: 10px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;"></textarea>
@@ -393,18 +491,18 @@
         <button class="btn" style="width: 50%;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
-    <!-- SCREEN 1.5: PILIH MENU UTAMA MODE PECAHAN -->
+    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
-        <h1>PILIH DUNIA PECAHAN</h1>
+        <h1>PILIH DUNIA PERMAINAN</h1>
         <p style="font-size: 14px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
         <div class="level-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="level-card" onclick="selectOperationMode('addition')" style="border-left: 10px solid var(--mario-red); text-align: center; padding: 16px;">
-                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-red);">➕ PENJUMLAHAN</span>
-                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Penjumlahan Pecahan</span>
+            <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 10px solid var(--mario-red); text-align: center; padding: 16px;">
+                <span style="font-family:'Press Start 2P'; font-size: 14px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Perkalian Distributif</span>
             </div>
-            <div class="level-card" onclick="selectOperationMode('subtraction')" style="border-left: 10px solid var(--mario-blue); text-align: center; padding: 16px;">
-                <span style="font-family:'Press Start 2P'; font-size: 13px; color: var(--mario-blue);">➖ PENGURANGAN</span>
-                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Pengurangan Pecahan</span>
+            <div class="level-card" onclick="selectOperationMode('division')" style="border-left: 10px solid var(--mario-blue); text-align: center; padding: 16px;">
+                <span style="font-family:'Press Start 2P'; font-size: 14px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:13px; display:block; color:#666; font-weight:bold; margin-top: 6px;">Pembagian Distributif</span>
             </div>
         </div>
         <div style="margin-top: 10px;">
@@ -420,10 +518,10 @@
         </div>
         <h1 id="level-screen-title" style="font-size: 16px; margin: 4px 0;">PILIH LEVEL KESULITAN</h1>
         <div class="level-grid">
-            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Penyebut Sama</span></div>
-            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Penyebut Berbeda (Kelipatan)</span></div>
-            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Penyebut Berbeda (KPK)</span></div>
-            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Pecahan Campuran & Tantangan</span></div>
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Drag & Drop Koin</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Tantangan Kastil</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:2px;">Misi Penyelamatan Utama</span></div>
         </div>
     </div>
 
@@ -447,7 +545,7 @@
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
-            <!-- LAYOUT UTAMA -->
+            <!-- LAYOUT UTAMA: KOLOM GAME & KOTAK BANTUAN DI SAMPING -->
             <div class="game-play-layout">
                 <div class="main-game-column">
                     <!-- TOMBOL REBUTAN NAMA PEMAIN -->
@@ -455,13 +553,34 @@
                         <p style="font-weight: bold; color: var(--mario-red); font-size: 13px; margin: 0; font-family:'Press Start 2P';">⭐ PILIH PAHLAWANMU! ⭐</p>
                         <div class="player-buttons-grid" id="player-buttons-box"></div>
                     </div>
+
+                    <div class="number-bond-container" id="bond-container" style="display:none;">
+                        <svg class="lines-svg" viewBox="0 0 280 32" id="bond-lines">
+                            <!-- Garis cabang SVG -->
+                        </svg>
+                        <div class="bond-circles" id="bond-circles-container">
+                            <!-- Lingkaran dropzone -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BANTUAN DISESUAIKAN (MENAMPILKAN PERKALIAN PEMBAGI DENGAN ANGKA BESAR YANG RELEVAN) -->
+                <div id="helper-multiples" class="helper-multiples-box">
+                    <b>BANTUAN (<span id="helper-b-val"></span>)</b>
+                    <div id="helper-multiples-list"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Bagian Input Pengerjaan Pecahan -->
+        <!-- Wadah Kepingan Drag -->
+        <div id="drag-source-wrapper" style="display:none; width: 100%;">
+            <p style="margin: 4px 0; font-size: 13px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
+            <div class="drag-source-container" id="drag-source-box"></div>
+        </div>
+        
+        <!-- Bagian Kotak Penjumlahan -->
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
-            <!-- Input dinamis langkah penyelesaian pecahan -->
+            <!-- Input dinamis perkalian/pembagian distributif -->
         </div>
 
         <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 4px;">JAWAB! 🎯</button>
@@ -485,7 +604,7 @@
     let playerScores = {};
     let activePlayer = null;
     let currentLevel = "easy";
-    let operationMode = "addition"; // 'addition' atau 'subtraction'
+    let operationMode = "multiplication"; // 'multiplication' atau 'division'
     let questionIndex = 0;
     let questions = [];
     let currentQuestion = {};
@@ -493,94 +612,107 @@
     let timerInterval = null;
     let answeredPlayersInThisQuestion = [];
 
-    // BANTUAN FUNGSI MATEMATIKA PECAHAN (KPK & FPB)
-    function gcd(a, b) {
-        return b === 0 ? a : gcd(b, a % b);
-    }
-
-    function lcm(a, b) {
-        return (a * b) / gcd(a, b);
-    }
-
-    // BANK SOAL PENJUMLAHAN PECAHAN
-    const additionLevelBanks = {
+    // BANK SOAL PERKALIAN
+    const multiplicationLevelBanks = {
         easy: [
-            { f1: [1, 4], f2: [2, 4], commonDen: 4, n1: 1, n2: 2, ansNum: 3, ansDen: 4 },
-            { f1: [2, 5], f2: [1, 5], commonDen: 5, n1: 2, n2: 1, ansNum: 3, ansDen: 5 },
-            { f1: [3, 8], f2: [2, 8], commonDen: 8, n1: 3, n2: 2, ansNum: 5, ansDen: 8 },
-            { f1: [1, 6], f2: [3, 6], commonDen: 6, n1: 1, n2: 3, ansNum: 4, ansDen: 6 },
-            { f1: [2, 7], f2: [4, 7], commonDen: 7, n1: 2, n2: 4, ansNum: 6, ansDen: 7 },
-            { f1: [3, 10], f2: [4, 10], commonDen: 10, n1: 3, n2: 4, ansNum: 7, ansDen: 10 },
-            { f1: [1, 3], f2: [1, 3], commonDen: 3, n1: 1, n2: 1, ansNum: 2, ansDen: 3 },
-            { f1: [5, 12], f2: [1, 12], commonDen: 12, n1: 5, n2: 1, ansNum: 6, ansDen: 12 }
+            { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
+            { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
+            { a: 14, b: 2, decomp: [10, 4], parts: [20, 8], ans: 28 },
+            { a: 15, b: 3, decomp: [10, 5], parts: [30, 15], ans: 45 },
+            { a: 16, b: 4, decomp: [10, 6], parts: [40, 24], ans: 64 },
+            { a: 17, b: 3, decomp: [10, 7], parts: [30, 21], ans: 51 },
+            { a: 18, b: 2, decomp: [10, 8], parts: [20, 16], ans: 36 },
+            { a: 19, b: 4, decomp: [10, 9], parts: [40, 36], ans: 76 },
+            { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
+            { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 }
         ],
         medium: [
-            { f1: [1, 2], f2: [1, 4], commonDen: 4, n1: 2, n2: 1, ansNum: 3, ansDen: 4 },
-            { f1: [1, 3], f2: [1, 6], commonDen: 6, n1: 2, n2: 1, ansNum: 3, ansDen: 6 },
-            { f1: [1, 2], f2: [3, 8], commonDen: 8, n1: 4, n2: 3, ansNum: 7, ansDen: 8 },
-            { f1: [2, 5], f2: [1, 10], commonDen: 10, n1: 4, n2: 1, ansNum: 5, ansDen: 10 },
-            { f1: [1, 4], f2: [3, 12], commonDen: 12, n1: 3, n2: 3, ansNum: 6, ansDen: 12 },
-            { f1: [3, 4], f2: [1, 8], commonDen: 8, n1: 6, n2: 1, ansNum: 7, ansDen: 8 },
-            { f1: [1, 3], f2: [2, 9], commonDen: 9, n1: 3, n2: 2, ansNum: 5, ansDen: 9 },
-            { f1: [1, 2], f2: [2, 6], commonDen: 6, n1: 3, n2: 2, ansNum: 5, ansDen: 6 }
+            { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
+            { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
+            { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
+            { a: 42, b: 6, decomp: [40, 2], parts: [240, 12], ans: 252 },
+            { a: 45, b: 3, decomp: [40, 5], parts: [120, 15], ans: 135 },
+            { a: 28, b: 4, decomp: [20, 8], parts: [80, 32], ans: 112 },
+            { a: 36, b: 5, decomp: [30, 6], parts: [150, 30], ans: 180 },
+            { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
+            { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
+            { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
         ],
         expert: [
-            { f1: [1, 2], f2: [1, 3], commonDen: 6, n1: 3, n2: 2, ansNum: 5, ansDen: 6 },
-            { f1: [1, 3], f2: [1, 4], commonDen: 12, n1: 4, n2: 3, ansNum: 7, ansDen: 12 },
-            { f1: [2, 5], f2: [1, 3], commonDen: 15, n1: 6, n2: 5, ansNum: 11, ansDen: 15 },
-            { f1: [3, 4], f2: [2, 5], commonDen: 20, n1: 15, n2: 8, ansNum: 23, ansDen: 20 },
-            { f1: [1, 4], f2: [2, 3], commonDen: 12, n1: 3, n2: 8, ansNum: 11, ansDen: 12 },
-            { f1: [3, 5], f2: [1, 2], commonDen: 10, n1: 6, n2: 5, ansNum: 11, ansDen: 10 },
-            { f1: [1, 6], f2: [3, 4], commonDen: 12, n1: 2, n2: 9, ansNum: 11, ansDen: 12 },
-            { f1: [2, 3], f2: [3, 5], commonDen: 15, n1: 10, n2: 9, ansNum: 19, ansDen: 15 }
+            { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
+            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
+            { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
+            { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
+            { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
+            { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
+            { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
+            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
+            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+            { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
         ],
         nightmare: [
-            { f1: [1, 2], f2: [3, 4], commonDen: 4, n1: 2, n2: 3, ansNum: 5, ansDen: 4, isMixed: true },
-            { f1: [2, 3], f2: [4, 5], commonDen: 15, n1: 10, n2: 12, ansNum: 22, ansDen: 15, isMixed: true },
-            { f1: [3, 4], f2: [5, 6], commonDen: 12, n1: 9, n2: 10, ansNum: 19, ansDen: 12, isMixed: true },
-            { f1: [4, 5], f2: [7, 10], commonDen: 10, n1: 8, n2: 7, ansNum: 15, ansDen: 10, isMixed: true },
-            { f1: [5, 6], f2: [3, 8], commonDen: 24, n1: 20, n2: 9, ansNum: 29, ansDen: 24, isMixed: true }
+            { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
+            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+            { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
+            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
+            { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
+            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
+            { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
+            { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
+            { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
         ]
     };
 
-    // BANK SOAL PENGURANGAN PECAHAN
-    const subtractionLevelBanks = {
+    // BANK SOAL PEMBAGIAN (DIVISION)
+    const divisionLevelBanks = {
         easy: [
-            { f1: [3, 4], f2: [1, 4], commonDen: 4, n1: 3, n2: 1, ansNum: 2, ansDen: 4 },
-            { f1: [4, 5], f2: [2, 5], commonDen: 5, n1: 4, n2: 2, ansNum: 2, ansDen: 5 },
-            { f1: [7, 8], f2: [3, 8], commonDen: 8, n1: 7, n2: 3, ansNum: 4, ansDen: 8 },
-            { f1: [5, 6], f2: [2, 6], commonDen: 6, n1: 5, n2: 2, ansNum: 3, ansDen: 6 },
-            { f1: [6, 7], f2: [2, 7], commonDen: 7, n1: 6, n2: 2, ansNum: 4, ansDen: 7 },
-            { f1: [9, 10], f2: [4, 10], commonDen: 10, n1: 9, n2: 4, ansNum: 5, ansDen: 10 },
-            { f1: [2, 3], f2: [1, 3], commonDen: 3, n1: 2, n2: 1, ansNum: 1, ansDen: 3 },
-            { f1: [11, 12], f2: [5, 12], commonDen: 12, n1: 11, n2: 5, ansNum: 6, ansDen: 12 }
+            { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
+            { a: 39, b: 3, decomp: [30, 9], parts: [10, 3], ans: 13 },
+            { a: 28, b: 2, decomp: [20, 8], parts: [10, 4], ans: 14 },
+            { a: 45, b: 3, decomp: [30, 15], parts: [10, 5], ans: 15 },
+            { a: 64, b: 4, decomp: [40, 24], parts: [10, 6], ans: 16 },
+            { a: 51, b: 3, decomp: [30, 21], parts: [10, 7], ans: 17 },
+            { a: 36, b: 2, decomp: [20, 16], parts: [10, 8], ans: 18 },
+            { a: 76, b: 4, decomp: [40, 36], parts: [10, 9], ans: 19 },
+            { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13 },
+            { a: 70, b: 5, decomp: [50, 20], parts: [10, 4], ans: 14 }
         ],
         medium: [
-            { f1: [3, 4], f2: [1, 2], commonDen: 4, n1: 3, n2: 2, ansNum: 1, ansDen: 4 },
-            { f1: [5, 6], f2: [1, 3], commonDen: 6, n1: 5, n2: 2, ansNum: 3, ansDen: 6 },
-            { f1: [7, 8], f2: [1, 2], commonDen: 8, n1: 7, n2: 4, ansNum: 3, ansDen: 8 },
-            { f1: [4, 5], f2: [3, 10], commonDen: 10, n1: 8, n2: 3, ansNum: 5, ansDen: 10 },
-            { f1: [5, 6], f2: [1, 2], commonDen: 6, n1: 5, n2: 3, ansNum: 2, ansDen: 6 },
-            { f1: [7, 8], f2: [1, 4], commonDen: 8, n1: 7, n2: 2, ansNum: 5, ansDen: 8 },
-            { f1: [5, 9], f2: [1, 3], commonDen: 9, n1: 5, n2: 3, ansNum: 2, ansDen: 9 },
-            { f1: [5, 6], f2: [1, 6], commonDen: 6, n1: 5, n2: 1, ansNum: 4, ansDen: 6 }
+            { a: 72, b: 3, decomp: [60, 12], parts: [20, 4], ans: 24 },
+            { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32 },
+            { a: 175, b: 5, decomp: [150, 25], parts: [30, 5], ans: 35 },
+            { a: 252, b: 6, decomp: [240, 12], parts: [40, 2], ans: 42 },
+            { a: 135, b: 3, decomp: [120, 15], parts: [40, 5], ans: 45 },
+            { a: 112, b: 4, decomp: [80, 32], parts: [20, 8], ans: 28 },
+            { a: 180, b: 5, decomp: [150, 30], parts: [30, 6], ans: 36 },
+            { a: 96, b: 2, decomp: [80, 16], parts: [40, 8], ans: 48 },
+            { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
+            { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 }
         ],
         expert: [
-            { f1: [1, 2], f2: [1, 3], commonDen: 6, n1: 3, n2: 2, ansNum: 1, ansDen: 6 },
-            { f1: [1, 3], f2: [1, 4], commonDen: 12, n1: 4, n2: 3, ansNum: 1, ansDen: 12 },
-            { f1: [2, 3], f2: [2, 5], commonDen: 15, n1: 10, n2: 6, ansNum: 4, ansDen: 15 },
-            { f1: [3, 4], f2: [3, 5], commonDen: 20, n1: 15, n2: 12, ansNum: 3, ansDen: 20 },
-            { f1: [3, 4], f2: [1, 3], commonDen: 12, n1: 9, n2: 4, ansNum: 5, ansDen: 12 },
-            { f1: [4, 5], f2: [1, 2], commonDen: 10, n1: 8, n2: 5, ansNum: 3, ansDen: 10 },
-            { f1: [5, 6], f2: [3, 4], commonDen: 12, n1: 10, n2: 9, ansNum: 1, ansDen: 12 },
-            { f1: [4, 5], f2: [2, 3], commonDen: 15, n1: 12, n2: 10, ansNum: 2, ansDen: 15 }
+            { a: 224, b: 4, decomp: [200, 24], parts: [50, 6], ans: 56 },
+            { a: 245, b: 5, decomp: [200, 45], parts: [40, 9], ans: 49 },
+            { a: 312, b: 6, decomp: [300, 12], parts: [50, 2], ans: 52 },
+            { a: 378, b: 7, decomp: [350, 28], parts: [50, 4], ans: 54 },
+            { a: 432, b: 8, decomp: [400, 32], parts: [50, 4], ans: 54 },
+            { a: 288, b: 9, decomp: [270, 18], parts: [30, 2], ans: 32 },
+            { a: 455, b: 5, decomp: [400, 55], parts: [80, 11], ans: 91 },
+            { a: 512, b: 8, decomp: [480, 32], parts: [60, 4], ans: 64 },
+            { a: 216, b: 3, decomp: [210, 6], parts: [70, 2], ans: 72 },
+            { a: 324, b: 6, decomp: [300, 24], parts: [50, 4], ans: 54 }
         ],
         nightmare: [
-            { f1: [5, 4], f2: [2, 3], commonDen: 12, n1: 15, n2: 8, ansNum: 7, ansDen: 12, isMixed: true },
-            { f1: [4, 3], f2: [3, 5], commonDen: 15, n1: 20, n2: 9, ansNum: 11, ansDen: 15, isMixed: true },
-            { f1: [7, 5], f2: [1, 2], commonDen: 10, n1: 14, n2: 5, ansNum: 9, ansDen: 10, isMixed: true },
-            { f1: [5, 3], f2: [3, 4], commonDen: 12, n1: 20, n2: 9, ansNum: 11, ansDen: 12, isMixed: true },
-            { f1: [9, 5], f2: [3, 4], commonDen: 20, n1: 36, n2: 15, ansNum: 21, ansDen: 20, isMixed: true }
+            { a: 624, b: 4, decomp: [600, 24], parts: [150, 6], ans: 156 },
+            { a: 635, b: 5, decomp: [600, 35], parts: [120, 7], ans: 127 },
+            { a: 726, b: 6, decomp: [720, 6], parts: [120, 1], ans: 121 },
+            { a: 812, b: 7, decomp: [700, 112], parts: [100, 16], ans: 116 },
+            { a: 936, b: 8, decomp: [800, 136], parts: [100, 17], ans: 117 },
+            { a: 639, b: 9, decomp: [630, 9], parts: [70, 1], ans: 71 },
+            { a: 756, b: 6, decomp: [720, 36], parts: [120, 6], ans: 126 },
+            { a: 845, b: 5, decomp: [800, 45], parts: [160, 9], ans: 169 },
+            { a: 912, b: 8, decomp: [880, 32], parts: [110, 4], ans: 114 },
+            { a: 651, b: 3, decomp: [600, 51], parts: [200, 17], ans: 217 }
         ]
     };
 
@@ -616,7 +748,7 @@
     function selectOperationMode(mode) {
         operationMode = mode;
         goToScreen('screen-levels');
-        let titleText = operationMode === 'addition' ? 'Penjumlahan ➕' : 'Pengurangan ➖';
+        let titleText = operationMode === 'multiplication' ? 'Perkalian ✖️' : 'Pembagian ➗';
         document.getElementById('level-screen-title').innerText = `PILIH LEVEL (${titleText})`;
     }
 
@@ -640,7 +772,7 @@
         questionIndex = 0;
         players.forEach(p => playerScores[p] = 0);
 
-        let sourceBank = operationMode === 'addition' ? additionLevelBanks[level] : subtractionLevelBanks[level];
+        let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
         questions = shuffledBank.slice(0, 5);
 
@@ -651,10 +783,6 @@
     function updateScoreboardText() {
         let text = players.map(p => `<b>${p}:</b> ${playerScores[p]}💎`).join(' | ');
         document.getElementById('scoreboard-text').innerHTML = text;
-    }
-
-    function renderFractionHtml(num, den) {
-        return `<span class="fraction-inline"><span class="numerator">${num}</span><span class="denominator">${den}</span></span>`;
     }
 
     function loadQuestion() {
@@ -672,18 +800,37 @@
         activePlayer = null;
         answeredPlayersInThisQuestion = [];
 
-        let opSymbol = operationMode === 'addition' ? '+' : '-';
-        document.getElementById('game-title').innerText = operationMode === 'addition' ? 'PENJUMLAHAN ➕' : 'PENGURANGAN ➖';
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'PERKALIAN ✖️' : 'PEMBAGIAN ➗';
         document.getElementById('current-q-num').innerText = questionIndex + 1;
-        
-        let f1Str = renderFractionHtml(currentQuestion.f1[0], currentQuestion.f1[1]);
-        let f2Str = renderFractionHtml(currentQuestion.f2[0], currentQuestion.f2[1]);
-        document.getElementById('question-text').innerHTML = `${f1Str} ${opSymbol} ${f2Str} = ...`;
-        
+        document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         updateScoreboardText();
+        
+        let helperBox = document.getElementById('helper-multiples');
+        if (operationMode === 'division') {
+            let b = currentQuestion.b;
+            // BANTUAN DISESUAIKAN: Menampilkan kelipatan besar (misal 10, 20, 50, 100) yang langsung membantu pembagian distributif
+            let multipliers = [10, 20, 30, 40, 50, 100];
+            let listContainer = document.getElementById('helper-multiples-list');
+            listContainer.innerHTML = '';
+            
+            multipliers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'helper-list-item';
+                div.innerText = `${b}×${m} = ${b * m}`;
+                listContainer.appendChild(div);
+            });
 
+            document.getElementById('helper-b-val').innerText = b;
+            helperBox.style.display = 'block';
+        } else {
+            helperBox.style.display = 'none';
+        }
+
+        document.getElementById('bond-container').style.display = 'none';
         document.getElementById('inputs-container').style.display = 'none';
         document.getElementById('inputs-container').classList.add('disabled-section');
+        document.getElementById('drag-source-wrapper').style.display = 'none';
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('feedback').innerText = '';
@@ -733,12 +880,12 @@
         answeredPlayersInThisQuestion.push(playerName);
 
         document.getElementById('player-selector-container').style.display = 'none';
+        document.getElementById('bond-container').style.display = 'flex';
         document.getElementById('inputs-container').style.display = 'flex';
-        document.getElementById('inputs-container').classList.remove('disabled-section');
         document.getElementById('submit-btn').style.display = 'block';
 
         let feedback = document.getElementById('feedback');
-        feedback.innerText = `Giliran ${playerName}! Samakan penyebut dan hitung pecahan di bawah.`;
+        feedback.innerText = `Giliran ${playerName}! Lengkapi Number Bond di atas.`;
         feedback.className = "correct";
 
         setupStandardGameplay();
@@ -752,48 +899,234 @@
         timerInterval = setInterval(updateTimer, 1000);
     }
 
+    function checkNumberBondCompletion() {
+        let decomp = currentQuestion.decomp;
+        let isComplete = true;
+
+        decomp.forEach((_, index) => {
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                if (!zone.dataset.value) isComplete = false;
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                if (!input.value.trim()) isComplete = false;
+            }
+        });
+
+        let breakdownSection = document.getElementById('inputs-container');
+        if (isComplete) {
+            breakdownSection.classList.remove('disabled-section');
+            updateDistributiveLabels();
+        } else {
+            breakdownSection.classList.add('disabled-section');
+        }
+    }
+
     function setupStandardGameplay() {
+        let circlesContainer = document.getElementById('bond-circles-container');
+        let svgContainer = document.getElementById('bond-lines');
+        let dragSourceWrapper = document.getElementById('drag-source-wrapper');
+        let dragSourceBox = document.getElementById('drag-source-box');
+        let breakdownSection = document.getElementById('inputs-container');
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+
+        circlesContainer.innerHTML = '';
+        svgContainer.innerHTML = '';
+        dragSourceBox.innerHTML = '';
+        breakdownSection.classList.add('disabled-section');
+
+        let decomp = currentQuestion.decomp;
+        let count = decomp.length;
+
+        if (count === 3) {
+            svgContainer.innerHTML = `
+                <line x1="140" y1="0" x2="40" y2="30" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="140" y2="30" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="240" y2="30" stroke="#e52521" stroke-width="4" />
+            `;
+        } else {
+            svgContainer.innerHTML = `
+                <line x1="140" y1="0" x2="70" y2="30" stroke="#e52521" stroke-width="4" />
+                <line x1="140" y1="0" x2="210" y2="30" stroke="#e52521" stroke-width="4" />
+            `;
+        }
+
+        if (currentLevel === 'easy') {
+            dragSourceWrapper.style.display = 'block';
+
+            decomp.forEach((_, index) => {
+                let dropzone = document.createElement('div');
+                dropzone.className = 'circle-dropzone';
+                dropzone.id = `decomp-${index}`;
+                dropzone.dataset.value = "";
+                dropzone.dataset.index = index;
+                dropzone.innerText = "?";
+
+                dropzone.addEventListener('click', () => {
+                    if (dropzone.dataset.value) {
+                        let val = parseInt(dropzone.dataset.value);
+                        dropzone.dataset.value = "";
+                        dropzone.innerText = "?";
+                        createDraggableItem(val, dragSourceBox);
+                        checkNumberBondCompletion();
+                    }
+                });
+
+                circlesContainer.appendChild(dropzone);
+            });
+
+            let shuffledDecomp = shuffleArray([...decomp]);
+            shuffledDecomp.forEach((val) => {
+                createDraggableItem(val, dragSourceBox);
+            });
+
+        } else {
+            dragSourceWrapper.style.display = 'none';
+
+            decomp.forEach((_, index) => {
+                let inputCircle = document.createElement('input');
+                inputCircle.type = 'number';
+                inputCircle.className = 'circle-input';
+                inputCircle.id = `decomp-${index}`;
+                inputCircle.placeholder = '?';
+                
+                inputCircle.addEventListener('input', () => {
+                    checkNumberBondCompletion();
+                });
+
+                circlesContainer.appendChild(inputCircle);
+            });
+        }
+
         let container = document.getElementById('inputs-container');
         container.innerHTML = '';
-        let opSymbol = operationMode === 'addition' ? '+' : '-';
+        
+        currentQuestion.parts.forEach((_, index) => {
+            if (index > 0) {
+                let plus = document.createElement('span');
+                plus.innerText = '+';
+                plus.style.fontSize = '20px';
+                plus.style.fontWeight = 'bold';
+                plus.style.color = '#2e7d32';
+                container.appendChild(plus);
+            }
+            
+            let group = document.createElement('div');
+            group.className = 'input-group';
+            group.innerHTML = `<label id="label-part-${index}">[ ? ] ${opSymbol} ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
+            container.appendChild(group);
+        });
 
-        // Bagian Penyetaraan Penyebut
-        let step1 = document.createElement('div');
-        step1.style.display = 'flex';
-        step1.style.alignItems = 'center';
-        step1.style.gap = '8px';
-        step1.style.flexWrap = 'wrap';
-        step1.style.justifyContent = 'center';
-        step1.innerHTML = `
-            <span style="font-weight:bold; color:#2e7d32;">Samakan Penyebut:</span>
-            <div class="fraction-input-group">
-                <input type="number" id="eq-n1" class="input-num" placeholder="?">
-                <input type="number" id="eq-d1" class="input-den" placeholder="?">
-            </div>
-            <span style="font-weight:bold; font-size:18px;">${opSymbol}</span>
-            <div class="fraction-input-group">
-                <input type="number" id="eq-n2" class="input-num" placeholder="?">
-                <input type="number" id="eq-d2" class="input-den" placeholder="?">
-            </div>
-            <span style="font-weight:bold; font-size:18px;">=</span>
-        `;
+        let equals = document.createElement('span');
+        equals.innerText = '=';
+        equals.style.fontSize = '20px';
+        equals.style.fontWeight = 'bold';
+        equals.style.color = '#2e7d32';
+        container.appendChild(equals);
 
-        // Bagian Hasil Akhir
-        let step2 = document.createElement('div');
-        step2.style.display = 'flex';
-        step2.style.alignItems = 'center';
-        step2.style.gap = '8px';
-        step2.style.flexWrap = 'wrap';
-        step2.style.justifyContent = 'center';
-        step2.innerHTML = `
-            <div class="fraction-input-group">
-                <input type="number" id="ans-n" class="input-num" placeholder="?">
-                <input type="number" id="ans-d" class="input-den" placeholder="?">
-            </div>
-        `;
+        let finalGroup = document.createElement('div');
+        finalGroup.className = 'input-group';
+        finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
+        container.appendChild(finalGroup);
+    }
 
-        container.appendChild(step1);
-        container.appendChild(step2);
+    function createDraggableItem(val, container) {
+        let item = document.createElement('div');
+        item.className = 'draggable-item';
+        item.innerText = val;
+        item.dataset.value = val;
+
+        item.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            let startX = e.clientX;
+            let startY = e.clientY;
+            let rect = item.getBoundingClientRect();
+            
+            item.classList.add('dragging');
+            item.style.left = `${rect.left}px`;
+            item.style.top = `${rect.top}px`;
+
+            function onPointerMove(e) {
+                let dx = e.clientX - startX;
+                let dy = e.clientY - startY;
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.15)`;
+
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        zone.classList.add('highlight');
+                    } else {
+                        zone.classList.remove('highlight');
+                    }
+                });
+            }
+
+            function onPointerUp(e) {
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+                item.classList.remove('dragging');
+                item.style.transform = '';
+                item.style.left = '';
+                item.style.top = '';
+
+                let feedback = document.getElementById('feedback');
+
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    zone.classList.remove('highlight');
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        
+                        let zoneIndex = parseInt(zone.dataset.index);
+                        let expectedVal = currentQuestion.decomp[zoneIndex];
+                        let isValidPosition = (val === expectedVal);
+
+                        if (!isValidPosition) {
+                            zone.classList.add('error-highlight');
+                            setTimeout(() => zone.classList.remove('error-highlight'), 600);
+                            
+                            feedback.innerText = `⚠️ Koin angka ${val} kurang tepat di sini!`;
+                            feedback.className = "incorrect";
+                            return;
+                        }
+
+                        if (zone.dataset.value) {
+                            createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
+                        }
+
+                        zone.dataset.value = val;
+                        zone.innerText = val;
+                        item.remove();
+                        feedback.innerText = "";
+                        checkNumberBondCompletion();
+                    }
+                });
+            }
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        });
+
+        container.appendChild(item);
+    }
+
+    function updateDistributiveLabels() {
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        currentQuestion.decomp.forEach((_, index) => {
+            let val;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                val = zone.dataset.value || '?';
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                val = input.value || '?';
+            }
+            let label = document.getElementById(`label-part-${index}`);
+            if(label) {
+                label.innerText = `${val} ${opSymbol} ${currentQuestion.b}`;
+            }
+        });
     }
 
     function updateTimer() {
@@ -815,7 +1148,9 @@
                 playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
                 updateScoreboardText();
 
+                document.getElementById('bond-container').style.display = 'none';
                 document.getElementById('inputs-container').style.display = 'none';
+                document.getElementById('drag-source-wrapper').style.display = 'none';
                 document.getElementById('submit-btn').style.display = 'none';
                 
                 renderPlayerSelector();
@@ -824,33 +1159,26 @@
     }
 
     function checkAnswer() {
-        let eqN1 = parseInt(document.getElementById('eq-n1').value);
-        let eqD1 = parseInt(document.getElementById('eq-d1').value);
-        let eqN2 = parseInt(document.getElementById('eq-n2').value);
-        let eqD2 = parseInt(document.getElementById('eq-d2').value);
-        let ansN = parseInt(document.getElementById('ans-n').value);
-        let ansD = parseInt(document.getElementById('ans-d').value);
-
         let allCorrect = true;
-        if (eqN1 !== currentQuestion.n1 || eqD1 !== currentQuestion.commonDen) allCorrect = false;
-        if (eqN2 !== currentQuestion.n2 || eqD2 !== currentQuestion.commonDen) allCorrect = false;
         
-        // Cek jawaban akhir (memperhitungkan penyederhanaan atau nilai pecahan senilai)
-        let userVal = ansN / ansD;
-        let targetVal = currentQuestion.ansNum / currentQuestion.ansDen;
-        if (Math.abs(userVal - targetVal) > 0.0001 || ansD !== currentQuestion.commonDen) {
-            // Cek apakah disederhanakan dengan benar
-            let uGcd = gcd(ansN, ansD);
-            let simpN = ansN / uGcd;
-            let simpD = ansD / uGcd;
-            let tGcd = gcd(currentQuestion.ansNum, currentQuestion.ansDen);
-            let targetSimpN = currentQuestion.ansNum / tGcd;
-            let targetSimpD = currentQuestion.ansDen / tGcd;
-
-            if (simpN !== targetSimpN || simpD !== targetSimpD) {
-                allCorrect = false;
+        currentQuestion.decomp.forEach((val, index) => {
+            let userVal;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                userVal = parseInt(zone.dataset.value);
+            } else {
+                userVal = parseInt(document.getElementById(`decomp-${index}`).value);
             }
-        }
+            if (userVal !== val) allCorrect = false;
+        });
+
+        currentQuestion.parts.forEach((val, index) => {
+            let userVal = parseInt(document.getElementById(`part-${index}`).value);
+            if (userVal !== val) allCorrect = false;
+        });
+
+        let userFinal = parseInt(document.getElementById('final-ans').value);
+        if (userFinal !== currentQuestion.ans) allCorrect = false;
 
         let feedback = document.getElementById('feedback');
         clearInterval(timerInterval);
@@ -870,7 +1198,9 @@
             feedback.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 Koin) Giliran direbut teman lain!`;
             feedback.className = "incorrect";
             
+            document.getElementById('bond-container').style.display = 'none';
             document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('drag-source-wrapper').style.display = 'none';
             document.getElementById('submit-btn').style.display = 'none';
             
             renderPlayerSelector();
