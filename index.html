@@ -573,7 +573,7 @@
             flex-direction: column;
             gap: 10px;
             width: 100%;
-            max-height: 460px;
+            max-height: 420px;
             overflow-y: auto;
             padding: 4px;
         }
@@ -602,39 +602,51 @@
             border-radius: 10px;
             font-weight: bold;
         }
-        .char-choice-group {
+        .char-choice-group-big {
             display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 6px;
         }
-        .char-radio-btn {
-            border: 3px solid #ccc;
-            border-radius: 12px;
-            padding: 6px 14px;
+        .char-big-btn {
+            border: 4px solid #000;
+            border-radius: 16px;
+            padding: 8px 20px;
             background: #fff;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
+            gap: 10px;
+            font-size: 14px;
             font-weight: bold;
+            font-family: 'Press Start 2P', cursive;
             transition: all 0.2s;
+            box-shadow: 0 4px 0px #000;
         }
-        .char-radio-btn img {
+        .char-big-btn img {
             width: 32px;
             height: 32px;
             object-fit: contain;
         }
-        .char-radio-btn.selected-mario {
+        .char-big-btn.selected-mario {
             border-color: var(--mario-red);
             background: #ffebee;
-            box-shadow: 0 4px 0px var(--mario-red);
+            color: var(--mario-red);
+            box-shadow: 0 6px 0px var(--mario-red);
+            transform: translateY(-2px);
         }
-        .char-radio-btn.selected-luigi {
+        .char-big-btn.selected-luigi {
             border-color: var(--mario-blue);
             background: #e3f2fd;
-            box-shadow: 0 4px 0px var(--mario-blue);
+            color: var(--mario-blue);
+            box-shadow: 0 6px 0px var(--mario-blue);
+            transform: translateY(-2px);
+        }
+
+        .player-avatar-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
 
         #feedback {
@@ -658,41 +670,37 @@
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA & PILIH KARAKTER MASING-MASING -->
+    <!-- SCREEN 1: INPUT NAMA & PILIH KARAKTER UTAMA -->
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
-        <div class="mario-badge">✨ DAFTAR PAHLAWAN & KOSTUM ✨</div>
-        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 2px;">Ketik nama anak dan pilih kostum pahlawan:</p>
+        <div class="mario-badge">✨ PILIH KOSTUM PAHLAWAN UTAMA ✨</div>
+        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px;">Pilih kostum pahlawan untuk seluruh pemain:</p>
         
+        <!-- 2 TOMBOL BESAR UTAMA PILIH KARAKTER -->
+        <div class="char-choice-group-big">
+            <div id="global-btn-mario" class="char-big-btn selected-mario" onclick="setGlobalCharacter('mario')">
+                <img src="mario.png" alt="Mario"> Mario
+            </div>
+            <div id="global-btn-luigi" class="char-big-btn" onclick="setGlobalCharacter('luigi')">
+                <img src="luigi.png" alt="Luigi"> Luigi
+            </div>
+        </div>
+
         <div class="name-setup-container" id="player-inputs-list-box">
             <!-- Baris input default pemain 1 -->
             <div class="player-row-item">
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
+                    <img src="mario.png" class="player-avatar-icon row-avatar-img">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="Mario">
-                </div>
-                <div class="char-choice-group">
-                    <div class="char-radio-btn selected-mario" onclick="setRowCharacter(this, 'mario')">
-                        <img src="mario.png" alt="Mario"> Mario
-                    </div>
-                    <div class="char-radio-btn" onclick="setRowCharacter(this, 'luigi')">
-                        <img src="luigi.png" alt="Luigi"> Luigi
-                    </div>
                 </div>
             </div>
             <!-- Baris input default pemain 2 -->
             <div class="player-row-item">
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#2</span>
+                    <img src="mario.png" class="player-avatar-icon row-avatar-img">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="Luigi">
-                </div>
-                <div class="char-choice-group">
-                    <div class="char-radio-btn" onclick="setRowCharacter(this, 'mario')">
-                        <img src="mario.png" alt="Mario"> Mario
-                    </div>
-                    <div class="char-radio-btn selected-luigi" onclick="setRowCharacter(this, 'luigi')">
-                        <img src="luigi.png" alt="Luigi"> Luigi
-                    </div>
                 </div>
             </div>
         </div>
@@ -834,6 +842,7 @@
     let players = []; 
     let playerScores = {};
     let playerCharacters = {};
+    let activeGlobalChar = 'mario';
     let activePlayer = null;
     let currentLevel = "easy";
     let operationMode = "multiplication"; 
@@ -913,16 +922,23 @@
         document.getElementById(screenId).classList.add('active');
     }
 
-    function setRowCharacter(element, charName) {
-        let parentGroup = element.parentElement;
-        parentGroup.querySelectorAll('.char-radio-btn').forEach(btn => {
-            btn.classList.remove('selected-mario', 'selected-luigi');
-        });
+    function setGlobalCharacter(charName) {
+        activeGlobalChar = charName;
+        let btnMario = document.getElementById('global-btn-mario');
+        let btnLuigi = document.getElementById('global-btn-luigi');
+
         if (charName === 'mario') {
-            element.classList.add('selected-mario');
+            btnMario.className = 'char-big-btn selected-mario';
+            btnLuigi.className = 'char-big-btn';
         } else {
-            element.classList.add('selected-luigi');
+            btnMario.className = 'char-big-btn';
+            btnLuigi.className = 'char-big-btn selected-luigi';
         }
+
+        // Update semua icon avatar di samping input baris nama
+        document.querySelectorAll('.row-avatar-img').forEach(img => {
+            img.src = `${charName}.png`;
+        });
     }
 
     function addPlayerRow() {
@@ -935,15 +951,8 @@
         div.innerHTML = `
             <div class="player-row-left">
                 <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count}</span>
+                <img src="${activeGlobalChar}.png" class="player-avatar-icon row-avatar-img">
                 <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}">
-            </div>
-            <div class="char-choice-group">
-                <div class="char-radio-btn selected-mario" onclick="setRowCharacter(this, 'mario')">
-                    <img src="mario.png" alt="Mario"> Mario
-                </div>
-                <div class="char-radio-btn" onclick="setRowCharacter(this, 'luigi')">
-                    <img src="luigi.png" alt="Luigi"> Luigi
-                </div>
             </div>
         `;
         container.appendChild(div);
@@ -965,13 +974,10 @@
 
         rows.forEach(row => {
             let inputName = row.querySelector('.p-name-input').value.trim();
-            let selectedBtn = row.querySelector('.char-radio-btn.selected-mario, .char-radio-btn.selected-luigi');
-            let charName = selectedBtn && selectedBtn.classList.contains('selected-luigi') ? 'luigi' : 'mario';
-
             if (inputName) {
                 players.push(inputName);
                 playerScores[inputName] = 0;
-                playerCharacters[inputName] = charName;
+                playerCharacters[inputName] = activeGlobalChar;
             }
         });
 
