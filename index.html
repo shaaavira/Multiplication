@@ -176,12 +176,13 @@
 
         .score-display-kids {
             font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
+            font-size: 11px;
             color: #b71c1c;
             display: flex;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
         
         .math-problem-area {
@@ -490,7 +491,6 @@
             margin-bottom: 4px;
         }
 
-        /* PERBARUI TAMPILAN KARTU LEVEL & DUNIA AGAR LEBIH MERIAH */
         .level-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -554,43 +554,78 @@
             border-radius: 12px;
             cursor: pointer;
             box-shadow: 0 4px 0px #f57f17;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             transition: transform 0.1s;
+        }
+        .btn-player-pick img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
         }
         .btn-player-pick:active { transform: scale(0.95); }
         .btn-player-pick:hover { background-color: #ffeb3b; }
 
-        /* PILIHAN KARAKTER (MARIO & LUIGI) */
-        .character-options-grid {
+        /* TABEL INPUT NAMA & PILIH KARAKTER */
+        .name-setup-container {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 15px 0;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-height: 520px;
+            overflow-y: auto;
+            padding: 4px;
         }
-        .character-card {
-            background: #fdfdfd;
-            border: 4px solid #333;
-            border-radius: 16px;
-            padding: 12px;
-            width: 110px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 0px #000;
-            text-align: center;
-        }
-        .character-card img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 6px;
-        }
-        .character-card:hover {
-            transform: translateY(-4px);
+        .player-row-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             background: #fffde7;
+            border: 3px solid #000;
+            padding: 8px 14px;
+            border-radius: 14px;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
         }
-        .character-card.selected {
+        .player-row-item input[type="text"] {
+            flex: 1;
+            font-size: 16px;
+            padding: 8px 12px;
+            border: 3px solid #fbc02d;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .char-choice-group {
+            display: flex;
+            gap: 8px;
+        }
+        .char-radio-btn {
+            border: 3px solid #ccc;
+            border-radius: 10px;
+            padding: 4px 8px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .char-radio-btn img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        .char-radio-btn.selected-mario {
             border-color: var(--mario-red);
             background: #ffebee;
-            box-shadow: 0 6px 0px var(--mario-red);
+            box-shadow: 0 3px 0px var(--mario-red);
+        }
+        .char-radio-btn.selected-luigi {
+            border-color: var(--mario-blue);
+            background: #e3f2fd;
+            box-shadow: 0 3px 0px var(--mario-blue);
         }
 
         #feedback {
@@ -602,65 +637,65 @@
         .correct { color: #2e7d32; }
         .incorrect { color: #d32f2f; }
         
-        textarea {
-            border: 4px solid #000 !important;
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
-        }
-
-        #player-names-input {
-            width: 98% !important;
-            max-width: 1200px !important;
-            font-size: 16px !important;
-        }
-
-        .answers-container, .btn-options-grid {
-            margin-top: 0 !important;
-            padding-bottom: 5px;
+        .scoreboard-avatar {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            object-fit: contain;
+            margin-right: 2px;
         }
     </style>
 </head>
 <body>
 
 <div class="game-container">
-    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
+    <!-- SCREEN 1: INPUT NAMA & PILIH KARAKTER MASING-MASING -->
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
-        <div class="mario-badge">✨ PETUALANGAN MATEMATIKA SERU ✨</div>
-        <p style="font-size: 15px; font-weight: bold; color: #333;">Masukkan nama pahlawan, satu nama per baris (Maksimal 10 anak):</p>
-        <div style="margin: 8px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <textarea id="player-names-input" rows="3" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 12px; border-radius: 14px; outline: none; resize: none; font-family: inherit; box-sizing: border-box; background: #fffde7;"></textarea>
-            
-            <div id="tv-peringatan" style="color: var(--mario-red); font-size: 13px; font-weight: bold; margin-top: 4px; display: none;"></div>
-        </div>
-        <button class="btn" style="width: 45%; font-size: 15px; background: linear-gradient(135deg, #e52521, #c62828); box-shadow: 0 6px 0px #790000;" onclick="goToCharacterSelection()">LANJUT PILIH KARAKTER ➡️</button>
-    </div>
-
-    <!-- SCREEN 1.2: PILIH KARAKTER (MARIO ATAU LUIGI) -->
-    <div id="screen-character" class="screen">
-        <div class="arcade-header-decor" style="font-size: 22px;">PILIH KARAKTER UTAMA</div>
-        <p style="font-size: 14px;">Pilih kostum pahlawanmu untuk bertualang:</p>
+        <div class="mario-badge">✨ DAFTAR PAHLAWAN & KOSTUM ✨</div>
+        <p style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 4px;">Ketik nama anak dan pilih karakter andalan mereka:</p>
         
-        <div class="character-options-grid">
-            <div class="character-card selected" id="char-mario" onclick="selectCharacter('mario')">
-                <img src="mario.png" alt="Mario">
-                <div style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-red);">MARIO</div>
+        <div class="name-setup-container" id="player-inputs-list-box">
+            <!-- Baris input default pemain 1 -->
+            <div class="player-row-item">
+                <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
+                <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="Mario">
+                <div class="char-choice-group">
+                    <div class="char-radio-btn selected-mario" onclick="setRowCharacter(this, 'mario')">
+                        <img src="mario.png" alt="Mario"> Mario
+                    </div>
+                    <div class="char-radio-btn" onclick="setRowCharacter(this, 'luigi')">
+                        <img src="luigi.png" alt="Luigi"> Luigi
+                    </div>
+                </div>
             </div>
-            <div class="character-card" id="char-luigi" onclick="selectCharacter('luigi')">
-                <img src="luigi.png" alt="Luigi">
-                <div style="font-family:'Press Start 2P'; font-size: 11px; color: var(--mario-blue);">LUIGI</div>
+            <div class="player-row-item">
+                <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#2</span>
+                <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="Luigi">
+                <div class="char-choice-group">
+                    <div class="char-radio-btn" onclick="setRowCharacter(this, 'mario')">
+                        <img src="mario.png" alt="Mario"> Mario
+                    </div>
+                    <div class="char-radio-btn selected-luigi" onclick="setRowCharacter(this, 'luigi')">
+                        <img src="luigi.png" alt="Luigi"> Luigi
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div style="display: flex; gap: 12px; width: 50%; justify-content: center; margin-top: 15px;">
-            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Kembali</button>
-            <button class="btn" style="margin-top: 0;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+        <div style="display: flex; gap: 10px; margin-top: 6px; width: 100%; justify-content: center;">
+            <button class="btn-back-menu" style="background-color: #2e7d32;" onclick="addPlayerRow()">➕ Tambah Pemain</button>
+            <button class="btn-back-menu" style="background-color: #c62828;" onclick="removePlayerRow()">➖ Hapus Baris</button>
         </div>
+
+        <div id="tv-peringatan" style="color: var(--mario-red); font-size: 13px; font-weight: bold; margin-top: 4px; display: none;"></div>
+        <button class="btn" style="width: 50%; font-size: 14px; background: linear-gradient(135deg, #e52521, #c62828); box-shadow: 0 6px 0px #790000; margin-top: 8px;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
     </div>
 
     <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
     <div id="screen-main-menu" class="screen">
         <div class="arcade-header-decor" style="font-size: 22px;">PILIH DUNIA PERMAINAN</div>
-        <p style="font-size: 14px;">Pemain & Karakter: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <p style="font-size: 14px;">Pahlawan Terdaftar: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
         <div class="level-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 14px solid var(--mario-red); text-align: center; padding: 22px; background: linear-gradient(135deg, #ffebee, #ffffff);">
                 <span style="font-family:'Press Start 2P'; font-size: 16px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
@@ -672,7 +707,7 @@
             </div>
         </div>
         <div style="margin-top: 10px;">
-            <button class="btn-back-menu" onclick="goToScreen('screen-character')">⬅️ Ganti Karakter</button>
+            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama / Karakter</button>
         </div>
     </div>
 
@@ -680,7 +715,7 @@
     <div id="screen-levels" class="screen">
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
-            <span style="font-size: 14px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
+            <span style="font-size: 13px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
         </div>
         <h1 id="level-screen-title" style="font-size: 18px; margin: 4px 0; font-family: 'Press Start 2P'; color: #333;">PILIH LEVEL KESULITAN</h1>
         <div class="level-grid">
@@ -782,9 +817,9 @@
 </div>
 
 <script>
-    let players = [];
+    let players = []; // Format objek: [{name: "Mario", char: "mario"}, ...]
     let playerScores = {};
-    let selectedCharacter = "mario";
+    let playerCharacters = {};
     let activePlayer = null;
     let currentLevel = "easy";
     let operationMode = "multiplication"; 
@@ -864,13 +899,68 @@
         document.getElementById(screenId).classList.add('active');
     }
 
-    function goToCharacterSelection() {
-        let inputField = document.getElementById('player-names-input');
-        let tvPeringatan = document.getElementById('tv-peringatan');
-        let inputVal = inputField.value.trim();
+    function setRowCharacter(element, charName) {
+        let parentGroup = element.parentElement;
+        parentGroup.querySelectorAll('.char-radio-btn').forEach(btn => {
+            btn.classList.remove('selected-mario', 'selected-luigi');
+        });
+        if (charName === 'mario') {
+            element.classList.add('selected-mario');
+        } else {
+            element.classList.add('selected-luigi');
+        }
+    }
 
-        if (!inputVal) {
-            tvPeringatan.innerText = "Minimal isi nama pemain satu!";
+    function addPlayerRow() {
+        let container = document.getElementById('player-inputs-list-box');
+        let count = container.children.length + 1;
+        if (count > 10) return;
+
+        let div = document.createElement('div');
+        div.className = 'player-row-item';
+        div.innerHTML = `
+            <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count}</span>
+            <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}">
+            <div class="char-choice-group">
+                <div class="char-radio-btn selected-mario" onclick="setRowCharacter(this, 'mario')">
+                    <img src="mario.png" alt="Mario"> Mario
+                </div>
+                <div class="char-radio-btn" onclick="setRowCharacter(this, 'luigi')">
+                    <img src="luigi.png" alt="Luigi"> Luigi
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    function removePlayerRow() {
+        let container = document.getElementById('player-inputs-list-box');
+        if (container.children.length > 1) {
+            container.removeChild(container.lastChild);
+        }
+    }
+
+    function initPlayers() {
+        let rows = document.querySelectorAll('.player-row-item');
+        let tvPeringatan = document.getElementById('tv-peringatan');
+        players = [];
+        playerScores = {};
+        playerCharacters = {};
+
+        rows.forEach(row => {
+            let inputName = row.querySelector('.p-name-input').value.trim();
+            let selectedBtn = row.querySelector('.char-radio-btn.selected-mario, .char-radio-btn.selected-luigi');
+            let charName = selectedBtn && selectedBtn.classList.contains('selected-luigi') ? 'luigi' : 'mario';
+
+            if (inputName) {
+                players.push(inputName);
+                playerScores[inputName] = 0;
+                playerCharacters[inputName] = charName;
+            }
+        });
+
+        if (players.length === 0) {
+            tvPeringatan.innerText = "Minimal masukkan 1 nama pahlawan yang valid!";
             tvPeringatan.style.display = "block";
             if ("vibrate" in navigator) navigator.vibrate(200);
             return;
@@ -878,35 +968,7 @@
             tvPeringatan.style.display = "none";
         }
 
-        let tempPlayers = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
-
-        if (tempPlayers.length > 10) {
-            tvPeringatan.innerText = "Maksimal hanya 10 anak yang dapat dimasukkan!";
-            tvPeringatan.style.display = "block";
-            if ("vibrate" in navigator) navigator.vibrate(200);
-            return;
-        }
-
-        goToScreen('screen-character');
-    }
-
-    function selectCharacter(charName) {
-        selectedCharacter = charName;
-        document.getElementById('char-mario').classList.remove('selected');
-        document.getElementById('char-luigi').classList.remove('selected');
-        document.getElementById(`char-${charName}`).classList.add('selected');
-    }
-
-    function initPlayers() {
-        let inputField = document.getElementById('player-names-input');
-        let inputVal = inputField.value.trim();
-        players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
-
-        playerScores = {};
-        players.forEach(p => playerScores[p] = 0);
-
-        let charTitle = selectedCharacter === 'mario' ? '🍄 Mario' : '⭐ Luigi';
-        let namesStr = `${players.join(', ')} (${charTitle})`;
+        let namesStr = players.map(p => `${playerCharacters[p] === 'mario' ? '🍄' : '⭐'} ${p}`).join(', ');
         document.getElementById('display-players-list-menu').innerText = namesStr;
         document.getElementById('display-players-list').innerText = namesStr;
         
@@ -949,7 +1011,10 @@
     }
 
     function updateScoreboardText() {
-        let text = players.map(p => `<b>${p}:</b> ${playerScores[p]}💎`).join(' | ');
+        let text = players.map(p => {
+            let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
+            return `<img src="${imgFile}" class="scoreboard-avatar"><b>${p}:</b> ${playerScores[p]}💎`;
+        }).join(' | ');
         document.getElementById('scoreboard-text').innerHTML = text;
     }
 
@@ -957,7 +1022,8 @@
         if (questionIndex >= questions.length) {
             let finalHtml = "";
             players.forEach(p => {
-                finalHtml += `🪙 ${p}: <b>${playerScores[p]} Koin</b><br>`;
+                let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
+                finalHtml += `<img src="${imgFile}" class="scoreboard-avatar"> ${p}: <b>${playerScores[p]} Koin</b><br>`;
             });
             document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
@@ -1031,9 +1097,10 @@
         document.getElementById('player-selector-container').style.display = 'flex';
 
         availablePlayers.forEach(p => {
+            let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
             let btn = document.createElement('button');
             btn.className = 'btn-player-pick';
-            btn.innerText = `⭐ ${p}`;
+            btn.innerHTML = `<img src="${imgFile}"> ${p}`;
             btn.onclick = () => selectPlayerTurn(p);
             container.appendChild(btn);
         });
