@@ -849,7 +849,7 @@
 </div>
 
 <script>
-    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API) ================= */
+    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API - DIKERASKAN) ================= */
     let audioCtx = null;
     let bgmInterval = null;
 
@@ -857,19 +857,21 @@
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
     }
 
     // Memulai Musik Latar Belakang (BGM) Retro Chiptune Berulang
     function startBGM() {
-        if (bgmInterval) return; // Jangan jalankan dobel jika sudah aktif
+        if (bgmInterval) return; 
         initAudio();
 
-        // Melodi ceria ala game petualangan retro (frekuensi nada dalam Hz)
         const melody = [
-            523.25, 659.25, 783.99, 1046.50,  // C5, E5, G5, C6
-            783.99, 659.25, 523.25, 392.00,   // G5, E5, C5, G4
-            440.00, 554.37, 659.25, 880.00,   // A4, C#5, E5, A5
-            659.25, 554.37, 440.00, 523.25    // E5, C#5, A4, C5
+            523.25, 659.25, 783.99, 1046.50,  
+            783.99, 659.25, 523.25, 392.00,   
+            440.00, 554.37, 659.25, 880.00,   
+            659.25, 554.37, 440.00, 523.25    
         ];
         let noteIndex = 0;
 
@@ -881,10 +883,11 @@
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 
-                osc.type = 'triangle'; // Suara chip 8-bit yang lembut
+                osc.type = 'triangle'; 
                 osc.frequency.setValueAtTime(melody[noteIndex], now);
                 
-                gain.gain.setValueAtTime(0.04, now); // Volume pelan agar nyaman sebagai latar belakang
+                // Volume BGM diperbesar agar terdengar jelas
+                gain.gain.setValueAtTime(0.18, now); 
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
                 
                 osc.connect(gain);
@@ -897,10 +900,10 @@
             } catch(e) {
                 // Ignore audio context issues
             }
-        }, 300); // Tempo ketukan lagu
+        }, 300); 
     }
 
-    // Listener otomatis untuk menyalakan BGM saat pertama kali pengguna berinteraksi di halaman web
+    // Listener otomatis menyalakan BGM saat pertama kali pengguna berinteraksi
     window.addEventListener('pointerdown', () => {
         initAudio();
         startBGM();
@@ -909,9 +912,6 @@
     function playMarioSound(type) {
         try {
             initAudio();
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
             
             const now = audioCtx.currentTime;
 
@@ -921,7 +921,7 @@
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(440, now);
                 osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.setValueAtTime(0.3, now); // Dinaikkan volumenya
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -934,7 +934,7 @@
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(300, now);
                 osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
-                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.setValueAtTime(0.35, now); // Dinaikkan volumenya
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -950,7 +950,7 @@
                     let duration = 0.08;
                     osc.type = 'square';
                     osc.frequency.setValueAtTime(freq, startTime);
-                    gain.gain.setValueAtTime(0.1, startTime);
+                    gain.gain.setValueAtTime(0.3, startTime); // Dinaikkan volumenya
                     gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -964,7 +964,7 @@
                 osc1.type = 'square';
                 osc1.frequency.setValueAtTime(987.77, now);
                 osc1.frequency.setValueAtTime(1318.51, now + 0.08);
-                gain1.gain.setValueAtTime(0.12, now);
+                gain1.gain.setValueAtTime(0.35, now); // Dinaikkan volumenya
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
                 osc1.connect(gain1);
                 gain1.connect(audioCtx.destination);
@@ -980,7 +980,7 @@
                     let duration = 0.12;
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(freq, startTime);
-                    gain.gain.setValueAtTime(0.15, startTime);
+                    gain.gain.setValueAtTime(0.4, startTime); // Dinaikkan volumenya
                     gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -994,7 +994,7 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, now);
                 osc.frequency.linearRampToValueAtTime(80, now + 0.25);
-                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.setValueAtTime(0.4, now); // Dinaikkan volumenya
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -1616,7 +1616,6 @@
     function checkAnswer() {
         let allCorrect = true;
         
-        currentQuestion.decomp.php.forEach?.(); // Safe
         currentQuestion.decomp.forEach((val, index) => {
             let userVal;
             if (currentLevel === 'easy') {
@@ -1667,8 +1666,8 @@
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
-                    z.classList.add('error-handler');
                     z.classList.add('error-highlight');
+                    setTimeout(() => z.classList.remove('error-highlight'), 600);
                 });
             } else {
                 document.querySelectorAll('.circle-input').forEach(i => {
