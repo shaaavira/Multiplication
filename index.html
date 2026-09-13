@@ -849,14 +849,62 @@
 </div>
 
 <script>
-    /* ================= AUDIO SYSTEM (WEB AUDIO API) ================= */
+    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API) ================= */
     let audioCtx = null;
+    let bgmInterval = null;
 
     function initAudio() {
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
     }
+
+    // Memulai Musik Latar Belakang (BGM) Retro Chiptune Berulang
+    function startBGM() {
+        if (bgmInterval) return; // Jangan jalankan dobel jika sudah aktif
+        initAudio();
+
+        // Melodi ceria ala game petualangan retro (frekuensi nada dalam Hz)
+        const melody = [
+            523.25, 659.25, 783.99, 1046.50,  // C5, E5, G5, C6
+            783.99, 659.25, 523.25, 392.00,   // G5, E5, C5, G4
+            440.00, 554.37, 659.25, 880.00,   // A4, C#5, E5, A5
+            659.25, 554.37, 440.00, 523.25    // E5, C#5, A4, C5
+        ];
+        let noteIndex = 0;
+
+        bgmInterval = setInterval(() => {
+            if (!audioCtx || audioCtx.state === 'suspended') return;
+            
+            try {
+                let now = audioCtx.currentTime;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                
+                osc.type = 'triangle'; // Suara chip 8-bit yang lembut
+                osc.frequency.setValueAtTime(melody[noteIndex], now);
+                
+                gain.gain.setValueAtTime(0.04, now); // Volume pelan agar nyaman sebagai latar belakang
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.25);
+
+                noteIndex = (noteIndex + 1) % melody.length;
+            } catch(e) {
+                // Ignore audio context issues
+            }
+        }, 300); // Tempo ketukan lagu
+    }
+
+    // Listener otomatis untuk menyalakan BGM saat pertama kali pengguna berinteraksi di halaman web
+    window.addEventListener('pointerdown', () => {
+        initAudio();
+        startBGM();
+    }, { once: true });
 
     function playMarioSound(type) {
         try {
@@ -868,7 +916,6 @@
             const now = audioCtx.currentTime;
 
             if (type === 'click') {
-                // Suara tombol menu pendek
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.type = 'square';
@@ -882,7 +929,6 @@
                 osc.stop(now + 0.08);
             } 
             else if (type === 'select') {
-                // Suara tombol pilih level (naik nada)
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.type = 'triangle';
@@ -896,8 +942,7 @@
                 osc.stop(now + 0.12);
             }
             else if (type === 'startGame') {
-                // Jingle Pembuka ala Start Game Mario (Chords pendek beruntun)
-                let notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                let notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
@@ -914,12 +959,11 @@
                 });
             }
             else if (type === 'coin') {
-                // Suara Koin Mario Ikonik (Dua nada cepat: B4 -> E5)
                 let osc1 = audioCtx.createOscillator();
                 let gain1 = audioCtx.createGain();
                 osc1.type = 'square';
-                osc1.frequency.setValueAtTime(987.77, now); // B4
-                osc1.frequency.setValueAtTime(1318.51, now + 0.08); // E5
+                osc1.frequency.setValueAtTime(987.77, now);
+                osc1.frequency.setValueAtTime(1318.51, now + 0.08);
                 gain1.gain.setValueAtTime(0.12, now);
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
                 osc1.connect(gain1);
@@ -928,8 +972,7 @@
                 osc1.stop(now + 0.3);
             } 
             else if (type === 'correct') {
-                // Jingle Berhasil / Stage Clear (Nada gembira)
-                let notes = [440, 554.37, 659.25, 880]; // A4, C#5, E5, A5
+                let notes = [440, 554.37, 659.25, 880];
                 notes.forEach((freq, idx) => {
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
@@ -946,7 +989,6 @@
                 });
             } 
             else if (type === 'wrong') {
-                // Suara Gagal / Salah (Nada turun rendah)
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.type = 'sawtooth';
@@ -1574,6 +1616,7 @@
     function checkAnswer() {
         let allCorrect = true;
         
+        currentQuestion.decomp.php.forEach?.(); // Safe
         currentQuestion.decomp.forEach((val, index) => {
             let userVal;
             if (currentLevel === 'easy') {
@@ -1598,8 +1641,8 @@
         document.getElementById('lbl-timer').innerText = '-';
 
         if (allCorrect) {
-            playMarioSound('coin'); // Suara Koin Kemenangan
-            setTimeout(() => playMarioSound('correct'), 250); // Suara Jingle Benar
+            playMarioSound('coin'); 
+            setTimeout(() => playMarioSound('correct'), 250); 
             
             feedback.innerText = `HEBAT! +10 Koin untuk ${activePlayer}! 🍄🎉`;
             feedback.className = "correct";
@@ -1615,7 +1658,7 @@
             document.getElementById('submit-btn').style.display = 'none';
             document.getElementById('next-btn').style.display = 'block';
         } else {
-            playMarioSound('wrong'); // Suara Salah
+            playMarioSound('wrong'); 
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
@@ -1624,6 +1667,7 @@
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
+                    z.classList.add('error-handler');
                     z.classList.add('error-highlight');
                 });
             } else {
