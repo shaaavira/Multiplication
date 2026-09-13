@@ -44,6 +44,1281 @@
 
         .game-container {
             width: 98vw;
+            height: 98vh;
+            max-width: 1400px;
+            max-height: 880px;
+            margin: auto;
+            background: #ffffff;
+            color: #333;
+            padding: 14px 24px;
+            border-radius: 28px;
+            border: 8px solid #000;
+            box-shadow: 0 16px 0px #000, 0 25px 50px rgba(0,0,0,0.5);
+            position: relative;
+            text-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--mario-red);
+            font-size: 24px;
+            margin: 2px 0 6px 0;
+            line-height: 1.4;
+            text-shadow: 3px 3px 0px var(--mario-yellow);
+        }
+
+        p { 
+            color: #444; 
+            font-size: 16px; 
+            font-weight: 600;
+            margin: 4px 0;
+        }
+        
+        .screen { 
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+        .screen.active { display: flex; }
+
+        /* WADAH UTAMA 3 KOLOM TERPISAH (SOAL, SKOR, WAKTU) */
+        .score-board-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 12px;
+            margin-bottom: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* KOLOM 1: NOMOR SOAL */
+        .board-column-question {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 3px solid var(--mario-blue);
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: var(--mario-blue);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        /* KOLOM 2: PAPAN SKOR */
+        .board-column-score {
+            flex: 1;
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border: 3px solid #fbc02d;
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: #e65100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+        }
+
+        /* KOLOM 3: WAKTU / TIMER */
+        .board-column-timer {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 3px solid var(--mario-red);
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: var(--mario-red);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        .score-display-kids {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            color: #b71c1c;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .math-problem-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2px 0;
+            width: 100%;
+        }
+
+        .question-box {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 22px;
+            color: var(--mario-blue);
+            margin-bottom: 8px;
+            width: 100%;
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 10px;
+            border: 3px dashed var(--mario-blue);
+            box-sizing: border-box;
+        }
+
+        /* LAYOUT GAMEPLAY UTAMA DENGAN KOLOM SAMPING */
+        .game-play-layout {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+            width: 100%;
+        }
+        .main-game-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 480px;
+        }
+
+        /* KOTAK BANTUAN DI SAMPING */
+        .helper-multiples-box {
+            display: none;
+            background: #fff9c4;
+            border: 3px solid #fbc02d;
+            padding: 10px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #f57f17;
+            width: 180px;
+            box-sizing: border-box;
+            text-align: left;
+            flex-shrink: 0;
+            box-shadow: 0 4px 0px #fbc02d;
+            font-weight: bold;
+        }
+        .helper-multiples-box b {
+            color: #e65100;
+            display: block;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 10px;
+            border-bottom: 2px dashed #ffe082;
+            padding-bottom: 4px;
+        }
+        .helper-list-item {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            color: #333;
+        }
+        
+        /* NUMBER BOND CONTAINER */
+        .number-bond-container {
+            position: relative;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2px;
+        }
+        
+        .bond-circles {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: -2px;
+        }
+        
+        .circle-dropzone {
+            width: 65px !important;
+            height: 65px !important;
+            min-width: 65px;
+            min-height: 65px;
+            border: 3px dashed var(--mario-red) !important;
+            border-radius: 50% !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--mario-red);
+            background-color: #ffebee;
+            box-sizing: border-box;
+            cursor: pointer;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+        }
+        .circle-dropzone.highlight {
+            background-color: #c8e6c9;
+            border-color: #2e7d32 !important;
+        }
+        .circle-dropzone.error-highlight {
+            background-color: #ffcdd2;
+            border-color: #d32f2f !important;
+        }
+
+        /* KEPINGAN DRAG PILIHAN */
+        .drag-source-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 6px 0;
+            min-height: 60px;
+            align-items: center;
+        }
+        .draggable-item {
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            border: 3px solid #f57f17;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 22px;
+            color: #b71c1c;
+            cursor: pointer;
+            user-select: none;
+            touch-action: none;
+            box-shadow: 0 4px 0px #e65100;
+            transition: transform 0.1s;
+        }
+        .draggable-item.dragging {
+            position: fixed;
+            z-index: 1000;
+            opacity: 0.9;
+            pointer-events: none;
+            transform: scale(1.15);
+        }
+
+        .circle-input {
+            width: 65px !important;
+            height: 65px !important;
+            min-width: 65px;
+            min-height: 65px;
+            border: 3px solid var(--mario-red) !important;
+            border-radius: 50% !important;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--mario-red);
+            background-color: #ffebee;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            -moz-appearance: textfield;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+        }
+        .circle-input::-webkit-outer-spin-button,
+        .circle-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .lines-svg {
+            width: 100%;
+            height: 32px;
+        }
+
+        .breakdown-section {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 6px 0;
+            background: #f1f8e9;
+            border: 3px solid #81c784;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: opacity 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .breakdown-section.disabled-section {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label {
+            font-size: 13px;
+            color: #2e7d32;
+            margin-bottom: 2px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 95px;
+            padding: 8px;
+            font-size: 18px;
+            text-align: center;
+            border: 3px solid #81c784;
+            border-radius: 8px;
+            outline: none;
+            font-weight: bold;
+            color: #333;
+            background: #fff;
+        }
+        input:disabled, .breakdown-section.disabled-section input {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+
+        .btn {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--mario-red);
+            color: white;
+            border: 3px solid #000;
+            padding: 11px 20px;
+            font-size: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 6px;
+            width: 100%;
+            box-shadow: 0 4px 0px #900;
+            transition: all 0.1s;
+        }
+        .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 6px 0px #900; }
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
+        
+        .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 4px 0px #001a75; }
+        .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 6px 0px #001a75; }
+        
+        .btn-back-menu {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #78909c;
+            color: white;
+            border: 3px solid #000;
+            padding: 8px 12px;
+            font-size: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 0px #455a64;
+            transition: background-color 0.2s;
+        }
+        .btn-back-menu:hover { background-color: #90a4ae; }
+
+        .top-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+            width: 100%;
+        }
+        .level-card {
+            background: #fff;
+            border: 3px solid #000;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.2s;
+            text-align: left;
+            color: #333;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+        }
+        .level-card:hover { transform: translateY(-3px); background: #fffde7; }
+        .level-card.easy { border-left: 10px solid #4caf50; }
+        .level-card.medium { border-left: 10px solid #ff9800; }
+        .level-card.expert { border-left: 10px solid #f44336; }
+        .level-card.nightmare { border-left: 10px solid #9c27b0; }
+
+        /* PLAYER SELECTION ARENA */
+        .player-selector-arena {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0;
+            width: 100%;
+        }
+        .player-buttons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+        }
+        .btn-player-pick {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--mario-yellow);
+            color: #b71c1c;
+            border: 3px solid #000;
+            padding: 11px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 0px #f57f17;
+            transition: transform 0.1s;
+        }
+        .btn-player-pick:active { transform: scale(0.95); }
+        .btn-player-pick:hover { background-color: #ffeb3b; }
+
+        #feedback {
+            margin-top: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            min-height: 22px;
+        }
+        .correct { color: #2e7d32; }
+        .incorrect { color: #d32f2f; }
+        
+        textarea {
+            border: 3px solid #000 !important;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        #player-names-input {
+            width: 98% !important;
+            max-width: 1100px !important;
+            font-size: 16px !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <!-- SCREEN 1: INPUT NAMA-NAMA PEMAIN -->
+    <div id="screen-welcome" class="screen active">
+        <h1>🍄 SUPER MATH BROS 🌟</h1>
+        <p style="font-size: 16px;">Masukkan nama pemain, satu nama per baris (Maksimal 10 anak):</p>
+        <div style="margin: 10px 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <textarea id="player-names-input" rows="4" placeholder="Mario&#10;Luigi&#10;Peach" style="padding: 12px; border-radius: 10px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <!-- Tambahan Elemen Peringatan Validasi & Getar -->
+            <div id="tv-peringatan" style="color: var(--mario-red); font-size: 14px; font-weight: bold; margin-top: 6px; display: none;"></div>
+        </div>
+        <button class="btn" style="width: 35%; font-size: 16px;" onclick="initPlayers()">MULAI BERMAIN! 🚀</button>
+    </div>
+
+    <!-- SCREEN 1.5: PILIH MENU UTAMA (MULTIPLICATION / DIVISION) -->
+    <div id="screen-main-menu" class="screen">
+        <h1>PILIH DUNIA PERMAINAN</h1>
+        <p style="font-size: 15px;">Pemain Aktif: <span id="display-players-list-menu" style="font-weight: bold; color: var(--mario-red);"></span></p>
+        <div class="level-grid" style="margin-top: 20px; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="level-card" onclick="selectOperationMode('multiplication')" style="border-left: 10px solid var(--mario-red); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 15px; color: var(--mario-red);">✖️ MULTIPLICATION</span>
+                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Perkalian Distributif</span>
+            </div>
+            <div class="level-card" onclick="selectOperationMode('division')" style="border-left: 10px solid var(--mario-blue); text-align: center; padding: 20px;">
+                <span style="font-family:'Press Start 2P'; font-size: 15px; color: var(--mario-blue);">➗ DIVISION</span>
+                <span style="font-size:14px; display:block; color:#666; font-weight:bold; margin-top: 8px;">Pembagian Distributif</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <button class="btn-back-menu" onclick="goToScreen('screen-welcome')">⬅️ Ganti Nama Pemain</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: PILIH LEVEL -->
+    <div id="screen-levels" class="screen">
+        <div class="top-nav-row">
+            <button class="btn-back-menu" onclick="goToScreen('screen-main-menu')">⬅️ Menu Mode</button>
+            <span style="font-size: 15px; font-weight: bold; color: #444;">Pemain: <span id="display-players-list" style="color: var(--mario-red);"></span></span>
+        </div>
+        <h1 id="level-screen-title" style="font-size: 18px; margin: 6px 0;">PILIH LEVEL KESULITAN</h1>
+        <div class="level-grid">
+            <div class="level-card easy" onclick="startLevel('easy')">🟢 Level 1: World 1-1 (Belasan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Drag & Drop Koin</span></div>
+            <div class="level-card medium" onclick="startLevel('medium')">🟡 Level 2: World 2-2 (Puluhan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Number Bond Input</span></div>
+            <div class="level-card expert" onclick="startLevel('expert')">🟠 Level 3: World 3-3 (Ratusan) <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Tantangan Kastil</span></div>
+            <div class="level-card nightmare" onclick="startLevel('nightmare')">🟣 Level 4: Bowser's Castle <span style="font-size:12px; display:block; color:#666; font-weight:bold; margin-top:3px;">Misi Penyelamatan Utama</span></div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: GAMEPLAY ARENA -->
+    <div id="screen-game" class="screen" style="justify-content: flex-start; padding-top: 2px;">
+        <div class="top-nav-row">
+            <button class="btn-back-menu" onclick="returnToMenu()">⬅️ Menu Level</button>
+            <div style="font-family: 'Press Start 2P'; font-size: 14px; color: var(--mario-red);" id="game-title">Super Math Bros</div>
+            <div style="width: 80px;"></div>
+        </div>
+
+        <!-- 3 KOLOM TERPISAH: NOMOR SOAL, PAPAN SKOR, TIMER -->
+        <div class="score-board-top">
+            <div class="board-column-question">
+                Soal no <span id="current-q-num">1</span>/10
+            </div>
+            <div class="board-column-score">
+                <div class="score-display-kids" id="scoreboard-text">
+                    <!-- Daftar skor anak-anak -->
+                </div>
+            </div>
+            <div class="board-column-timer">
+                ⏱️ <span id="lbl-timer">60</span>s
+            </div>
+        </div>
+        
+        <div class="math-problem-area">
+            <div class="question-box" id="question-text">Loading...</div>
+            
+            <!-- LAYOUT UTAMA: KOLOM GAME & KOTAK BANTUAN DI SAMPING -->
+            <div class="game-play-layout">
+                <div class="main-game-column">
+                    <!-- TOMBOL REBUTAN NAMA PEMAIN -->
+                    <div id="player-selector-container" class="player-selector-arena" style="display:none;">
+                        <p style="font-weight: bold; color: var(--mario-red); font-size: 14px; margin: 0; font-family:'Press Start 2P';">⭐ PILIH PAHLAWANMU! ⭐</p>
+                        <div class="player-buttons-grid" id="player-buttons-box"></div>
+                    </div>
+
+                    <div class="number-bond-container" id="bond-container" style="display:none;">
+                        <svg class="lines-svg" viewBox="0 0 250 32" id="bond-lines">
+                            <!-- Garis cabang SVG -->
+                        </svg>
+                        <div class="bond-circles" id="bond-circles-container">
+                            <!-- Lingkaran dropzone -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BANTUAN DISESUAIKAN -->
+                <div id="helper-multiples" class="helper-multiples-box">
+                    <b>BANTUAN (<span id="helper-b-val"></span>)</b>
+                    <div id="helper-multiples-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wadah Kepingan Drag -->
+        <div id="drag-source-wrapper" style="display:none; width: 100%;">
+            <p style="margin: 4px 0; font-size: 14px; color: #555;">Seret koin angka ke lingkaran jamur yang tepat:</p>
+            <div class="drag-source-container" id="drag-source-box"></div>
+        </div>
+        
+        <!-- Bagian Kotak Penjumlahan -->
+        <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;">
+            <!-- Input dinamis perkalian/pembagian distributif -->
+        </div>
+
+        <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 6px; width: 35%;">JAWAB! 🎯</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="nextQuestion()" style="display:none; margin-top: 6px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
+        <div id="feedback"></div>
+    </div>
+
+    <!-- SCREEN 4: HASIL AKHIR -->
+    <div id="screen-score" class="screen">
+        <h1 style="color: var(--mario-red); font-size: 22px;">MISI SELESAI! 🎉</h1>
+        <p style="font-size: 16px; margin: 8px 0; font-weight: bold;">Perolehan Koin Pahlawan:</p>
+        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 12px 0; line-height: 1.6; color: #333; background: #fffde7; border: 3px solid #fbc02d; padding: 14px; border-radius: 12px; width: 65%;">
+            <!-- Daftar skor akhir anak -->
+        </div>
+        <button class="btn" style="width: 35%; font-size: 15px;" onclick="goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
+    </div>
+</div>
+
+<script>
+    let players = [];
+    let playerScores = {};
+    let activePlayer = null;
+    let currentLevel = "easy";
+    let operationMode = "multiplication"; 
+    let questionIndex = 0;
+    let questions = [];
+    let currentQuestion = {};
+    let timer = 60;
+    let timerInterval = null;
+    let answeredPlayersInThisQuestion = [];
+
+    // BANK SOAL PERKALIAN
+    const multiplicationLevelBanks = {
+        easy: [
+            { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
+            { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
+            { a: 14, b: 2, decomp: [10, 4], parts: [20, 8], ans: 28 },
+            { a: 15, b: 3, decomp: [10, 5], parts: [30, 15], ans: 45 },
+            { a: 16, b: 4, decomp: [10, 6], parts: [40, 24], ans: 64 },
+            { a: 17, b: 3, decomp: [10, 7], parts: [30, 21], ans: 51 },
+            { a: 18, b: 2, decomp: [10, 8], parts: [20, 16], ans: 36 },
+            { a: 19, b: 4, decomp: [10, 9], parts: [40, 36], ans: 76 },
+            { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
+            { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 }
+        ],
+        medium: [
+            { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
+            { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
+            { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
+            { a: 42, b: 6, decomp: [40, 2], parts: [240, 12], ans: 252 },
+            { a: 45, b: 3, decomp: [40, 5], parts: [120, 15], ans: 135 },
+            { a: 28, b: 4, decomp: [20, 8], parts: [80, 32], ans: 112 },
+            { a: 36, b: 5, decomp: [30, 6], parts: [150, 30], ans: 180 },
+            { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
+            { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
+            { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
+        ],
+        expert: [
+            { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
+            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
+            { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
+            { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
+            { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
+            { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
+            { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
+            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
+            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+            { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
+        ],
+        nightmare: [
+            { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
+            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
+            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
+            { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
+            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
+            { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
+            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
+            { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
+            { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
+            { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
+        ]
+    };
+
+    // BANK SOAL PEMBAGIAN (DIVISION)
+    const divisionLevelBanks = {
+        easy: [
+            { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
+            { a: 39, b: 3, decomp: [30, 9], parts: [10, 3], ans: 13 },
+            { a: 28, b: 2, decomp: [20, 8], parts: [10, 4], ans: 14 },
+            { a: 45, b: 3, decomp: [30, 15], parts: [10, 5], ans: 15 },
+            { a: 64, b: 4, decomp: [40, 24], parts: [10, 6], ans: 16 },
+            { a: 51, b: 3, decomp: [30, 21], parts: [10, 7], ans: 17 },
+            { a: 36, b: 2, decomp: [20, 16], parts: [10, 8], ans: 18 },
+            { a: 76, b: 4, decomp: [40, 36], parts: [10, 9], ans: 19 },
+            { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13 },
+            { a: 70, b: 5, decomp: [50, 20], parts: [10, 4], ans: 14 }
+        ],
+        medium: [
+            { a: 72, b: 3, decomp: [60, 12], parts: [20, 4], ans: 24 },
+            { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32 },
+            { a: 175, b: 5, decomp: [150, 25], parts: [30, 5], ans: 35 },
+            { a: 252, b: 6, decomp: [240, 12], parts: [40, 2], ans: 42 },
+            { a: 135, b: 3, decomp: [120, 15], parts: [40, 5], ans: 45 },
+            { a: 112, b: 4, decomp: [80, 32], parts: [20, 8], ans: 28 },
+            { a: 180, b: 5, decomp: [150, 30], parts: [30, 6], ans: 36 },
+            { a: 96, b: 2, decomp: [80, 16], parts: [40, 8], ans: 48 },
+            { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
+            { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 }
+        ],
+        expert: [
+            { a: 224, b: 4, decomp: [200, 24], parts: [50, 6], ans: 56 },
+            { a: 245, b: 5, decomp: [200, 45], parts: [40, 9], ans: 49 },
+            { a: 312, b: 6, decomp: [300, 12], parts: [50, 2], ans: 52 },
+            { a: 378, b: 7, decomp: [350, 28], parts: [50, 4], ans: 54 },
+            { a: 432, b: 8, decomp: [400, 32], parts: [50, 4], ans: 54 },
+            { a: 288, b: 9, decomp: [270, 18], parts: [30, 2], ans: 32 },
+            { a: 455, b: 5, decomp: [400, 55], parts: [80, 11], ans: 91 },
+            { a: 512, b: 8, decomp: [480, 32], parts: [60, 4], ans: 64 },
+            { a: 216, b: 3, decomp: [210, 6], parts: [70, 2], ans: 72 },
+            { a: 324, b: 6, decomp: [300, 24], parts: [50, 4], ans: 54 }
+        ],
+        nightmare: [
+            { a: 624, b: 4, decomp: [600, 24], parts: [150, 6], ans: 156 },
+            { a: 635, b: 5, decomp: [600, 35], parts: [120, 7], ans: 127 },
+            { a: 726, b: 6, decomp: [720, 6], parts: [120, 1], ans: 121 },
+            { a: 812, b: 7, decomp: [700, 112], parts: [100, 16], ans: 116 },
+            { a: 936, b: 8, decomp: [800, 136], parts: [100, 17], ans: 117 },
+            { a: 639, b: 9, decomp: [630, 9], parts: [70, 1], ans: 71 },
+            { a: 756, b: 6, decomp: [720, 36], parts: [120, 6], ans: 126 },
+            { a: 845, b: 5, decomp: [800, 45], parts: [160, 9], ans: 169 },
+            { a: 912, b: 8, decomp: [880, 32], parts: [110, 4], ans: 114 },
+            { a: 651, b: 3, decomp: [600, 51], parts: [200, 17], ans: 217 }
+        ]
+    };
+
+    function goToScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function initPlayers() {
+        let inputField = document.getElementById('player-names-input');
+        let tvPeringatan = document.getElementById('tv-peringatan');
+        let inputVal = inputField.value.trim();
+
+        if (!inputVal) {
+            tvPeringatan.innerText = "Minimal isi nama pemain satu!";
+            tvPeringatan.style.display = "block";
+
+            if ("vibrate" in navigator) {
+                navigator.vibrate(200);
+            }
+            return;
+        } else {
+            tvPeringatan.style.display = "none";
+        }
+
+        players = inputVal.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+
+        if (players.length > 10) {
+            tvPeringatan.innerText = "Maksimal hanya 10 anak yang dapat dimasukkan!";
+            tvPeringatan.style.display = "block";
+            if ("vibrate" in navigator) {
+                navigator.vibrate(200);
+            }
+            return;
+        }
+
+        playerScores = {};
+        players.forEach(p => playerScores[p] = 0);
+
+        let namesStr = players.join(', ');
+        document.getElementById('display-players-list-menu').innerText = namesStr;
+        document.getElementById('display-players-list').innerText = namesStr;
+        
+        goToScreen('screen-main-menu');
+    }
+
+    function selectOperationMode(mode) {
+        operationMode = mode;
+        goToScreen('screen-levels');
+        let titleText = operationMode === 'multiplication' ? 'Perkalian ✖️' : 'Pembagian ➗';
+        document.getElementById('level-screen-title').innerText = `PILIH LEVEL (${titleText})`;
+    }
+
+    function returnToMenu() {
+        clearInterval(timerInterval);
+        goToScreen('screen-levels');
+    }
+
+    function shuffleArray(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    function startLevel(level) {
+        currentLevel = level;
+        questionIndex = 0;
+        players.forEach(p => playerScores[p] = 0);
+
+        let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
+        let shuffledBank = shuffleArray([...sourceBank]);
+        questions = shuffledBank.slice(0, 10);
+
+        goToScreen('screen-game');
+        loadQuestion();
+    }
+
+    function updateScoreboardText() {
+        let text = players.map(p => `<b>${p}:</b> ${playerScores[p]}💎`).join(' | ');
+        document.getElementById('scoreboard-text').innerHTML = text;
+    }
+
+    function loadQuestion() {
+        if (questionIndex >= questions.length) {
+            let finalHtml = "";
+            players.forEach(p => {
+                finalHtml += `🍄 ${p}: <b>${playerScores[p]} Koin</b><br>`;
+            });
+            document.getElementById('final-scores-list').innerHTML = finalHtml;
+            goToScreen('screen-score');
+            return;
+        }
+
+        currentQuestion = questions[questionIndex];
+        activePlayer = null;
+        answeredPlayersInThisQuestion = [];
+
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'PERKALIAN ✖️' : 'PEMBAGIAN ➗';
+        document.getElementById('current-q-num').innerText = questionIndex + 1;
+        document.getElementById('question-text').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
+        updateScoreboardText();
+        
+        let helperBox = document.getElementById('helper-multiples');
+        if (operationMode === 'division') {
+            let b = currentQuestion.b;
+            let multipliers = [10, 20, 30, 40, 50, 100];
+            let listContainer = document.getElementById('helper-multiples-list');
+            listContainer.innerHTML = '';
+            
+            multipliers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'helper-list-item';
+                div.innerText = `${b}×${m} = ${b * m}`;
+                listContainer.appendChild(div);
+            });
+
+            document.getElementById('helper-b-val').innerText = b;
+            helperBox.style.display = 'block';
+        } else {
+            helperBox.style.display = 'none';
+        }
+
+        document.getElementById('bond-container').style.display = 'none';
+        document.getElementById('inputs-container').style.display = 'none';
+        document.getElementById('inputs-container').classList.add('disabled-section');
+        document.getElementById('drag-source-wrapper').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('feedback').innerText = '';
+
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20;
+
+        document.getElementById('lbl-timer').innerText = timer;
+        clearInterval(timerInterval);
+
+        renderPlayerSelector();
+    }
+
+    function renderPlayerSelector() {
+        let container = document.getElementById('player-buttons-box');
+        container.innerHTML = '';
+        
+        let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
+
+        if (availablePlayers.length === 0) {
+            document.getElementById('player-selector-container').style.display = 'none';
+            document.getElementById('feedback').innerText = "Semua pahlawan sudah mencoba soal ini! Lanjut ke soal berikutnya.";
+            document.getElementById('feedback').className = "incorrect";
+            document.getElementById('next-btn').style.display = 'block';
+            clearInterval(timerInterval);
+            return;
+        }
+
+        document.getElementById('player-selector-container').style.display = 'flex';
+
+        availablePlayers.forEach(p => {
+            let btn = document.createElement('button');
+            btn.className = 'btn-player-pick';
+            btn.innerText = `⭐ ${p}`;
+            btn.onclick = () => selectPlayerTurn(p);
+            container.appendChild(btn);
+        });
+
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function selectPlayerTurn(playerName) {
+        clearInterval(timerInterval);
+        activePlayer = playerName;
+        answeredPlayersInThisQuestion.push(playerName);
+
+        document.getElementById('player-selector-container').style.display = 'none';
+        document.getElementById('bond-container').style.display = 'flex';
+        document.getElementById('inputs-container').style.display = 'flex';
+        document.getElementById('submit-btn').style.display = 'block';
+
+        let feedback = document.getElementById('feedback');
+        feedback.innerText = `Giliran ${playerName}! Lengkapi Number Bond di atas.`;
+        feedback.className = "correct";
+
+        setupStandardGameplay();
+
+        if (currentLevel === 'easy') timer = 60;
+        else if (currentLevel === 'medium') timer = 45;
+        else if (currentLevel === 'expert') timer = 30;
+        else timer = 20;
+
+        document.getElementById('lbl-timer').innerText = timer;
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function checkNumberBondCompletion() {
+        let decomp = currentQuestion.decomp;
+        let isComplete = true;
+
+        decomp.forEach((_, index) => {
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                if (!zone.dataset.value) isComplete = false;
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                if (!input.value.trim()) isComplete = false;
+            }
+        });
+
+        let breakdownSection = document.getElementById('inputs-container');
+        if (isComplete) {
+            breakdownSection.classList.remove('disabled-section');
+            updateDistributiveLabels();
+        } else {
+            breakdownSection.classList.add('disabled-section');
+        }
+    }
+
+    function setupStandardGameplay() {
+        let circlesContainer = document.getElementById('bond-circles-container');
+        let svgContainer = document.getElementById('bond-lines');
+        let dragSourceWrapper = document.getElementById('drag-source-wrapper');
+        let dragSourceBox = document.getElementById('drag-source-box');
+        let breakdownSection = document.getElementById('inputs-container');
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+
+        circlesContainer.innerHTML = '';
+        svgContainer.innerHTML = '';
+        dragSourceBox.innerHTML = '';
+        breakdownSection.classList.add('disabled-section');
+
+        let decomp = currentQuestion.decomp;
+        let count = decomp.length;
+
+        if (count === 3) {
+            svgContainer.setAttribute('viewBox', '0 0 280 32');
+            svgContainer.innerHTML = `
+                <line x1="140" y1="0" x2="50" y2="28" stroke="#e52521" stroke-width="3" />
+                <line x1="140" y1="0" x2="140" y2="28" stroke="#e52521" stroke-width="3" />
+                <line x1="140" y1="0" x2="230" y2="28" stroke="#e52521" stroke-width="3" />
+            `;
+            circlesContainer.style.justifyContent = 'space-around';
+        } else {
+            svgContainer.setAttribute('viewBox', '0 0 250 32');
+            svgContainer.innerHTML = `
+                <line x1="125" y1="0" x2="60" y2="28" stroke="#e52521" stroke-width="3" />
+                <line x1="125" y1="0" x2="190" y2="28" stroke="#e52521" stroke-width="3" />
+            `;
+            circlesContainer.style.justifyContent = 'space-between';
+        }
+
+        if (currentLevel === 'easy') {
+            dragSourceWrapper.style.display = 'block';
+
+            decomp.forEach((_, index) => {
+                let dropzone = document.createElement('div');
+                dropzone.className = 'circle-dropzone';
+                dropzone.id = `decomp-${index}`;
+                dropzone.dataset.value = "";
+                dropzone.dataset.index = index;
+                dropzone.innerText = "?";
+
+                dropzone.addEventListener('click', () => {
+                    if (dropzone.dataset.value) {
+                        let val = parseInt(dropzone.dataset.value);
+                        dropzone.dataset.value = "";
+                        dropzone.innerText = "?";
+                        createDraggableItem(val, dragSourceBox);
+                        checkNumberBondCompletion();
+                    }
+                });
+
+                circlesContainer.appendChild(dropzone);
+            });
+
+            let shuffledDecomp = shuffleArray([...decomp]);
+            shuffledDecomp.forEach((val) => {
+                createDraggableItem(val, dragSourceBox);
+            });
+
+        } else {
+            dragSourceWrapper.style.display = 'none';
+
+            decomp.forEach((_, index) => {
+                let inputCircle = document.createElement('input');
+                inputCircle.type = 'number';
+                inputCircle.className = 'circle-input';
+                inputCircle.id = `decomp-${index}`;
+                inputCircle.placeholder = '?';
+                
+                inputCircle.addEventListener('input', () => {
+                    checkNumberBondCompletion();
+                });
+
+                circlesContainer.appendChild(inputCircle);
+            });
+        }
+
+        let container = document.getElementById('inputs-container');
+        container.innerHTML = '';
+        
+        currentQuestion.parts.forEach((_, index) => {
+            if (index > 0) {
+                let plus = document.createElement('span');
+                plus.innerText = '+';
+                plus.style.fontSize = '20px';
+                plus.style.fontWeight = 'bold';
+                plus.style.color = '#2e7d32';
+                container.appendChild(plus);
+            }
+            
+            let group = document.createElement('div');
+            group.className = 'input-group';
+            group.innerHTML = `<label id="label-part-${index}">[ ? ] ${opSymbol} ${currentQuestion.b}</label><input type="number" id="part-${index}" placeholder="?">`;
+            container.appendChild(group);
+        });
+
+        let equals = document.createElement('span');
+        equals.innerText = '=';
+        equals.style.fontSize = '20px';
+        equals.style.fontWeight = 'bold';
+        equals.style.color = '#2e7d32';
+        container.appendChild(equals);
+
+        let finalGroup = document.createElement('div');
+        finalGroup.className = 'input-group';
+        finalGroup.innerHTML = `<label>Total</label><input type="number" id="final-ans" placeholder="Total">`;
+        container.appendChild(finalGroup);
+    }
+
+    function createDraggableItem(val, container) {
+        let item = document.createElement('div');
+        item.className = 'draggable-item';
+        item.innerText = val;
+        item.dataset.value = val;
+
+        item.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            let startX = e.clientX;
+            let startY = e.clientY;
+            let rect = item.getBoundingClientRect();
+            
+            item.classList.add('dragging');
+            item.style.left = `${rect.left}px`;
+            item.style.top = `${rect.top}px`;
+
+            function onPointerMove(e) {
+                let dx = e.clientX - startX;
+                let dy = e.clientY - startY;
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.15)`;
+
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        zone.classList.add('highlight');
+                    } else {
+                        zone.classList.remove('highlight');
+                    }
+                });
+            }
+
+            function onPointerUp(e) {
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+                item.classList.remove('dragging');
+                item.style.transform = '';
+                item.style.left = '';
+                item.style.top = '';
+
+                let feedback = document.getElementById('feedback');
+
+                document.querySelectorAll('.circle-dropzone').forEach(zone => {
+                    zone.classList.remove('highlight');
+                    let zRect = zone.getBoundingClientRect();
+                    if (e.clientX >= zRect.left && e.clientX <= zRect.right &&
+                        e.clientY >= zRect.top && e.clientY <= zRect.bottom) {
+                        
+                        let zoneIndex = parseInt(zone.dataset.index);
+                        let expectedVal = currentQuestion.decomp[zoneIndex];
+                        let isValidPosition = (val === expectedVal);
+
+                        if (!isValidPosition) {
+                            zone.classList.add('error-highlight');
+                            setTimeout(() => zone.classList.remove('error-highlight'), 600);
+                            
+                            feedback.innerText = `⚠️ Koin angka ${val} kurang tepat di sini!`;
+                            feedback.className = "incorrect";
+                            return;
+                        }
+
+                        if (zone.dataset.value) {
+                            createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
+                        }
+
+                        zone.dataset.value = val;
+                        zone.innerText = val;
+                        item.remove();
+                        feedback.innerText = "";
+                        checkNumberBondCompletion();
+                    }
+                });
+            }
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        });
+
+        container.appendChild(item);
+    }
+
+    function updateDistributiveLabels() {
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        currentQuestion.decomp.forEach((_, index) => {
+            let val;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                val = zone.dataset.value || '?';
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                val = input.value || '?';
+            }
+            let label = document.getElementById(`label-part-${index}`);
+            if(label) {
+                label.innerText = `${val} ${opSymbol} ${currentQuestion.b}`;
+            }
+        });
+    }
+
+    function updateTimer() {
+        if (timer > 0) {
+            timer--;
+            document.getElementById('lbl-timer').innerText = timer;
+        } else {
+            clearInterval(timerInterval);
+            let feedback = document.getElementById('feedback');
+            
+            if (!activePlayer) {
+                feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
+                feedback.className = "incorrect";
+                document.getElementById('player-selector-container').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'block';
+            } else {
+                feedback.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 Koin). Giliran direbut pahlawan lain!`;
+                feedback.className = "incorrect";
+                playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+                updateScoreboardText();
+
+                document.getElementById('bond-container').style.display = 'none';
+                document.getElementById('inputs-container').style.display = 'none';
+                document.getElementById('drag-source-wrapper').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'none';
+                
+                renderPlayerSelector();
+            }
+        }
+    }
+
+    function checkAnswer() {
+        let allCorrect = true;
+        
+        currentQuestion.decomp.forEach((val, index) => {
+            let userVal;
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                userVal = parseInt(zone.dataset.value);
+            } else {
+                userVal = parseInt(document.getElementById(`decomp-${index}`).value);
+            }
+            if (userVal !== val) allCorrect = false;
+        });
+
+        currentQuestion.parts.forEach((val, index) => {
+            let userVal = parseInt(document.getElementById(`part-${index}`).value);
+            if (userVal !== val) allCorrect = false;
+        });
+
+        let userFinal = parseInt(document.getElementById('final-ans').value);
+        if (userFinal !== currentQuestion.ans) allCorrect = false;
+
+        let feedback = document.getElementById('feedback');
+        clearInterval(timerInterval);
+
+        if (allCorrect) {
+            feedback.innerText = `HEBAT! +10 Koin untuk ${activePlayer}! 🍄🎉`;
+            feedback.className = "correct";
+            playerScores[activePlayer] += 10;
+            updateScoreboardText();
+            
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+        } else {
+            playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+            updateScoreboardText();
+            
+            feedback.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 Koin) Giliran direbut teman lain!`;
+            feedback.className, "incorrect";
+            
+            document.getElementById('bond-container').style.display = 'none';
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('drag-source-wrapper').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            renderPlayerSelector();
+        }
+    }
+
+    function nextQuestion() {
+        questionIndex++;
+        loadQuestion();
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Math Bros: Pecah Perkalian & Pembagian</title>
+    <!-- Memuat Google Fonts bergaya game retro (Press Start 2P & Fredoka) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mario-red: #e52521;
+            --mario-blue: #002fbe;
+            --mario-yellow: #f8b800;
+            --mario-green: #43b3ae;
+            --mario-bg-sky: #5c94fc;
+        }
+
+        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--mario-bg-sky);
+            background-image: 
+                radial-gradient(white 15%, transparent 16%),
+                radial-gradient(white 15%, transparent 16%);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
+            color: #fff;
+            text-align: center;
+            touch-action: manipulation;
+            text-shadow: 2px 2px 0px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-container {
+            width: 98vw;
             height: 97vh;
             max-width: 1450px;
             max-height: 900px;
