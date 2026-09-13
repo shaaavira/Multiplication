@@ -539,7 +539,7 @@
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             width: 100%;
         }
@@ -548,7 +548,7 @@
             background-color: var(--mario-yellow);
             color: #b71c1c;
             border: 4px solid #000;
-            padding: 12px 18px;
+            padding: 12px 20px;
             font-size: 12px;
             font-weight: bold;
             border-radius: 12px;
@@ -556,12 +556,12 @@
             box-shadow: 0 4px 0px #f57f17;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: transform 0.1s;
         }
         .btn-player-pick img {
-            width: 22px;
-            height: 22px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
         }
         .btn-player-pick:active { transform: scale(0.95); }
@@ -595,7 +595,7 @@
         .player-row-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex: 1;
         }
         .player-row-item input[type="text"] {
@@ -621,7 +621,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 10px;
             font-weight: bold;
             font-family: 'Press Start 2P', cursive;
@@ -629,8 +629,8 @@
             box-shadow: 0 3px 0px #000;
         }
         .char-row-btn img {
-            width: 22px;
-            height: 22px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
         }
         .char-row-btn.selected-mario {
@@ -648,10 +648,64 @@
             transform: translateY(-2px);
         }
 
-        .player-avatar-icon {
+        /* UKURAN AVATAR MARIO DIPERBESAR, LUIGI TETAP STANDARD */
+        .player-avatar-icon.mario-avatar {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        .player-avatar-icon.luigi-avatar {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .row-avatar-img.mario-avatar {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+        .row-avatar-img.luigi-avatar {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .btn-player-pick img.mario-avatar {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+        }
+        .btn-player-pick img.luigi-avatar {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .char-row-btn img.mario-avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        .char-row-btn img.luigi-avatar {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .scoreboard-avatar.mario-avatar {
+            width: 38px;
+            height: 38px;
+            vertical-align: middle;
+            object-fit: contain;
+            margin-right: 4px;
+        }
+        .scoreboard-avatar.luigi-avatar {
             width: 30px;
             height: 30px;
+            vertical-align: middle;
             object-fit: contain;
+            margin-right: 4px;
         }
 
         #feedback {
@@ -662,14 +716,6 @@
         }
         .correct { color: #2e7d32; }
         .incorrect { color: #d32f2f; }
-        
-        .scoreboard-avatar {
-            width: 20px;
-            height: 20px;
-            vertical-align: middle;
-            object-fit: contain;
-            margin-right: 2px;
-        }
     </style>
 </head>
 <body>
@@ -686,15 +732,15 @@
             <div class="player-row-item" data-char="mario">
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
-                    <img src="mario.png" class="player-avatar-icon row-avatar-img">
+                    <img src="mario.png" class="player-avatar-icon row-avatar-img mario-avatar">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 1" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
-                        <img src="mario.png"> Mario
+                        <img src="mario.png" class="mario-avatar"> Mario
                     </div>
                     <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'luigi')">
-                        <img src="luigi.png"> Luigi
+                        <img src="luigi.png" class="luigi-avatar"> Luigi
                     </div>
                 </div>
             </div>
@@ -702,15 +748,15 @@
             <div class="player-row-item" data-char="luigi">
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#2</span>
-                    <img src="luigi.png" class="player-avatar-icon row-avatar-img">
+                    <img src="luigi.png" class="player-avatar-icon row-avatar-img luigi-avatar">
                     <input type="text" class="p-name-input" placeholder="Nama Pahlawan 2" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'mario')">
-                        <img src="mario.png"> Mario
+                        <img src="mario.png" class="mario-avatar"> Mario
                     </div>
                     <div class="char-row-btn selected-luigi" onclick="setPlayerRowCharacter(this, 'luigi')">
-                        <img src="luigi.png"> Luigi
+                        <img src="luigi.png" class="luigi-avatar"> Luigi
                     </div>
                 </div>
             </div>
@@ -947,7 +993,9 @@
             btnLuigi.className = 'char-row-btn selected-luigi';
         }
 
-        rowItem.querySelector('.row-avatar-img').src = `${charName}.png`;
+        let avatarImg = rowItem.querySelector('.row-avatar-img');
+        avatarImg.src = `${charName}.png`;
+        avatarImg.className = `player-avatar-icon row-avatar-img ${charName}-avatar`;
     }
 
     function addPlayerRow() {
@@ -961,15 +1009,15 @@
         div.innerHTML = `
             <div class="player-row-left">
                 <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#${count}</span>
-                <img src="mario.png" class="player-avatar-icon row-avatar-img">
+                <img src="mario.png" class="player-avatar-icon row-avatar-img mario-avatar">
                 <input type="text" class="p-name-input" placeholder="Nama Pahlawan ${count}" value="">
             </div>
             <div class="char-choice-group-row">
                 <div class="char-row-btn selected-mario" onclick="setPlayerRowCharacter(this, 'mario')">
-                    <img src="mario.png"> Mario
+                    <img src="mario.png" class="mario-avatar"> Mario
                 </div>
                 <div class="char-row-btn" onclick="setPlayerRowCharacter(this, 'luigi')">
-                    <img src="luigi.png"> Luigi
+                    <img src="luigi.png" class="luigi-avatar"> Luigi
                 </div>
             </div>
         `;
@@ -1049,8 +1097,9 @@
 
     function updateScoreboardText() {
         let text = players.map(p => {
-            let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
-            return `<img src="${imgFile}" class="scoreboard-avatar"><b>${p}:</b> ${playerScores[p]}💎`;
+            let char = playerCharacters[p];
+            let imgFile = char === 'mario' ? 'mario.png' : 'luigi.png';
+            return `<img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"><b>${p}:</b> ${playerScores[p]}💎`;
         }).join(' | ');
         document.getElementById('scoreboard-text').innerHTML = text;
     }
@@ -1059,8 +1108,9 @@
         if (questionIndex >= questions.length) {
             let finalHtml = "";
             players.forEach(p => {
-                let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
-                finalHtml += `<img src="${imgFile}" class="scoreboard-avatar"> ${p}: <b>${playerScores[p]} Koin</b><br>`;
+                let char = playerCharacters[p];
+                let imgFile = char === 'mario' ? 'mario.png' : 'luigi.png';
+                finalHtml += `<img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"> ${p}: <b>${playerScores[p]} Koin</b><br>`;
             });
             document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
@@ -1134,10 +1184,11 @@
         document.getElementById('player-selector-container').style.display = 'flex';
 
         availablePlayers.forEach(p => {
-            let imgFile = playerCharacters[p] === 'mario' ? 'mario.png' : 'luigi.png';
+            let char = playerCharacters[p];
+            let imgFile = char === 'mario' ? 'mario.png' : 'luigi.png';
             let btn = document.createElement('button');
             btn.className = 'btn-player-pick';
-            btn.innerHTML = `<img src="${imgFile}"> ${p}`;
+            btn.innerHTML = `<img src="${imgFile}" class="${char}-avatar"> ${p}`;
             btn.onclick = () => selectPlayerTurn(p);
             container.appendChild(btn);
         });
