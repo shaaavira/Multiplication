@@ -427,7 +427,6 @@
             height: 42px;
         }
 
-        /* PERUBAHAN: Lebar otomatis sesuai isi (fit-content) dan berada di tengah dengan jarak atas-bawah proporsional */
         .breakdown-section {
             display: inline-flex;
             justify-content: center;
@@ -557,28 +556,37 @@
         .level-card.expert { border-left: 16px solid #f44336; background: linear-gradient(135deg, #ffebee, #ffffff); }
         .level-card.nightmare { border-left: 16px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ffffff); }
 
+        /* PERUBAHAN: Penambahan max-height & overflow-y untuk player-selector-arena & player-buttons-grid agar aman untuk banyak pemain (>5 orang) */
         .player-selector-arena {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            margin: 15px 0;
+            gap: 12px;
+            margin: 10px 0;
             width: 100%;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 6px;
+            box-sizing: border-box;
         }
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
             width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 4px;
         }
+
         .btn-player-pick {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--mario-blue);
             color: #ffffff;
             border: 4px solid #000;
-            padding: 18px 28px;
-            font-size: 15px;
+            padding: 14px 22px;
+            font-size: 14px;
             font-weight: bold;
             border-radius: 16px;
             cursor: pointer;
@@ -590,8 +598,8 @@
         }
         .btn-player-pick img {
             object-fit: contain;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
         }
         .btn-player-pick:active { transform: scale(0.95); }
         .btn-player-pick:hover { background-color: #1a45e6; transform: translateY(-3px); box-shadow: 0 8px 0px #001a75; }
@@ -826,7 +834,7 @@
             <div class="game-play-layout">
                 <div class="main-game-column">
                     <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                        <p style="font-weight: bold; color: var(--mario-red); font-size: 15px; margin: 0; font-family:'Press Start 2P';">⭐ REBUTAN JAWAB! SIAPA CEPAT DIA DAPAT! ⭐</p>
+                        <p style="font-weight: bold; color: var(--mario-red); font-size: 14px; margin: 0; font-family:'Press Start 2P';">⭐ REBUTAN JAWAB! SIAPA CEPAT DIA DAPAT! ⭐</p>
                         <div class="player-buttons-grid" id="player-buttons-box"></div>
                     </div>
 
