@@ -15,7 +15,7 @@
             --mario-bg-sky: #5c94fc;
         }
 
-        /* FULLSCREEN & TANPA SCROLL DEFAULT */
+        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
         html, body {
             width: 100vw;
             height: 100vh;
@@ -59,15 +59,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Default terkunci tanpa scroll */
+            overflow: hidden;
             box-sizing: border-box;
             gap: 6px !important;
         }
 
-        /* Kelas dinamis untuk mengaktifkan scroll jika pemain > 5 */
-        .game-container.scrollable-mode {
+        /* PERUBAHAN: Kelas dinamis untuk mengaktifkan scroll pada game container jika pemain > 5 */
+        .game-container.many-players {
             overflow-y: auto !important;
-            justify-content: flex-start !important;
         }
 
         .arcade-header-decor {
@@ -718,7 +717,7 @@
 </head>
 <body>
 
-<div class="game-container" id="main-game-box">
+<div class="game-container" id="main-game-container">
     <!-- SCREEN 1: INPUT NAMA & PILIH KOTAK PAHLAWAN -->
     <div id="screen-welcome" class="screen active">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
@@ -1191,12 +1190,12 @@
 
         tvPeringatan.style.display = "none";
 
-        // Logika Otomatis: Jika pemain lebih dari 5 orang, aktifkan mode scroll pada container game
-        let mainGameBox = document.getElementById('main-game-box');
+        // PERUBAHAN: Aktifkan scroll container utama jika jumlah pemain lebih dari 5 orang
+        let containerBox = document.getElementById('main-game-container');
         if (players.length > 5) {
-            mainGameBox.classList.add('scrollable-mode');
+            containerBox.classList.add('many-players');
         } else {
-            mainGameBox.classList.remove('scrollable-mode');
+            containerBox.classList.remove('many-players');
         }
 
         let namesStr = players.map(p => `${playerCharacters[p] === 'mario' ? '🍄' : '⭐'} ${p}`).join(', ');
@@ -1717,7 +1716,6 @@
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
-                    z.classList.0 = ''; // reset safeguard
                     z.classList.add('error-highlight');
                     setTimeout(() => z.classList.remove('error-highlight'), 600);
                 });
