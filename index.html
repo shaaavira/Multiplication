@@ -64,11 +64,14 @@
             gap: 6px !important;
         }
 
-        /* PERUBAHAN: Mengizinkan scroll vertikal pada screen game jika pemain banyak (>5 orang) */
+        /* PERUBAHAN: Scroll vertikal dinamis hanya aktif jika pemain > 5 */
         #screen-game {
-            overflow-y: auto !important;
+            overflow-y: hidden;
             max-height: 84vh;
             padding-right: 6px;
+        }
+        #screen-game.enable-scroll {
+            overflow-y: auto !important;
         }
         #screen-game::-webkit-scrollbar {
             width: 8px;
@@ -1206,6 +1209,14 @@
         document.getElementById('display-players-list-menu').innerText = namesStr;
         document.getElementById('display-players-list').innerText = namesStr;
         
+        // PERUBAHAN: Aktifkan scroll pada screen game hanya jika pemain lebih dari 5 orang
+        let screenGame = document.getElementById('screen-game');
+        if (players.length > 5) {
+            screenGame.classList.add('enable-scroll');
+        } else {
+            screenGame.classList.remove('enable-scroll');
+        }
+
         goToScreen('screen-main-menu');
     }
 
