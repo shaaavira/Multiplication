@@ -204,22 +204,21 @@
         
         /* STYLE KHUSUS KOTAK SOAL SAAT REBUTAN (PENDEK & DI TENGAH) */
         .question-box.highlight-big-question {
-            font-size: 32px;
+            font-size: 36px;
             color: #b71c1c;
             background: #e8f5e9;
             border: 6px solid #43b3ae;
             box-shadow: 0 8px 0px rgba(0,0,0,0.15);
             animation: pulseQuestion 1.5s infinite alternate;
             width: auto !important;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 12px 30px;
+            max-width: 700px;
+            margin: 20px auto !important;
+            padding: 18px 40px;
             display: inline-block;
         }
         @keyframes pulseQuestion {
             0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
+            100% { transform: scale(1.03); }
         }
 
         .game-play-layout {
@@ -238,7 +237,7 @@
             min-width: 480px;
         }
 
-        /* PERUBAHAN WARNA: Kotak Bantuan Pembagian (Hijau Mint/Teal) */
+        /* KOTAK BANTUAN PEMBAGIAN (Hijau Mint/Teal) */
         .helper-multiples-box {
             display: none;
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -264,7 +263,7 @@
             padding-bottom: 4px;
         }
 
-        /* PERUBAHAN WARNA: Kotak Bantuan Perkalian (Biru Muda/Cyan) */
+        /* KOTAK BANTUAN PERKALIAN (Biru Muda/Cyan) */
         .helper-multiplication-box {
             display: none;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
@@ -563,14 +562,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            margin: 10px 0;
+            gap: 16px;
+            margin: 15px 0;
             width: 100%;
         }
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 16px;
             justify-content: center;
             width: 100%;
         }
@@ -579,8 +578,8 @@
             background-color: var(--mario-blue);
             color: #ffffff;
             border: 4px solid #000;
-            padding: 16px 24px;
-            font-size: 14px;
+            padding: 18px 28px;
+            font-size: 15px;
             font-weight: bold;
             border-radius: 16px;
             cursor: pointer;
@@ -592,8 +591,8 @@
         }
         .btn-player-pick img {
             object-fit: contain;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
         }
         .btn-player-pick:active { transform: scale(0.95); }
         .btn-player-pick:hover { background-color: #1a45e6; transform: translateY(-3px); box-shadow: 0 8px 0px #001a75; }
@@ -1255,7 +1254,8 @@
         
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
-        // Menggunakan class highlight-big-question saat pemilihan agar posisinya di tengah dan lebarnya menyesuaikan soal (pendek)
+        
+        // Menerapkan class highlight agar kotak soal di tengah layar saat rebutan
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
@@ -1317,7 +1317,7 @@
         document.getElementById('player-selector-container').style.display = 'none';
         
         let qBox = document.getElementById('question-text');
-        // Kembali ke style normal penuh saat pemain sudah terpilih dan mengerjakan
+        // Mengembalikan ukuran kotak soal normal setelah pemain terpilih
         qBox.className = "question-box";
 
         document.getElementById('bond-container').style.display = 'flex';
