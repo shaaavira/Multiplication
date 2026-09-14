@@ -117,8 +117,14 @@
             justify-content: center;
             height: 100%;
             width: 100%;
+            animation: fadeInScreen 0.4s ease-in-out;
         }
         .screen.active { display: flex; }
+
+        @keyframes fadeInScreen {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
         .score-board-top {
             display: flex;
@@ -181,6 +187,11 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 3px 0px #3e2723;
+            animation: pulseScore 2s infinite alternate;
+        }
+        @keyframes pulseScore {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
         }
 
         .board-column-timer {
@@ -216,6 +227,11 @@
             justify-content: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.05);
             margin-bottom: 4px;
+            animation: bannerPulse 1.5s infinite alternate;
+        }
+        @keyframes bannerPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.005); }
         }
         #feedback-top-banner.correct { color: #2e7d32; background: #e8f5e9; border-color: #2e7d32; }
         #feedback-top-banner.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
@@ -230,7 +246,7 @@
 
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 20px; /* Sesuai instruksi: soal untuk dikerjakan tetap 20px */
+            font-size: 20px;
             color: var(--mario-blue);
             margin-bottom: 8px;
             width: fit-content !important;
@@ -246,7 +262,7 @@
         }
         
         .question-box.highlight-big-question {
-            font-size: 32px; /* Diubah menjadi 32px sesuai permintaan terbaru untuk soal saat awal pemilihan/tampil sebelum dijawab */
+            font-size: 32px;
             color: #b71c1c;
             background: #e8f5e9;
             border: 5px solid #43b3ae;
@@ -337,6 +353,7 @@
             color: #1b5e20;
         }
         
+        /* 🍄 ENHANCED NUMBER BOND CONTAINER & ANIMATIONS */
         .number-bond-container, .drop-zone-container {
             position: relative;
             width: 310px;
@@ -347,6 +364,11 @@
             margin-bottom: 12px !important;
             transform: scale(1.05);
             transform-origin: top center;
+            animation: floatContainer 3s ease-in-out infinite alternate;
+        }
+        @keyframes floatContainer {
+            0% { transform: scale(1.05) translateY(0); }
+            100% { transform: scale(1.05) translateY(-3px); }
         }
         
         .bond-circles {
@@ -372,13 +394,19 @@
             background-color: #ffebee;
             box-sizing: border-box;
             cursor: pointer;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
-            transition: all 0.2s;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15), 0 0 10px rgba(229, 37, 33, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: zoneGlow 2s infinite alternate;
         }
+        @keyframes zoneGlow {
+            0% { border-color: var(--mario-red); box-shadow: 0 4px 0px rgba(0,0,0,0.15), 0 0 5px rgba(229, 37, 33, 0.2); }
+            100% { border-color: #ff5722; box-shadow: 0 4px 0px rgba(0,0,0,0.15), 0 0 12px rgba(255, 87, 34, 0.5); }
+        }
+
         .circle-dropzone.highlight {
             background-color: #c8e6c9;
             border-color: #2e7d32 !important;
-            transform: scale(1.1);
+            transform: scale(1.15) rotate(5deg);
         }
         .circle-dropzone.error-highlight {
             background-color: #ffcdd2 !important;
@@ -388,18 +416,18 @@
         .circle-dropzone.correct-highlight {
             background-color: #c8e6c9 !important;
             border-color: #2e7d32 !important;
-            animation: popSuccess 0.3s ease-in-out;
+            animation: popSuccess 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
         }
 
         @keyframes popSuccess {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.25) rotate(-5deg); background-color: #81c784; }
             100% { transform: scale(1); }
         }
 
@@ -429,15 +457,38 @@
             cursor: pointer;
             user-select: none;
             touch-action: none;
-            box-shadow: 0 4px 0px #e65100;
-            transition: transform 0.1s;
+            box-shadow: 0 4px 0px #e65100, 0 0 8px rgba(255, 235, 59, 0.6);
+            transition: transform 0.1s, box-shadow 0.2s;
+            animation: coinBounce 1.2s infinite alternate ease-in-out;
+        }
+        @keyframes coinBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-4px); }
         }
         .draggable-item.dragging {
             position: fixed;
             z-index: 1000;
-            opacity: 0.9;
+            opacity: 0.95;
             pointer-events: none;
-            transform: scale(1.15);
+            transform: scale(1.25) rotate(10deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            animation: none;
+        }
+
+        /* 🌟 SPARKLE EFFECT ANIMATION */
+        .sparkle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #fff 20%, #f8b800 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnim 0.6s ease-out forwards;
+            z-index: 999;
+        }
+        @keyframes sparkleAnim {
+            0% { transform: scale(0.2) translate(0, 0); opacity: 1; }
+            100% { transform: scale(1.5) translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
         .circle-input {
@@ -458,6 +509,12 @@
             box-sizing: border-box;
             -moz-appearance: textfield;
             box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .circle-input:focus {
+            transform: scale(1.1);
+            background-color: #fff;
+            border-color: #e65100 !important;
         }
         .circle-input::-webkit-outer-spin-button,
         .circle-input::-webkit-inner-spin-button {
@@ -481,7 +538,7 @@
             border: 4px solid #81c784;
             padding: 10px 20px;
             border-radius: 14px;
-            transition: opacity 0.3s;
+            transition: all 0.3s ease-in-out;
             width: fit-content;
             max-width: 100%;
             box-sizing: border-box;
@@ -489,6 +546,7 @@
         .breakdown-section.disabled-section {
             opacity: 0.4;
             pointer-events: none;
+            transform: scale(0.98);
         }
 
         .input-group {
@@ -1318,7 +1376,6 @@
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         
-        // Reset Banner Atas
         let banner = document.getElementById('feedback-top-banner');
         banner.innerText = "⭐ Pilih pahlawan untuk menjawab soal ini!";
         banner.className = "";
@@ -1370,7 +1427,7 @@
         document.getElementById('player-selector-container').style.display = 'none';
         
         let qBox = document.getElementById('question-text');
-        qBox.className = "question-box"; // Kembali ke 20px saat mulai dikerjakan
+        qBox.className = "question-box"; 
 
         document.getElementById('bond-container').style.display = 'flex';
         document.getElementById('inputs-container').style.display = 'flex';
@@ -1550,6 +1607,31 @@
         container.appendChild(finalGroup);
     }
 
+    /* 🌟 SPARKLE CREATOR FUNCTION */
+    function createSparkles(element) {
+        let rect = element.getBoundingClientRect();
+        let centerX = rect.left + rect.width / 2;
+        let centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 6; i++) {
+            let sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = `${centerX}px`;
+            sparkle.style.top = `${centerY}px`;
+
+            let angle = Math.random() * Math.PI * 2;
+            let distance = 40 + Math.random() * 40;
+            let dx = Math.cos(angle) * distance;
+            let dy = Math.sin(angle) * distance;
+
+            sparkle.style.setProperty('--dx', `${dx}px`);
+            sparkle.style.setProperty('--dy', `${dy}px`);
+
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 600);
+        }
+    }
+
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
@@ -1570,7 +1652,7 @@
             function onPointerMove(e) {
                 let dx = e.clientX - startX;
                 let dy = e.clientY - startY;
-                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.15)`;
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.25) rotate(10deg)`;
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     let zRect = zone.getBoundingClientRect();
@@ -1618,6 +1700,8 @@
                         }
 
                         playMarioSound('coin');
+                        createSparkles(zone);
+
                         if (zone.dataset.value) {
                             createDraggableItem(parseInt(zone.dataset.value), document.getElementById('drag-source-box'));
                         }
@@ -1737,6 +1821,7 @@
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
                     z.classList.add('correct-highlight');
+                    createSparkles(z);
                 });
             }
 
