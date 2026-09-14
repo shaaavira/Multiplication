@@ -145,7 +145,6 @@
             white-space: nowrap;
         }
 
-        /* PAPAN SKOR XP RETRO STYLE */
         .board-column-score {
             flex: 1;
             background: linear-gradient(135deg, #fff350, #ffb300);
@@ -198,6 +197,28 @@
             box-shadow: 0 4px 0px rgba(0,0,0,0.1);
             white-space: nowrap;
         }
+
+        /* BANNER GILIRAN PEMAIN DI BAGIAN ATAS */
+        #feedback-top-banner {
+            width: 100%;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 3px dashed #2e7d32;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            color: #1b5e20;
+            box-sizing: border-box;
+            text-align: center;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
+            margin-bottom: 4px;
+        }
+        #feedback-top-banner.correct { color: #2e7d32; background: #e8f5e9; border-color: #2e7d32; }
+        #feedback-top-banner.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
         
         .math-problem-area {
             display: flex;
@@ -230,8 +251,8 @@
             animation: pulseQuestion 1.5s infinite alternate;
             width: auto !important;
             max-width: 700px;
-            margin: 20px auto !important;
-            padding: 18px 40px;
+            margin: 10px auto !important;
+            padding: 16px 40px;
             display: inline-block;
         }
         @keyframes pulseQuestion {
@@ -452,7 +473,7 @@
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 14px auto;
+            margin: 10px auto;
             background: #f1f8e9;
             border: 4px solid #81c784;
             padding: 12px 24px;
@@ -718,15 +739,6 @@
             width: 28px !important; 
             height: 28px !important; 
         }
-
-        #feedback {
-            margin-top: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            min-height: 22px;
-        }
-        .correct { color: #2e7d32; }
-        .incorrect { color: #d32f2f; }
     </style>
 </head>
 <body>
@@ -846,6 +858,9 @@
             </div>
         </div>
         
+        <!-- BANNER ATAS UNTUK INFORMASI GILIRAN & FEEDBACK -->
+        <div id="feedback-top-banner">Siapkan dirimu!</div>
+
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Loading...</div>
             
@@ -885,7 +900,6 @@
 
         <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 6px; width: 35%;">JAWAB! 🎯</button>
         <button id="next-btn" class="btn btn-secondary" onclick="playMarioSound('click'); nextQuestion()" style="display:none; margin-top: 6px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
-        <div id="feedback"></div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
@@ -1300,7 +1314,11 @@
         document.getElementById('drag-source-wrapper').style.display = 'none';
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
-        document.getElementById('feedback').innerText = '';
+        
+        // Reset Banner Atas
+        let banner = document.getElementById('feedback-top-banner');
+        banner.innerText = "⭐ Pilih pahlawan untuk menjawab soal ini!";
+        banner.className = "";
 
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
@@ -1316,8 +1334,9 @@
 
         if (availablePlayers.length === 0) {
             document.getElementById('player-selector-container').style.display = 'none';
-            document.getElementById('feedback').innerText = "Semua pahlawan sudah mencoba soal ini! Lanjut ke soal berikutnya.";
-            document.getElementById('feedback').className = "incorrect";
+            let banner = document.getElementById('feedback-top-banner');
+            banner.innerText = "Semua pahlawan sudah mencoba soal ini! Lanjut ke soal berikutnya.";
+            banner.className = "incorrect";
             document.getElementById('next-btn').style.display = 'block';
             clearInterval(timerInterval);
             document.getElementById('lbl-timer').innerText = '-';
@@ -1378,9 +1397,9 @@
             helperMultiplication.style.display = 'block';
         }
 
-        let feedback = document.getElementById('feedback');
-        feedback.innerText = `Giliran ${playerName}! Lengkapi Number Bond di atas.`;
-        feedback.className = "correct";
+        let banner = document.getElementById('feedback-top-banner');
+        banner.innerText = `🍄 Giliran ${playerName}! Lengkapi Number Bond di atas.`;
+        banner.className = "correct";
 
         setupStandardGameplay();
 
@@ -1569,7 +1588,7 @@
                 item.style.left = '';
                 item.style.top = '';
 
-                let feedback = document.getElementById('feedback');
+                let banner = document.getElementById('feedback-top-banner');
                 let droppedInZone = false;
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
@@ -1588,8 +1607,8 @@
                             zone.classList.add('error-highlight');
                             setTimeout(() => zone.classList.remove('error-highlight'), 600);
                             
-                            feedback.innerText = `⚠️ Koin angka ${val} kurang tepat di sini!`;
-                            feedback.className = "incorrect";
+                            banner.innerText = `⚠️ Koin angka ${val} kurang tepat di sini!`;
+                            banner.className = "incorrect";
                             
                             container.appendChild(item);
                             return;
@@ -1607,7 +1626,8 @@
                         setTimeout(() => zone.classList.remove('correct-highlight'), 600);
 
                         item.remove();
-                        feedback.innerText = "";
+                        banner.innerText = `🍄 Giliran ${activePlayer}! Lanjutkan mengisi...`;
+                        banner.className = "correct";
                         checkNumberBondCompletion();
                     }
                 });
@@ -1649,16 +1669,16 @@
         } else {
             clearInterval(timerInterval);
             playMarioSound('wrong');
-            let feedback = document.getElementById('feedback');
+            let banner = document.getElementById('feedback-top-banner');
             
             if (!activePlayer) {
-                feedback.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
-                feedback.className = "incorrect";
+                banner.innerText = "⏰ Waktu habis! Lanjut ke soal berikutnya.";
+                banner.className = "incorrect";
                 document.getElementById('player-selector-container').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'block';
             } else {
-                feedback.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pahlawan lain!`;
-                feedback.className = "incorrect";
+                banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut!`;
+                banner.className = "incorrect";
                 playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
                 updateScoreboardText();
 
@@ -1698,7 +1718,7 @@
         let userFinal = parseInt(document.getElementById('final-ans').value);
         if (userFinal !== currentQuestion.ans) allCorrect = false;
 
-        let feedback = document.getElementById('feedback');
+        let banner = document.getElementById('feedback-top-banner');
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
 
@@ -1706,8 +1726,8 @@
             playMarioSound('coin'); 
             setTimeout(() => playMarioSound('correct'), 250); 
             
-            feedback.innerText = `HEBAT! +10 XP untuk ${activePlayer}! 🍄🎉`;
-            feedback.className = "correct";
+            banner.innerText = `HEBAT! +10 XP untuk ${activePlayer}! 🍄🎉`;
+            banner.className = "correct";
             playerScores[activePlayer] += 10;
             updateScoreboardText();
             
@@ -1724,8 +1744,8 @@
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            feedback.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 XP) Giliran direbut teman lain!`;
-            feedback.className = "incorrect";
+            banner.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 XP) Giliran direbut teman lain!`;
+            banner.className = "incorrect";
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
