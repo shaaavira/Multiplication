@@ -230,20 +230,23 @@
 
         .question-box {
             font-family: 'Press Start 2P', cursive;
-            font-size: 28px;
+            font-size: 20px; /* Diubah menjadi 20px sesuai permintaan */
             color: var(--mario-blue);
             margin-bottom: 8px;
-            width: 100%;
+            width: fit-content !important; /* Kotak otomatis sesuai panjang teks soal */
+            max-width: 90%;
             background: #e3f2fd;
-            padding: 14px;
+            padding: 12px 28px;
             border-radius: 12px;
             border: 4px dashed var(--mario-blue);
             box-sizing: border-box;
             text-align: center;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .question-box.highlight-big-question {
-            font-size: 28px;
+            font-size: 20px; /* Diubah menjadi 20px */
             color: #b71c1c;
             background: #e8f5e9;
             border: 5px solid #43b3ae;
