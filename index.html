@@ -131,7 +131,7 @@
             justify-content: space-between;
             align-items: stretch;
             gap: 15px;
-            margin-bottom: 14px; /* DIPERBESAR JARAKNYA DARI SEBELUMNYA */
+            margin-bottom: 14px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -139,7 +139,7 @@
         .board-column-question {
             background: linear-gradient(135deg, #ffe0b2, #ffb74d);
             border: 3px solid #e65100;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 10px;
             color: #b71c1c;
             font-family: 'Press Start 2P', cursive;
@@ -149,6 +149,8 @@
             justify-content: center;
             box-shadow: 0 3px 0px #bf360c;
             white-space: nowrap;
+            width: fit-content;
+            flex: 0 0 auto;
         }
 
         .board-column-score {
@@ -207,6 +209,7 @@
             justify-content: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.1);
             white-space: nowrap;
+            flex: 0 0 auto;
         }
 
         /* BANNER GILIRAN PEMAIN DI BAGIAN ATAS */
@@ -353,7 +356,6 @@
             color: #1b5e20;
         }
         
-        /* 🍄 ENHANCED NUMBER BOND CONTAINER & ANIMATIONS */
         .number-bond-container, .drop-zone-container {
             position: relative;
             width: 310px;
@@ -475,7 +477,6 @@
             animation: none;
         }
 
-        /* 🌟 SPARKLE EFFECT ANIMATION */
         .sparkle {
             position: absolute;
             width: 12px;
@@ -973,7 +974,6 @@
 </div>
 
 <script>
-    /* ================= AUDIO & BGM SYSTEM (WEB AUDIO API) ================= */
     let audioCtx = null;
     let bgmInterval = null;
 
@@ -1605,7 +1605,6 @@
         container.appendChild(finalGroup);
     }
 
-    /* 🌟 SPARKLE CREATOR FUNCTION */
     function createSparkles(element) {
         let rect = element.getBoundingClientRect();
         let centerX = rect.left + rect.width / 2;
