@@ -202,7 +202,6 @@
             text-align: center;
         }
         
-        /* STYLE KHUSUS KOTAK SOAL SAAT REBUTAN (PENDEK & DI TENGAH) */
         .question-box.highlight-big-question {
             font-size: 36px;
             color: #b71c1c;
@@ -237,7 +236,6 @@
             min-width: 480px;
         }
 
-        /* KOTAK BANTUAN PEMBAGIAN (Hijau Mint/Teal) */
         .helper-multiples-box {
             display: none;
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -263,7 +261,6 @@
             padding-bottom: 4px;
         }
 
-        /* KOTAK BANTUAN PERKALIAN (Biru Muda/Cyan) */
         .helper-multiplication-box {
             display: none;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
@@ -431,19 +428,21 @@
             height: 42px;
         }
 
+        /* PERUBAHAN: Lebar otomatis sesuai isi (fit-content) dan berada di tengah */
         .breakdown-section {
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 6px 0;
+            margin: 6px auto;
             background: #f1f8e9;
             border: 4px solid #81c784;
-            padding: 10px 16px;
+            padding: 10px 20px;
             border-radius: 14px;
             transition: opacity 0.3s;
-            width: 100%;
+            width: fit-content;
+            max-width: 100%;
             box-sizing: border-box;
         }
         .breakdown-section.disabled-section {
@@ -457,15 +456,16 @@
             align-items: center;
         }
         .input-group label {
-            font-size: 20px;
+            font-size: 16px;
             color: #2e7d32;
             margin-bottom: 2px;
             font-weight: bold;
+            white-space: nowrap;
         }
         input[type="text"], input[type="number"] {
-            width: 100px;
+            width: 90px;
             padding: 8px;
-            font-size: 20px;
+            font-size: 18px;
             text-align: center;
             border: 4px solid #81c784;
             border-radius: 10px;
@@ -1255,7 +1255,6 @@
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
         
-        // Menerapkan class highlight agar kotak soal di tengah layar saat rebutan
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
@@ -1317,7 +1316,6 @@
         document.getElementById('player-selector-container').style.display = 'none';
         
         let qBox = document.getElementById('question-text');
-        // Mengembalikan ukuran kotak soal normal setelah pemain terpilih
         qBox.className = "question-box";
 
         document.getElementById('bond-container').style.display = 'flex';
