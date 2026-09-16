@@ -448,7 +448,6 @@
             animation: floatContainer 3s ease-in-out infinite alternate;
         }
 
-        /* PEMISAHAN POSISI NUMBER BOND PERKALIAN & PEMBAGIAN (DIUBAH) */
         .number-bond-container.mode-multiplication {
             margin-top: -20px !important;
         }
@@ -785,33 +784,46 @@
             background-image: url('lv4.png'); 
         }
 
+        /* PERBAIKAN POSISI: LAYAR REBUTAN GILIRAN PEMAIN TERSENDIRI DI TENGAH LAYAR */
+        #player-selector-screen-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeInScreen 0.3s ease-in-out;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
         .player-selector-arena {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 16px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 100%;
             max-width: 800px;
-            max-height: 400px;
-            overflow-y: auto;
+            max-height: 500px;
             padding: 16px;
             box-sizing: border-box;
-            z-index: 10;
         }
         .player-buttons-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             justify-content: center;
             width: 100%;
-            max-height: 220px;
+            max-height: 320px;
             overflow-y: auto;
-            padding: 4px;
+            padding: 8px;
         }
 
         .btn-player-pick {
@@ -1064,11 +1076,6 @@
             
             <div class="game-play-layout">
                 <div class="main-game-column">
-                    <div id="player-selector-container" class="player-selector-arena" style="display:none;">
-                        <p style="font-weight: bold; color: var(--pip-red); font-size: 14px; margin: 0; font-family:'Press Start 2P';">⭐ REBUTAN JAWAB! SIAPA CEPAT DIA DAPAT! ⭐</p>
-                        <div class="player-buttons-grid" id="player-buttons-box"></div>
-                    </div>
-
                     <div class="number-bond-container" id="bond-container" style="display:none;">
                         <svg class="lines-svg" viewBox="0 0 310 40" id="bond-lines"></svg>
                         <div class="bond-circles" id="bond-circles-container"></div>
@@ -1098,6 +1105,15 @@
 
         <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 4px; width: 35%;">JAWAB SEKARANG! 🎯</button>
         <button id="next-btn" class="btn btn-secondary" onclick="playAudio('click'); nextQuestion()" style="display:none; margin-top: 4px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
+
+        <!-- OVERLAY PEMILIH SIAPA YANG MENJAWAB (DI TENGAH LAYAR) -->
+        <div id="player-selector-screen-overlay">
+            <div class="player-selector-arena">
+                <div class="arcade-header-decor" style="font-size: 18px; color: var(--pip-yellow); text-shadow: 2px 2px 0px #e52521, 4px 4px 0px #000;">⭐ REBUTAN JAWAB! ⭐</div>
+                <p style="font-weight: bold; color: var(--pip-red); font-size: 14px; margin: 0; font-family:'Press Start 2P';">SIAPA CEPAT DIA DAPAT!</p>
+                <div class="player-buttons-grid" id="player-buttons-box"></div>
+            </div>
+        </div>
     </div>
 
     <!-- SCREEN 4: HASIL AKHIR -->
@@ -1613,7 +1629,7 @@
         let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
 
         if (availablePlayers.length === 0) {
-            document.getElementById('player-selector-container').style.display = 'none';
+            document.getElementById('player-selector-screen-overlay').style.display = 'none';
             let banner = document.getElementById('feedback-top-banner');
             banner.innerText = "Semua pahlawan hebat sudah menjawab! Lanjut ke petualangan berikutnya.";
             banner.className = "incorrect";
@@ -1623,7 +1639,7 @@
             return;
         }
 
-        document.getElementById('player-selector-container').style.display = 'flex';
+        document.getElementById('player-selector-screen-overlay').style.display = 'flex';
 
         availablePlayers.forEach(p => {
             let char = playerCharacters[p];
@@ -1644,7 +1660,7 @@
         activePlayer = playerName;
         answeredPlayersInThisQuestion.push(playerName);
 
-        document.getElementById('player-selector-container').style.display = 'none';
+        document.getElementById('player-selector-screen-overlay').style.display = 'none';
         
         let qBox = document.getElementById('question-text');
         qBox.className = "question-box"; 
@@ -1988,7 +2004,7 @@
             if (!activePlayer) {
                 banner.innerText = "⏰ Waktu habis! Giliran dilempar ke soal berikutnya.";
                 banner.className = "incorrect";
-                document.getElementById('player-selector-container').style.display = 'none';
+                document.getElementById('player-selector-screen-overlay').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'block';
             } else {
                 banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
