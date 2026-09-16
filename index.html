@@ -475,17 +475,17 @@
 
         .sparkle {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             background: radial-gradient(circle, #fff 20%, #f8b800 80%);
             border-radius: 50%;
             pointer-events: none;
-            animation: sparkleAnim 0.6s ease-out forwards;
+            animation: sparkleAnim 1.2s ease-out forwards;
             z-index: 999;
         }
         @keyframes sparkleAnim {
             0% { transform: scale(0.2) translate(0, 0); opacity: 1; }
-            100% { transform: scale(1.5) translate(var(--dx), var(--dy)); opacity: 0; }
+            100% { transform: scale(1.8) translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
         .circle-input {
@@ -1606,14 +1606,15 @@
         let centerX = rect.left + rect.width / 2;
         let centerY = rect.top + rect.height / 2;
 
-        for (let i = 0; i < 8; i++) {
+        // Dibuat lebih banyak (25 partikel) dan menyebar lebih luas
+        for (let i = 0; i < 25; i++) {
             let sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
             sparkle.style.left = `${centerX}px`;
             sparkle.style.top = `${centerY}px`;
 
             let angle = Math.random() * Math.PI * 2;
-            let distance = 50 + Math.random() * 50;
+            let distance = 60 + Math.random() * 90; // Sebaran lebih luas
             let dx = Math.cos(angle) * distance;
             let dy = Math.sin(angle) * distance;
 
@@ -1621,7 +1622,7 @@
             sparkle.style.setProperty('--dy', `${dy}px`);
 
             document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 600);
+            setTimeout(() => sparkle.remove(), 1200); // Durasi disesuaikan lebih lambat (1.2 detik)
         }
     }
 
@@ -1811,7 +1812,7 @@
             playerScores[activePlayer] += 10;
             updateScoreboardText();
             
-            // Memicu percikan bintang di sekitar kotak pertanyaan saat jawaban benar
+            // Memicu percikan bintang yang lebih banyak dan lambat di sekitar kotak pertanyaan
             createSparkles(document.getElementById('question-text'));
 
             if (currentLevel === 'easy') {
