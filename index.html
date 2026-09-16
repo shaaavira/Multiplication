@@ -13,67 +13,12 @@
             --mario-yellow: #f8b800;
             --mario-green: #43b3ae;
             --mario-bg-sky: #5c94fc;
-        }
-
-        /* TEMA WARNA BERDASARKAN LEVEL */
-        body.theme-easy {
-            --mario-bg-sky: #5c94fc;
-            background-color: #5c94fc;
-            background-image: radial-gradient(#7fc153 20%, transparent 21%), radial-gradient(#7fc153 20%, transparent 21%);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-        }
-        body.theme-easy .game-container {
-            background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-color: #2e7d32;
-        }
-        body.theme-easy #screen-game {
-            background: linear-gradient(180deg, #e8f5e9 0%, #a5d6a7 100%);
-            border-bottom: 20px solid #2e7d32; /* Efek rumput bawah */
-        }
-
-        body.theme-medium {
-            --mario-bg-sky: #1b365d;
-            background-color: #1b365d;
-            background-image: linear-gradient(45deg, #2d4f7c 25%, transparent 25%), linear-gradient(-45deg, #2d4f7c 25%, transparent 25%);
-            background-size: 40px 40px;
-        }
-        body.theme-medium .game-container {
-            background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
-            border-color: #00838f;
-        }
-        body.theme-medium #screen-game {
-            background: linear-gradient(180deg, #e0f7fa 0%, #80deea 100%);
-            border-bottom: 20px solid #006064; /* Efek pipa bawah */
-        }
-
-        body.theme-expert {
-            --mario-bg-sky: #4a148c;
-            background-color: #4a148c;
-            background-image: radial-gradient(circle, #7b1fa2 10%, transparent 11%);
-            background-size: 50px 50px;
-        }
-        body.theme-expert .game-container {
-            background: linear-gradient(180deg, #fff3e0 0%, #ffe0b2 100%);
-            border-color: #e65100;
-        }
-        body.theme-expert #screen-game {
-            background: linear-gradient(180deg, #fff3e0 0%, #ffcc80 100%);
-            border-bottom: 20px solid #ef6c00; /* Efek awan/kastil */
-        }
-
-        body.theme-nightmare {
-            --mario-bg-sky: #212121;
-            background-color: #212121;
-            background-image: repeating-linear-gradient(45deg, #333 0, #333 10px, #212121 0, #212121 20px);
-        }
-        body.theme-nightmare .game-container {
-            background: linear-gradient(180deg, #ffebee 0%, #ffcdd2 100%);
-            border-color: #b71c1c;
-        }
-        body.theme-nightmare #screen-game {
-            background: linear-gradient(180deg, #ffebee 0%, #ef9a9a 100%);
-            border-bottom: 20px solid #c62828; /* Efek lahar/markas Bowser */
+            
+            /* Dynamic Level Themes */
+            --level-bg: #ffffff;
+            --level-container-bg: #ffffff;
+            --level-border: #000;
+            --level-primary: var(--mario-red);
         }
 
         /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
@@ -88,6 +33,12 @@
 
         body {
             font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--mario-bg-sky);
+            background-image: 
+                radial-gradient(white 15%, transparent 16%),
+                radial-gradient(white 15%, transparent 16%);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
             color: #fff;
             text-align: center;
             touch-action: manipulation;
@@ -95,6 +46,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background-color 0.5s ease;
         }
 
         .game-container {
@@ -103,10 +55,11 @@
             max-width: 1450px;
             max-height: 900px;
             margin: auto;
+            background: var(--level-container-bg);
             color: #333;
             padding: 15px 25px;
             border-radius: 28px;
-            border: 8px solid #000;
+            border: 8px solid var(--level-border);
             box-shadow: 0 16px 0px #000, 0 25px 50px rgba(0,0,0,0.5);
             position: relative;
             text-shadow: none;
@@ -116,11 +69,50 @@
             overflow: hidden;
             box-sizing: border-box;
             gap: 6px !important;
-            transition: background 0.4s ease, border-color 0.4s ease;
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
 
         .game-container.many-players {
             overflow-y: auto !important;
+        }
+
+        /* --- THEME VARIATIONS FOR GAMEPLAY SCREEN --- */
+        .game-container.theme-easy {
+            --level-container-bg: #f1f8e9;
+            --level-border: #2e7d32;
+            background-image: linear-gradient(to bottom, #e8f5e9 0%, #f1f8e9 100%), radial-gradient(#a5d6a7 15%, transparent 16%);
+            background-size: 100% 100%, 40px 40px;
+        }
+        /* Elemen Rumput Dekoratif khusus Level Easy */
+        .game-container.theme-easy #screen-game::after {
+            content: "🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 18px;
+            letter-spacing: 12px;
+            opacity: 0.3;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .game-container.theme-medium {
+            --level-container-bg: #e0f7fa;
+            --level-border: #00838f;
+            background-image: linear-gradient(to bottom, #b2ebf2 0%, #e0f7fa 100%);
+        }
+
+        .game-container.theme-expert {
+            --level-container-bg: #fff3e0;
+            --level-border: #e65100;
+            background-image: linear-gradient(to bottom, #ffe0b2 0%, #fff3e0 100%);
+        }
+
+        .game-container.theme-nightmare {
+            --level-container-bg: #f3e5f5;
+            --level-border: #6a1b9a;
+            background-image: linear-gradient(to bottom, #e1bee7 0%, #f3e5f5 100%);
         }
 
         .arcade-header-decor {
@@ -173,8 +165,7 @@
             height: 100%;
             width: 100%;
             animation: fadeInScreen 0.4s ease-in-out;
-            box-sizing: border-box;
-            padding-bottom: 10px;
+            position: relative;
         }
         .screen.active { display: flex; }
 
@@ -588,7 +579,7 @@
             align-items: center;
             flex-wrap: wrap;
             margin: 6px auto;
-            background: #f1f8e9;
+            background: rgba(255, 255, 255, 0.9);
             border: 4px solid #81c784;
             padding: 10px 20px;
             border-radius: 14px;
@@ -653,14 +644,13 @@
         .btn-secondary { background-color: var(--mario-blue); box-shadow: 0 4px 0px #001a75; }
         .btn-secondary:hover { background-color: #1a45e6; box-shadow: 0 6px 0px #001a75; }
         
-        /* Tombol Kembali dengan padding & ukuran font yang diperbarui */
         .btn-back-menu {
             font-family: 'Press Start 2P', cursive;
             background-color: #78909c;
             color: white;
             border: 3px solid #000;
-            padding: 8px 12px; /* Atas-bawah 8px, Kiri-kanan 12px */
-            font-size: 10px;    /* Ukuran font 10px */
+            padding: 8px 12px;
+            font-size: 10px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
@@ -857,7 +847,7 @@
         }
     </style>
 </head>
-<body class="theme-easy">
+<body>
 
 <div class="game-container" id="main-game-container">
     <!-- SCREEN 0: HALAMAN SAMBUTAN (MISS RUNI) -->
@@ -1271,6 +1261,13 @@
     function goToScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
+        
+        // Reset container theme class when not in gameplay screen
+        let container = document.getElementById('main-game-container');
+        if (screenId !== 'screen-game') {
+            container.className = "game-container";
+            if (players.length > 5) container.classList.add('many-players');
+        }
     }
 
     function setPlayerRowCharacter(btnElement, charName) {
@@ -1389,12 +1386,14 @@
         questionIndex = 0;
         players.forEach(p => playerScores[p] = 0);
 
-        // Update tema warna body sesuai level yang dipilih
-        document.body.className = `theme-${level}`;
-
         let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
         questions = shuffledBank.slice(0, 5);
+
+        // Update container theme class based on selected level
+        let container = document.getElementById('main-game-container');
+        container.className = `game-container theme-${level}`;
+        if (players.length > 5) container.classList.add('many-players');
 
         goToScreen('screen-game');
         loadQuestion();
