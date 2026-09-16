@@ -14,14 +14,12 @@
             --pip-green: #43b3ae;
             --pip-bg-sky: #5c94fc;
             
-            /* Dynamic Level Themes - Background Putih Bersih */
             --level-bg: #ffffff;
             --level-container-bg: #ffffff;
             --level-border: #000;
             --level-primary: var(--pip-red);
         }
 
-        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
         html, body {
             width: 100vw;
             height: 100vh;
@@ -76,7 +74,6 @@
             overflow-y: auto !important;
         }
 
-        /* Level 1: Aksen Rumput Daun */
         .game-container.theme-easy {
             --level-container-bg: #ffffff;
             --level-border: #2e7d32;
@@ -94,7 +91,6 @@
             white-space: nowrap;
         }
 
-        /* Level 2: Aksen Pipa Tanah */
         .game-container.theme-medium {
             --level-container-bg: #ffffff;
             --level-border: #00838f;
@@ -112,7 +108,6 @@
             white-space: nowrap;
         }
 
-        /* Level 3: Aksen Matahari Awan */
         .game-container.theme-expert {
             --level-container-bg: #ffffff;
             --level-border: #e65100;
@@ -130,7 +125,6 @@
             white-space: nowrap;
         }
 
-        /* Level 4: Aksen Gunung Lahar Magma */
         .game-container.theme-nightmare {
             --level-container-bg: #ffffff;
             --level-border: #6a1b9a;
@@ -210,7 +204,7 @@
         .score-board-top {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Changed from stretch to center for independent vertical alignment */
+            align-items: center;
             gap: 15px;
             margin-bottom: 8px;
             width: 100%;
@@ -231,7 +225,7 @@
             justify-content: center;
             box-shadow: 0 3px 0px #bf360c;
             white-space: nowrap;
-            height: 40px; /* Fixed height independent of parent */
+            height: 40px;
             box-sizing: border-box;
         }
 
@@ -248,7 +242,7 @@
             box-shadow: 0 5px 0px #e65100, inset 0 3px 0px rgba(255,255,255,0.6);
             position: relative;
             overflow: hidden;
-            min-height: 40px; /* Independent minimum height */
+            min-height: 40px;
             box-sizing: border-box;
         }
 
@@ -293,36 +287,72 @@
             justify-content: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.1);
             white-space: nowrap;
-            height: 40px; /* Fixed height independent of parent */
+            height: 40px;
             box-sizing: border-box;
         }
 
-        #feedback-top-banner {
-            width: 100%;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            border: 3px dashed #2e7d32;
-            border-radius: 12px;
-            padding: 6px 12px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
-            color: #1b5e20;
-            box-sizing: border-box;
-            text-align: center;
-            min-height: 32px;
+        /* BUBBLE PERCAKAPAN DI POJOK KIRI */
+        .character-bubble-container {
+            position: absolute;
+            left: 15px;
+            top: 75px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            z-index: 10;
+            max-width: 320px;
+            animation: bubbleFloat 2s ease-in-out infinite alternate;
+        }
+        @keyframes bubbleFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+
+        .speaker-avatar-box {
+            width: 65px;
+            height: 65px;
+            min-width: 65px;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
-            margin-bottom: 4px;
-            z-index: 2;
-            animation: bannerPulse 1.5s infinite alternate;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+            overflow: hidden;
+            background: radial-gradient(circle, #fff350, #ffb300);
         }
-        @keyframes bannerPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.005); }
+        .speaker-avatar-box img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
         }
-        #feedback-top-banner.correct { color: #2e7d32; background: #e8f5e9; border-color: #2e7d32; }
-        #feedback-top-banner.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
+
+        .speech-bubble {
+            background: #ffffff;
+            border: 3px solid #000;
+            border-radius: 14px;
+            padding: 8px 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            color: #1b5e20;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+            text-align: left;
+            position: relative;
+            line-height: 1.4;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            border-width: 6px 10px 6px 0;
+            border-style: solid;
+            border-color: transparent #000 transparent transparent;
+            display: block;
+        }
+        .speech-bubble.correct { color: #2e7d32; background: #e8f5e9; border-color: #2e7d32; }
+        .speech-bubble.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
         
         .math-problem-area {
             display: flex;
@@ -790,7 +820,6 @@
             background-image: url('lv4.png'); 
         }
 
-        /* PERBAIKAN POSISI: LAYAR REBUTAN GILIRAN PEMAIN TERSENDIRI DI TENGAH LAYAR */
         #player-selector-screen-overlay {
             display: none;
             position: absolute;
@@ -1057,6 +1086,14 @@
 
     <!-- SCREEN 3: GAMEPLAY ARENA -->
     <div id="screen-game" class="screen" style="justify-content: flex-start; padding-top: 2px;">
+        <!-- BUBBLE PERCAKAPAN DI POJOK KIRI DENGAN KARAKTER DINAMIS -->
+        <div class="character-bubble-container" id="character-bubble-box">
+            <div class="speaker-avatar-box">
+                <img id="speaker-avatar-img" src="biasa.png" alt="Karakter">
+            </div>
+            <div class="speech-bubble" id="feedback-top-banner">Siapkan semangatmu, Pahlawan!</div>
+        </div>
+
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="playAudio('click'); returnToMenu()">⬅️ Pilih Level</button>
             <div style="font-family: 'Press Start 2P'; font-size: 14px; color: var(--pip-red);" id="game-title">Super Math Hero</div>
@@ -1074,8 +1111,6 @@
                 ⏱️ <span id="lbl-timer">-</span> detik
             </div>
         </div>
-        
-        <div id="feedback-top-banner">Siapkan semangatmu, Pahlawan!</div>
 
         <div class="math-problem-area">
             <div class="question-box" id="question-text">Memuat Permainan...</div>
@@ -1325,6 +1360,26 @@
     let timer = 60;
     let timerInterval = null;
     let answeredPlayersInThisQuestion = [];
+
+    // Fungsi pengubah avatar bubble secara dinamis (biasa, ceria, sedih)
+    function setBubbleState(state, message) {
+        let banner = document.getElementById('feedback-top-banner');
+        let avatarImg = document.getElementById('speaker-avatar-img');
+
+        banner.innerText = message;
+        banner.className = "speech-bubble";
+
+        if (state === 'correct') {
+            banner.classList.add('correct');
+            avatarImg.src = 'ceria.png';
+        } else if (state === 'incorrect') {
+            banner.classList.add('incorrect');
+            avatarImg.src = 'sedih.png';
+        } else {
+            // 'normal' / 'biasa'
+            avatarImg.src = 'biasa.png';
+        }
+    }
 
     const multiplicationLevelBanks = {
         easy: [
@@ -1619,9 +1674,7 @@
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         
-        let banner = document.getElementById('feedback-top-banner');
-        banner.innerText = "⭐ Siapa yang mau menjawab soal ini?";
-        banner.className = "";
+        setBubbleState('normal', "⭐ Siapa yang mau menjawab soal ini?");
 
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
@@ -1640,9 +1693,7 @@
 
         if (availablePlayers.length === 0) {
             document.getElementById('player-selector-screen-overlay').style.display = 'none';
-            let banner = document.getElementById('feedback-top-banner');
-            banner.innerText = "Semua pahlawan hebat sudah menjawab! Lanjut ke petualangan berikutnya.";
-            banner.className = "incorrect";
+            setBubbleState('incorrect', "Semua pahlawan hebat sudah menjawab! Lanjut ke petualangan berikutnya.");
             document.getElementById('next-btn').style.display = 'block';
             clearInterval(timerInterval);
             document.getElementById('lbl-timer').innerText = '-';
@@ -1706,9 +1757,7 @@
             helperMultiplication.style.display = 'block';
         }
 
-        let banner = document.getElementById('feedback-top-banner');
-        banner.innerText = `🍄 Giliran ${playerName}! Ayo lengkapi pohon angka ajaib di atas.`;
-        banner.className = "correct";
+        setBubbleState('normal', `🍄 Giliran ${playerName}! Ayo lengkapi pohon angka ajaib di atas.`);
 
         setupStandardGameplay();
 
@@ -1926,7 +1975,6 @@
                 item.style.left = '';
                 item.style.top = '';
 
-                let banner = document.getElementById('feedback-top-banner');
                 let droppedInZone = false;
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
@@ -1945,8 +1993,7 @@
                             zone.classList.add('error-highlight');
                             setTimeout(() => zone.classList.remove('error-highlight'), 600);
                             
-                            banner.innerText = `⚠️ Koin angka ${val} belum pas di sini, coba kotak lain!`;
-                            banner.className = "incorrect";
+                            setBubbleState('incorrect', `⚠️ Koin angka ${val} belum pas di sini, coba kotak lain!`);
                             
                             container.appendChild(item);
                             return;
@@ -1966,8 +2013,7 @@
                         setTimeout(() => zone.classList.remove('correct-highlight'), 600);
 
                         item.remove();
-                        banner.innerText = `🍄 Keren ${activePlayer}! Lanjutkan perjalananmu...`;
-                        banner.className = "correct";
+                        setBubbleState('normal', `🍄 Keren ${activePlayer}! Lanjutkan perjalananmu...`);
                         checkNumberBondCompletion();
                     }
                 });
@@ -2009,16 +2055,13 @@
         } else {
             clearInterval(timerInterval);
             playAudio('wrong');
-            let banner = document.getElementById('feedback-top-banner');
             
             if (!activePlayer) {
-                banner.innerText = "⏰ Waktu habis! Giliran dilempar ke soal berikutnya.";
-                banner.className = "incorrect";
+                setBubbleState('incorrect', "⏰ Waktu habis! Giliran dilempar ke soal berikutnya.");
                 document.getElementById('player-selector-screen-overlay').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'block';
             } else {
-                banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
-                banner.className = "incorrect";
+                setBubbleState('incorrect', `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`);
                 playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
                 updateScoreboardText();
 
@@ -2058,7 +2101,6 @@
         let userFinal = parseInt(document.getElementById('final-ans').value);
         if (userFinal !== currentQuestion.ans) allCorrect = false;
 
-        let banner = document.getElementById('feedback-top-banner');
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
 
@@ -2066,8 +2108,7 @@
             playAudio('coin'); 
             setTimeout(() => playAudio('correct'), 250); 
             
-            banner.innerText = `LUAR BIASA! +10 XP untuk ${activePlayer}! 🍄🎉`;
-            banner.className = "correct";
+            setBubbleState('correct', `LUAR BIASA! +10 XP untuk ${activePlayer}! 🍄🎉`);
             playerScores[activePlayer] += 10;
             updateScoreboardText();
             
@@ -2087,8 +2128,7 @@
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
-            banner.className = "incorrect";
+            setBubbleState('incorrect', `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`);
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
