@@ -1213,6 +1213,30 @@
                 osc.start(now);
                 osc.stop(now + 0.25);
             }
+            else if (type === 'win') {
+                // Nada Kemenangan Khas Game Mario (Level Clear Fanfare)
+                let winNotes = [
+                    { f: 523.25, d: 0.12, t: 0 },    // C5
+                    { f: 659.25, d: 0.12, t: 0.12 }, // E5
+                    { f: 783.99, d: 0.12, t: 0.24 }, // G5
+                    { f: 1046.50, d: 0.25, t: 0.36 },// C6
+                    { f: 830.61, d: 0.12, t: 0.65 }, // Ab5
+                    { f: 987.77, d: 0.35, t: 0.77 }  // B5
+                ];
+                winNotes.forEach(n => {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    let startTime = now + n.t;
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(n.f, startTime);
+                    gain.gain.setValueAtTime(0.35, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + n.d);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + n.d);
+                });
+            }
         } catch(e) {}
     }
 
@@ -1415,7 +1439,6 @@
             }
         });
 
-        // ATURAN MINIMAL 1 NAMA PEMAIN
         if (players.length === 0) {
             tvPeringatan.style.display = "block";
             tvPeringatan.innerText = "⚠️ Harap masukkan minimal 1 nama pemain untuk memulai!";
@@ -1489,7 +1512,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            playMarioSound('correct');
+            playMarioSound('win'); // <-- BACKSOUND MENANG MARIO DIPANGGIL DI SINI
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
@@ -1511,7 +1534,6 @@
         
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
-        
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
@@ -1781,6 +1803,7 @@
         }
     }
 
+    // --- OPTIMASI DRAG AND DROP TANPA DELAY ---
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
@@ -1790,18 +1813,23 @@
         item.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             playMarioSound('click');
-            let startX = e.clientX;
-            let startY = e.clientY;
-            let rect = item.getBoundingClientRect();
             
+            let rect = item.getBoundingClientRect();
+            let shiftX = e.clientX - rect.left;
+            let shiftY = e.clientY - rect.top;
+
             item.classList.add('dragging');
-            item.style.left = `${rect.left}px`;
-            item.style.top = `${rect.top}px`;
+            item.setPointerCapture(e.pointerId);
+
+            function moveAt(clientX, clientY) {
+                item.style.left = `${clientX - shiftX}px`;
+                item.style.top = `${clientY - shiftY}px`;
+            }
+
+            moveAt(e.clientX, e.clientY);
 
             function onPointerMove(e) {
-                let dx = e.clientX - startX;
-                let dy = e.clientY - startY;
-                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.25) rotate(10deg)`;
+                moveAt(e.clientX, e.clientY);
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     let zRect = zone.getBoundingClientRect();
@@ -1815,10 +1843,10 @@
             }
 
             function onPointerUp(e) {
-                window.removeEventListener('pointermove', onPointerMove);
-                window.removeEventListener('pointerup', onPointerUp);
+                item.removeEventListener('pointermove', onPointerMove);
+                item.removeEventListener('pointerup', onPointerUp);
+                
                 item.classList.remove('dragging');
-                item.style.transform = '';
                 item.style.left = '';
                 item.style.top = '';
 
@@ -1873,8 +1901,8 @@
                 }
             }
 
-            window.addEventListener('pointermove', onPointerMove);
-            window.addEventListener('pointerup', onPointerUp);
+            item.addEventListener('pointermove', onPointerMove);
+            item.addEventListener('pointerup', onPointerUp);
         });
 
         container.appendChild(item);
