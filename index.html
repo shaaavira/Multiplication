@@ -1214,26 +1214,20 @@
                 osc.stop(now + 0.25);
             }
             else if (type === 'win') {
-                // Fanfare Kemenangan Super Mario yang Lebih Panjang, Megah, dan Meriah
                 let winNotes = [
-                    // Bagian Awal (Menanjak Semangat)
-                    { f: 523.25, d: 0.12, t: 0.00 }, // C5
-                    { f: 659.25, d: 0.12, t: 0.12 }, // E5
-                    { f: 783.99, d: 0.12, t: 0.24 }, // G5
-                    { f: 1046.50, d: 0.25, t: 0.36 },// C6
-                    { f: 830.61, d: 0.12, t: 0.65 }, // Ab5
-                    { f: 987.77, d: 0.25, t: 0.77 }, // B5
-                    
-                    // Bagian Tambahan (Lebih Panjang & Megah Khas Stage Clear)
-                    { f: 1046.50, d: 0.15, t: 1.05 }, // C6
-                    { f: 1174.66, d: 0.15, t: 1.22 }, // D6
-                    { f: 1318.51, d: 0.15, t: 1.39 }, // E6
-                    { f: 1567.98, d: 0.35, t: 1.56 }, // G6 (Puncak Panjang)
-                    
-                    // Penutup Ikonik Bertema Kemenangan Epik
-                    { f: 1318.51, d: 0.15, t: 2.00 }, // E6
-                    { f: 1567.98, d: 0.15, t: 2.18 }, // G6
-                    { f: 2093.00, d: 0.60, t: 2.36 }  // C7 (Nada Tinggi Panjang Menggelegar)
+                    { f: 523.25, d: 0.12, t: 0.00 },
+                    { f: 659.25, d: 0.12, t: 0.12 },
+                    { f: 783.99, d: 0.12, t: 0.24 },
+                    { f: 1046.50, d: 0.25, t: 0.36 },
+                    { f: 830.61, d: 0.12, t: 0.65 },
+                    { f: 987.77, d: 0.25, t: 0.77 },
+                    { f: 1046.50, d: 0.15, t: 1.05 },
+                    { f: 1174.66, d: 0.15, t: 1.22 },
+                    { f: 1318.51, d: 0.15, t: 1.39 },
+                    { f: 1567.98, d: 0.35, t: 1.56 },
+                    { f: 1318.51, d: 0.15, t: 2.00 },
+                    { f: 1567.98, d: 0.15, t: 2.18 },
+                    { f: 2093.00, d: 0.60, t: 2.36 }
                 ];
                 
                 winNotes.forEach(n => {
@@ -1264,9 +1258,8 @@
     let currentQuestion = {};
     let timer = 60;
     let timerInterval = null;
-    let answeredPlayersInThisQuestion = [];
+    let failedPlayersInThisQuestion = 0; // TAMBAHAN: Menghitung berapa pemain yang sudah salah
 
-    // BANK SOAL PERKALIAN
     const multiplicationLevelBanks = {
         easy: [
             { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
@@ -1318,7 +1311,6 @@
         ]
     };
 
-    // BANK SOAL PEMBAGIAN (DIVISION)
     const divisionLevelBanks = {
         easy: [
             { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
@@ -1525,7 +1517,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            playMarioSound('win'); // <-- BACKSOUND MENANG MARIO DIPANGGIL DI SINI
+            playMarioSound('win');
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
@@ -1539,7 +1531,7 @@
 
         currentQuestion = questions[questionIndex];
         activePlayer = null;
-        answeredPlayersInThisQuestion = [];
+        failedPlayersInThisQuestion = 0; // RESET hitungan salah untuk soal baru
 
         let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
         document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'DUNIA PERKALIAN ✖️' : 'DUNIA PEMBAGIAN ➗';
@@ -1575,22 +1567,9 @@
         let container = document.getElementById('player-buttons-box');
         container.innerHTML = '';
         
-        let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
-
-        if (availablePlayers.length === 0) {
-            document.getElementById('player-selector-container').style.display = 'none';
-            let banner = document.getElementById('feedback-top-banner');
-            banner.innerText = "Semua pahlawan hebat sudah menjawab! Lanjut ke petualangan berikutnya.";
-            banner.className = "incorrect";
-            document.getElementById('next-btn').style.display = 'block';
-            clearInterval(timerInterval);
-            document.getElementById('lbl-timer').innerText = '-';
-            return;
-        }
-
         document.getElementById('player-selector-container').style.display = 'flex';
 
-        availablePlayers.forEach(p => {
+        players.forEach(p => {
             let char = playerCharacters[p];
             let imgFile = char === 'mario' ? 'mario.png' : 'luigi.png';
             let btn = document.createElement('button');
@@ -1607,7 +1586,6 @@
     function selectPlayerTurn(playerName) {
         clearInterval(timerInterval);
         activePlayer = playerName;
-        answeredPlayersInThisQuestion.push(playerName);
 
         document.getElementById('player-selector-container').style.display = 'none';
         
@@ -1816,7 +1794,6 @@
         }
     }
 
-    // --- OPTIMASI DRAG AND DROP TANPA DELAY ---
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
@@ -1949,28 +1926,63 @@
             let banner = document.getElementById('feedback-top-banner');
             
             if (!activePlayer) {
-                banner.innerText = "⏰ Waktu habis! Giliran dilempar ke soal berikutnya.";
+                banner.innerText = "⏰ Waktu habis! Silakan pilih pahlawan untuk menjawab.";
                 banner.className = "incorrect";
-                document.getElementById('player-selector-container').style.display = 'none';
-                document.getElementById('next-btn').style.display = 'block';
-            } else {
-                banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
-                banner.className = "incorrect";
-                playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
-                updateScoreboardText();
-
                 document.getElementById('bond-container').style.display = 'none';
                 document.getElementById('inputs-container').style.display = 'none';
                 document.getElementById('drag-source-wrapper').style.display = 'none';
                 document.getElementById('submit-btn').style.display = 'none';
-                document.getElementById('lbl-timer').innerText = '-';
-                
-                document.getElementById('helper-division').style.display = 'none';
-                document.getElementById('helper-multiplication').style.display = 'none';
-
                 renderPlayerSelector();
+            } else {
+                failedPlayersInThisQuestion++;
+                if (failedPlayersInThisQuestion >= 2) {
+                    // Jika 2 pemain salah/habis waktu, tampilkan kunci jawaban
+                    showAnswerKey("⏰ Waktu habis! Kesempatan selesai. Kunci jawaban ditampilkan untuk dibahas bersama.");
+                } else {
+                    banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
+                    banner.className = "incorrect";
+                    playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+                    updateScoreboardText();
+
+                    document.getElementById('bond-container').style.display = 'none';
+                    document.getElementById('inputs-container').style.display = 'none';
+                    document.getElementById('drag-source-wrapper').style.display = 'none';
+                    document.getElementById('submit-btn').style.display = 'none';
+                    document.getElementById('lbl-timer').innerText = '-';
+                    
+                    document.getElementById('helper-division').style.display = 'none';
+                    document.getElementById('helper-multiplication').style.display = 'none';
+
+                    activePlayer = null;
+                    renderPlayerSelector();
+                }
             }
         }
+    }
+
+    function showAnswerKey(message) {
+        let banner = document.getElementById('feedback-top-banner');
+        banner.innerText = message;
+        banner.className = "incorrect";
+
+        document.getElementById('bond-container').style.display = 'none';
+        document.getElementById('inputs-container').style.display = 'none';
+        document.getElementById('drag-source-wrapper').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+        document.getElementById('player-selector-container').style.display = 'none';
+        document.getElementById('helper-division').style.display = 'none';
+        document.getElementById('helper-multiplication').style.display = 'none';
+        document.getElementById('lbl-timer').innerText = '-';
+
+        // Tampilkan kunci jawaban di area soal atau buat section khusus pembahasan
+        let qBox = document.getElementById('question-text');
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        let decompStr = currentQuestion.decomp.join(' dan ');
+        let partsStr = currentQuestion.parts.join(' + ');
+        qBox.innerHTML = `KUNCI JAWABAN:<br>${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = (${decompStr})<br>Bagian: ${partsStr} = <b>${currentQuestion.ans}</b>`;
+        qBox.className = "question-box highlight-big-question";
+
+        document.getElementById('next-btn').style.display = 'block';
     }
 
     function checkAnswer() {
@@ -2024,30 +2036,38 @@
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
-            banner.className = "incorrect";
-            
-            if (currentLevel === 'easy') {
-                document.querySelectorAll('.circle-dropzone').forEach(z => {
-                    z.classList.add('error-highlight');
-                    setTimeout(() => z.classList.remove('error-highlight'), 600);
-                });
-            } else {
-                document.querySelectorAll('.circle-input').forEach(i => {
-                    i.classList.add('error-highlight');
-                    setTimeout(() => i.classList.remove('error-highlight'), 600);
-                });
-            }
-            
-            document.getElementById('bond-container').style.display = 'none';
-            document.getElementById('inputs-container').style.display = 'none';
-            document.getElementById('drag-source-wrapper').style.display = 'none';
-            document.getElementById('submit-btn').style.display = 'none';
-            
-            document.getElementById('helper-division').style.display = 'none';
-            document.getElementById('helper-multiplication').style.display = 'none';
+            failedPlayersInThisQuestion++;
 
-            renderPlayerSelector();
+            if (failedPlayersInThisQuestion >= 2) {
+                // Jika sudah 2 pemain salah, tampilkan kunci jawaban untuk dibahas bersama teacher
+                showAnswerKey(`❌ Wah, dua pemain sudah salah! (-5 XP). Kunci jawaban ditampilkan untuk dibahas bersama.`);
+            } else {
+                banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
+                banner.className = "incorrect";
+                
+                if (currentLevel === 'easy') {
+                    document.querySelectorAll('.circle-dropzone').forEach(z => {
+                        z.classList.add('error-highlight');
+                        setTimeout(() => z.classList.remove('error-highlight'), 600);
+                    });
+                } else {
+                    document.querySelectorAll('.circle-input').forEach(i => {
+                        i.classList.add('error-highlight');
+                        setTimeout(() => i.classList.remove('error-highlight'), 600);
+                    });
+                }
+                
+                document.getElementById('bond-container').style.display = 'none';
+                document.getElementById('inputs-container').style.display = 'none';
+                document.getElementById('drag-source-wrapper').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'none';
+                
+                document.getElementById('helper-division').style.display = 'none';
+                document.getElementById('helper-multiplication').style.display = 'none';
+
+                activePlayer = null;
+                renderPlayerSelector();
+            }
         }
     }
 
