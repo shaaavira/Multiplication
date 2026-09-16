@@ -72,7 +72,7 @@
             transition: border-color 0.5s ease;
         }
 
-        /* PERUBAHAN / TAMBAHAN: Mengaktifkan scroll otomatis jika kelas many-players aktif */
+        /* Mengaktifkan scroll otomatis jika kelas many-players aktif */
         .game-container.many-players {
             overflow-y: auto !important;
         }
@@ -1517,7 +1517,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            playMarioSound('win');
+            playMarioSound('win'); 
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
