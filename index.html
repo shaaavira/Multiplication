@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Math Bros: Misi Menyelamatkan Dunia Pekarlian dan Pembagian</title>
+    <title>Super Math Bros: Misi Menyelamatkan Dunia Perkalian dan Pembagian</title>
     <!-- Memuat Google Fonts bergaya game retro (Press Start 2P & Fredoka) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,7 +14,7 @@
             --mario-green: #43b3ae;
             --mario-bg-sky: #5c94fc;
             
-            /* Dynamic Level Themes */
+            /* Dynamic Level Themes - Background Putih Bersih */
             --level-bg: #ffffff;
             --level-container-bg: #ffffff;
             --level-border: #000;
@@ -55,7 +55,7 @@
             max-width: 1450px;
             max-height: 900px;
             margin: auto;
-            background: var(--level-container-bg);
+            background: #ffffff;
             color: #333;
             padding: 15px 25px;
             border-radius: 28px;
@@ -69,50 +69,85 @@
             overflow: hidden;
             box-sizing: border-box;
             gap: 6px !important;
-            transition: background 0.5s ease, border-color 0.5s ease;
+            transition: border-color 0.5s ease;
         }
 
         .game-container.many-players {
             overflow-y: auto !important;
         }
 
-        /* --- THEME VARIATIONS FOR GAMEPLAY SCREEN --- */
+        /* --- THEME VARIATIONS: BACKGROUND TETAP PUTIH DENGAN AKSEN BERBEDA --- */
+        
+        /* Level 1: Aksen Rumput Daun */
         .game-container.theme-easy {
-            --level-container-bg: #f1f8e9;
+            --level-container-bg: #ffffff;
             --level-border: #2e7d32;
-            background-image: linear-gradient(to bottom, #e8f5e9 0%, #f1f8e9 100%), radial-gradient(#a5d6a7 15%, transparent 16%);
-            background-size: 100% 100%, 40px 40px;
         }
-        /* Elemen Rumput Dekoratif khusus Level Easy */
         .game-container.theme-easy #screen-game::after {
             content: "🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿 ☘️ 🌿";
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            font-size: 18px;
+            font-size: 20px;
             letter-spacing: 12px;
-            opacity: 0.3;
+            opacity: 0.4;
             pointer-events: none;
             white-space: nowrap;
         }
 
+        /* Level 2: Aksen Pipa Tanah */
         .game-container.theme-medium {
-            --level-container-bg: #e0f7fa;
+            --level-container-bg: #ffffff;
             --level-border: #00838f;
-            background-image: linear-gradient(to bottom, #b2ebf2 0%, #e0f7fa 100%);
+        }
+        .game-container.theme-medium #screen-game::after {
+            content: "🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 22px;
+            letter-spacing: 16px;
+            opacity: 0.4;
+            pointer-events: none;
+            white-space: nowrap;
         }
 
+        /* Level 3: Aksen Matahari Awan */
         .game-container.theme-expert {
-            --level-container-bg: #fff3e0;
+            --level-container-bg: #ffffff;
             --level-border: #e65100;
-            background-image: linear-gradient(to bottom, #ffe0b2 0%, #fff3e0 100%);
+        }
+        .game-container.theme-expert #screen-game::after {
+            content: "☀️ ☁️ ☁️ ☀️ ☁️ ☁️ ☀️ ☁️ ☁️ ☀️ ☁️ ☁️ ☀️ ☁️ ☁️ ☀️ ☁️ ☁️ ☀️ ☁️";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 22px;
+            letter-spacing: 16px;
+            opacity: 0.4;
+            pointer-events: none;
+            white-space: nowrap;
         }
 
+        /* Level 4: Aksen Gunung Lahar Magma */
         .game-container.theme-nightmare {
-            --level-container-bg: #f3e5f5;
+            --level-container-bg: #ffffff;
             --level-border: #6a1b9a;
-            background-image: linear-gradient(to bottom, #e1bee7 0%, #f3e5f5 100%);
+        }
+        .game-container.theme-nightmare #screen-game::after {
+            content: "🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋 🔥 🌋";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 22px;
+            letter-spacing: 16px;
+            opacity: 0.4;
+            pointer-events: none;
+            white-space: nowrap;
         }
 
         .arcade-header-decor {
@@ -182,6 +217,7 @@
             margin-bottom: 14px;
             width: 100%;
             box-sizing: border-box;
+            z-index: 2;
         }
 
         .board-column-question {
@@ -227,7 +263,7 @@
         }
 
         .score-item-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.95);
             border: 3px solid #3e2723;
             padding: 6px 10px;
             border-radius: 10px;
@@ -274,6 +310,7 @@
             justify-content: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.05);
             margin-bottom: 8px;
+            z-index: 2;
             animation: bannerPulse 1.5s infinite alternate;
         }
         @keyframes bannerPulse {
@@ -289,6 +326,7 @@
             align-items: center;
             margin: 2px 0;
             width: 100%;
+            z-index: 2;
         }
 
         .question-box {
@@ -579,7 +617,7 @@
             align-items: center;
             flex-wrap: wrap;
             margin: 6px auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: 4px solid #81c784;
             padding: 10px 20px;
             border-radius: 14px;
@@ -587,6 +625,7 @@
             width: fit-content;
             max-width: 100%;
             box-sizing: border-box;
+            z-index: 2;
         }
         .breakdown-section.disabled-section {
             opacity: 0.4;
@@ -637,6 +676,7 @@
             width: 100%;
             box-shadow: 0 4px 0px #900;
             transition: all 0.1s;
+            z-index: 2;
         }
         .btn:hover { background-color: #ff3b30; transform: translateY(-2px); box-shadow: 0 6px 0px #900; }
         .btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #900; }
@@ -659,6 +699,7 @@
             gap: 6px;
             box-shadow: 0 3px 0px #455a64;
             transition: background-color 0.2s;
+            z-index: 2;
         }
         .btn-back-menu:hover { background-color: #90a4ae; }
 
@@ -668,6 +709,7 @@
             align-items: center;
             width: 100%;
             margin-bottom: 4px;
+            z-index: 2;
         }
 
         .level-grid {
@@ -713,6 +755,7 @@
             overflow-y: auto;
             padding: 6px;
             box-sizing: border-box;
+            z-index: 2;
         }
         .player-buttons-grid {
             display: flex;
@@ -856,7 +899,7 @@
         <div style="background: #e8f5e9; border: 5px solid #2e7d32; padding: 25px 35px; border-radius: 20px; box-shadow: 0 8px 0px #1b5e20; max-width: 750px; margin: 0 auto 20px auto;">
             <h1 style="color: #2e7d32; font-size: 22px; margin-bottom: 15px; text-shadow: 2px 2px 0px #a5d6a7;">SELAMAT DATANG!</h1>
             <p style="font-size: 20px; font-weight: bold; color: #333; line-height: 1.6;">
-                di game buatan Miss Runi🌻 
+                di game buatan Shavira Karunia Devi🌻
             </p>
             <p style="font-size: 15px; color: #555; margin-top: 10px; font-weight: bold;">
                 Siapkan dirimu untuk berpetualang sambil belajar matematika dengan seru!
@@ -945,19 +988,19 @@
         <div class="level-grid" style="gap: 20px; margin-top: 14px;">
             <div class="level-card easy" onclick="playMarioSound('select'); startLevel('easy')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #2e7d32; margin-bottom: 8px;">🟢 Level 1: Dunia Padang Rumput</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Koin Angka Belasan </span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Koin Angka Belasan 🌿</span>
             </div>
             <div class="level-card medium" onclick="playMarioSound('select'); startLevel('medium')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #ef6c00; margin-bottom: 8px;">🟡 Level 2: Dunia Terowongan Pipa</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan </span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🟩</span>
             </div>
             <div class="level-card expert" onclick="playMarioSound('select'); startLevel('expert')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #c62828; margin-bottom: 8px;">🟠 Level 3: Petualangan Kastil Awan</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Angka Ratusan yang Seru</span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Angka Ratusan yang Seru ☁️</span>
             </div>
             <div class="level-card nightmare" onclick="playMarioSound('select'); startLevel('nightmare')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #6a1b9a; margin-bottom: 8px;">🟣 Level 4: Markas Besar Bowser</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Misi Penyelamatan Utama </span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Misi Penyelamatan Utama 🌋</span>
             </div>
         </div>
     </div>
@@ -1014,7 +1057,7 @@
             </div>
         </div>
 
-        <div id="drag-source-wrapper" style="display:none; width: 100%;">
+        <div id="drag-source-wrapper" style="display:none; width: 100%; z-index: 2;">
             <p style="margin: 2px 0; font-size: 13px; color: #555;">Seret koin emas angka ke jamur ajaib yang pas:</p>
             <div class="drag-source-container" id="drag-source-box"></div>
         </div>
@@ -1262,7 +1305,6 @@
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
         
-        // Reset container theme class when not in gameplay screen
         let container = document.getElementById('main-game-container');
         if (screenId !== 'screen-game') {
             container.className = "game-container";
@@ -1390,7 +1432,6 @@
         let shuffledBank = shuffleArray([...sourceBank]);
         questions = shuffledBank.slice(0, 5);
 
-        // Update container theme class based on selected level
         let container = document.getElementById('main-game-container');
         container.className = `game-container theme-${level}`;
         if (players.length > 5) container.classList.add('many-players');
