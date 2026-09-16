@@ -797,7 +797,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             animation: fadeInScreen 0.3s ease-in-out;
             padding: 20px;
             box-sizing: border-box;
@@ -808,10 +808,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
             max-width: 800px;
-            max-height: 500px;
+            max-height: 550px;
             padding: 16px;
             box-sizing: border-box;
         }
@@ -821,7 +821,7 @@
             gap: 14px;
             justify-content: center;
             width: 100%;
-            max-height: 320px;
+            max-height: 280px;
             overflow-y: auto;
             padding: 8px;
         }
@@ -1110,7 +1110,8 @@
         <div id="player-selector-screen-overlay">
             <div class="player-selector-arena">
                 <div class="arcade-header-decor" style="font-size: 18px; color: var(--pip-yellow); text-shadow: 2px 2px 0px #e52521, 4px 4px 0px #000;">⭐ REBUTAN JAWAB! ⭐</div>
-                <p style="font-weight: bold; color: var(--pip-red); font-size: 14px; margin: 0; font-family:'Press Start 2P';">SIAPA CEPAT DIA DAPAT!</p>
+                <div id="overlay-question-display" style="font-family:'Press Start 2P'; font-size: 24px; color: var(--pip-blue); background: #e3f2fd; padding: 10px 24px; border-radius: 14px; border: 4px dashed var(--pip-blue); margin: 4px 0;">?</div>
+                <p style="font-weight: bold; color: var(--pip-red); font-size: 13px; margin: 0; font-family:'Press Start 2P';">SIAPA CEPAT DIA DAPAT! PILIH NAMA PEMAIN:</p>
                 <div class="player-buttons-grid" id="player-buttons-box"></div>
             </div>
         </div>
@@ -1613,7 +1614,7 @@
         document.getElementById('next-btn').style.display = 'none';
         
         let banner = document.getElementById('feedback-top-banner');
-        banner.innerText = "⭐ Tekan nama pahlawan yang mau menjawab soal ini!";
+        banner.innerText = "⭐ Siapa yang mau menjawab soal ini?";
         banner.className = "";
 
         clearInterval(timerInterval);
@@ -1627,6 +1628,9 @@
         container.innerHTML = '';
         
         let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
+
+        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
+        document.getElementById('overlay-question-display').innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
 
         if (availablePlayers.length === 0) {
             document.getElementById('player-selector-screen-overlay').style.display = 'none';
