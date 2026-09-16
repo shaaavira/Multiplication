@@ -473,7 +473,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px; /* DIUBAH: diperkecil lagi agar angka ratusan aman tidak terpotong */
+            font-size: 13px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -537,7 +537,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 13px; /* DIUBAH: diperkecil lagi agar angka koin drag ratusan muat */
+            font-size: 13px;
             color: #b71c1c;
             cursor: pointer;
             user-select: none;
@@ -583,7 +583,7 @@
             border: 4px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 13px; /* DIUBAH: diperkecil lagi agar input angka ratusan pas */
+            font-size: 13px;
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -1214,26 +1214,20 @@
                 osc.stop(now + 0.25);
             }
             else if (type === 'win') {
-                // Fanfare Kemenangan Super Mario yang Lebih Panjang, Megah, dan Meriah
                 let winNotes = [
-                    // Bagian Awal (Menanjak Semangat)
-                    { f: 523.25, d: 0.12, t: 0.00 }, // C5
-                    { f: 659.25, d: 0.12, t: 0.12 }, // E5
-                    { f: 783.99, d: 0.12, t: 0.24 }, // G5
-                    { f: 1046.50, d: 0.25, t: 0.36 },// C6
-                    { f: 830.61, d: 0.12, t: 0.65 }, // Ab5
-                    { f: 987.77, d: 0.25, t: 0.77 }, // B5
-                    
-                    // Bagian Tambahan (Lebih Panjang & Megah Khas Stage Clear)
-                    { f: 1046.50, d: 0.15, t: 1.05 }, // C6
-                    { f: 1174.66, d: 0.15, t: 1.22 }, // D6
-                    { f: 1318.51, d: 0.15, t: 1.39 }, // E6
-                    { f: 1567.98, d: 0.35, t: 1.56 }, // G6 (Puncak Panjang)
-                    
-                    // Penutup Ikonik Bertema Kemenangan Epik
-                    { f: 1318.51, d: 0.15, t: 2.00 }, // E6
-                    { f: 1567.98, d: 0.15, t: 2.18 }, // G6
-                    { f: 2093.00, d: 0.60, t: 2.36 }  // C7 (Nada Tinggi Panjang Menggelegar)
+                    { f: 523.25, d: 0.12, t: 0.00 },
+                    { f: 659.25, d: 0.12, t: 0.12 },
+                    { f: 783.99, d: 0.12, t: 0.24 },
+                    { f: 1046.50, d: 0.25, t: 0.36 },
+                    { f: 830.61, d: 0.12, t: 0.65 },
+                    { f: 987.77, d: 0.25, t: 0.77 },
+                    { f: 1046.50, d: 0.15, t: 1.05 },
+                    { f: 1174.66, d: 0.15, t: 1.22 },
+                    { f: 1318.51, d: 0.15, t: 1.39 },
+                    { f: 1567.98, d: 0.35, t: 1.56 },
+                    { f: 1318.51, d: 0.15, t: 2.00 },
+                    { f: 1567.98, d: 0.15, t: 2.18 },
+                    { f: 2093.00, d: 0.60, t: 2.36 }
                 ];
                 
                 winNotes.forEach(n => {
@@ -1266,7 +1260,6 @@
     let timerInterval = null;
     let answeredPlayersInThisQuestion = [];
 
-    // BANK SOAL PERKALIAN
     const multiplicationLevelBanks = {
         easy: [
             { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
@@ -1318,7 +1311,6 @@
         ]
     };
 
-    // BANK SOAL PEMBAGIAN (DIVISION)
     const divisionLevelBanks = {
         easy: [
             { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
@@ -1525,7 +1517,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            playMarioSound('win'); // <-- BACKSOUND MENANG MARIO DIPANGGIL DI SINI
+            playMarioSound('win');
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
@@ -1816,7 +1808,6 @@
         }
     }
 
-    // --- OPTIMASI DRAG AND DROP TANPA DELAY ---
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
