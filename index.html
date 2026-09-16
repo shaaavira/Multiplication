@@ -15,6 +15,67 @@
             --mario-bg-sky: #5c94fc;
         }
 
+        /* TEMA WARNA BERDASARKAN LEVEL */
+        body.theme-easy {
+            --mario-bg-sky: #5c94fc;
+            background-color: #5c94fc;
+            background-image: radial-gradient(#7fc153 20%, transparent 21%), radial-gradient(#7fc153 20%, transparent 21%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+        body.theme-easy .game-container {
+            background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-color: #2e7d32;
+        }
+        body.theme-easy #screen-game {
+            background: linear-gradient(180deg, #e8f5e9 0%, #a5d6a7 100%);
+            border-bottom: 20px solid #2e7d32; /* Efek rumput bawah */
+        }
+
+        body.theme-medium {
+            --mario-bg-sky: #1b365d;
+            background-color: #1b365d;
+            background-image: linear-gradient(45deg, #2d4f7c 25%, transparent 25%), linear-gradient(-45deg, #2d4f7c 25%, transparent 25%);
+            background-size: 40px 40px;
+        }
+        body.theme-medium .game-container {
+            background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-color: #00838f;
+        }
+        body.theme-medium #screen-game {
+            background: linear-gradient(180deg, #e0f7fa 0%, #80deea 100%);
+            border-bottom: 20px solid #006064; /* Efek pipa bawah */
+        }
+
+        body.theme-expert {
+            --mario-bg-sky: #4a148c;
+            background-color: #4a148c;
+            background-image: radial-gradient(circle, #7b1fa2 10%, transparent 11%);
+            background-size: 50px 50px;
+        }
+        body.theme-expert .game-container {
+            background: linear-gradient(180deg, #fff3e0 0%, #ffe0b2 100%);
+            border-color: #e65100;
+        }
+        body.theme-expert #screen-game {
+            background: linear-gradient(180deg, #fff3e0 0%, #ffcc80 100%);
+            border-bottom: 20px solid #ef6c00; /* Efek awan/kastil */
+        }
+
+        body.theme-nightmare {
+            --mario-bg-sky: #212121;
+            background-color: #212121;
+            background-image: repeating-linear-gradient(45deg, #333 0, #333 10px, #212121 0, #212121 20px);
+        }
+        body.theme-nightmare .game-container {
+            background: linear-gradient(180deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: #b71c1c;
+        }
+        body.theme-nightmare #screen-game {
+            background: linear-gradient(180deg, #ffebee 0%, #ef9a9a 100%);
+            border-bottom: 20px solid #c62828; /* Efek lahar/markas Bowser */
+        }
+
         /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
         html, body {
             width: 100vw;
@@ -27,12 +88,6 @@
 
         body {
             font-family: 'Fredoka', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--mario-bg-sky);
-            background-image: 
-                radial-gradient(white 15%, transparent 16%),
-                radial-gradient(white 15%, transparent 16%);
-            background-size: 80px 80px;
-            background-position: 0 0, 40px 40px;
             color: #fff;
             text-align: center;
             touch-action: manipulation;
@@ -48,7 +103,6 @@
             max-width: 1450px;
             max-height: 900px;
             margin: auto;
-            background: #ffffff;
             color: #333;
             padding: 15px 25px;
             border-radius: 28px;
@@ -62,6 +116,7 @@
             overflow: hidden;
             box-sizing: border-box;
             gap: 6px !important;
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
 
         .game-container.many-players {
@@ -118,6 +173,8 @@
             height: 100%;
             width: 100%;
             animation: fadeInScreen 0.4s ease-in-out;
+            box-sizing: border-box;
+            padding-bottom: 10px;
         }
         .screen.active { display: flex; }
 
@@ -800,7 +857,7 @@
         }
     </style>
 </head>
-<body>
+<body class="theme-easy">
 
 <div class="game-container" id="main-game-container">
     <!-- SCREEN 0: HALAMAN SAMBUTAN (MISS RUNI) -->
@@ -925,7 +982,7 @@
 
         <div class="score-board-top">
             <div class="board-column-question">
-                Soal ke-<span id="current-q-num">1</span> dari 5
+                Soal ke-<span id="current-q-num">1</span>/5
             </div>
             <div class="board-column-score">
                 <div class="score-display-kids" id="scoreboard-text"></div>
@@ -1331,6 +1388,9 @@
         currentLevel = level;
         questionIndex = 0;
         players.forEach(p => playerScores[p] = 0);
+
+        // Update tema warna body sesuai level yang dipilih
+        document.body.className = `theme-${level}`;
 
         let sourceBank = operationMode === 'multiplication' ? multiplicationLevelBanks[level] : divisionLevelBanks[level];
         let shuffledBank = shuffleArray([...sourceBank]);
