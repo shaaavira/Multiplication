@@ -297,17 +297,18 @@
             box-sizing: border-box;
         }
 
-        /* --- STYLING BARU: BUBBLE PERCAKAPAN DI POJOK KIRI BAWAH --- */
+        /* --- STYLING REVISI: BUBBLE PERCAKAPAN DI ATAS KARAKTER, MELEBAR KE BAWAH --- */
         .character-talk-wrapper {
             position: absolute;
             bottom: 10px;
             left: 10px;
             display: flex;
-            align-items: flex-end;
-            gap: 8px;
+            flex-direction: column-reverse; /* Karakter di bawah, bubble di atasnya */
+            align-items: flex-start;
+            gap: 6px;
             z-index: 50;
             pointer-events: none;
-            max-width: 450px;
+            max-width: 280px; /* Dibuat lebih ramping/melebar ke bawah */
         }
 
         .character-talk-wrapper img.talker-avatar {
@@ -327,37 +328,37 @@
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
             border: 3px solid #2e7d32;
             border-radius: 14px;
-            padding: 8px 14px;
+            padding: 10px 14px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
+            font-size: 9px;
             color: #1b5e20;
             box-sizing: border-box;
             text-align: left;
-            min-height: 38px;
             display: flex;
             align-items: center;
             box-shadow: 0 4px 0px rgba(0,0,0,0.15);
             position: relative;
             pointer-events: auto;
-            line-height: 1.4;
+            line-height: 1.5;
+            word-break: break-word;
         }
-        /* Ekor Bubble Percakapan ke Kiri */
+        /* Ekor Bubble Percakapan ke Bawah (menghadap karakter) */
         #feedback-top-banner::after {
             content: "";
             position: absolute;
-            bottom: 12px;
-            left: -10px;
-            border-width: 6px 10px 6px 0;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 8px 0 8px;
             border-style: solid;
-            border-color: transparent #2e7d32 transparent transparent;
+            border-color: #2e7d32 transparent transparent transparent;
             display: block;
         }
 
         #feedback-top-banner.correct { color: #1b5e20; background: #e8f5e9; border-color: #2e7d32; }
-        #feedback-top-banner.correct::after { border-color: transparent #2e7d32 transparent transparent; }
+        #feedback-top-banner.correct::after { border-color: #2e7d32 transparent transparent transparent; }
 
         #feedback-top-banner.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
-        #feedback-top-banner.incorrect::after { border-color: transparent #c62828 transparent transparent; }
+        #feedback-top-banner.incorrect::after { border-color: #c62828 transparent transparent transparent; }
         /* -------------------------------------------------------- */
         
         .math-problem-area {
@@ -1110,9 +1111,9 @@
             </div>
         </div>
         
-        <!-- BUBBLE PERCAKAPAN DI POJOK KIRI BAWAH -->
+        <!-- BUBBLE PERCAKAPAN DI POJOK KIRI BAWAH (DI ATAS KARAKTER, MELEBAR KE BAWAH) -->
         <div class="character-talk-wrapper">
-            <img id="talker-character-img" src="biasa.png" class="talker-avatar" alt="Karakter">
+            <img id="talker-character-img" src="biasapip.png" class="talker-avatar" alt="Karakter">
             <div id="feedback-top-banner">Siapkan semangatmu, Pahlawan!</div>
         </div>
 
@@ -1469,12 +1470,14 @@
 
     function updateTalkerExpression(state) {
         let img = document.getElementById('talker-character-img');
+        let prefix = operationMode === 'multiplication' ? 'pip' : 'zip';
+        
         if (state === 'correct') {
-            img.src = 'ceria.png';
+            img.src = `ceria${prefix}.png`;
         } else if (state === 'incorrect') {
-            img.src = 'sedih.png';
+            img.src = `sedih${prefix}.png`;
         } else {
-            img.src = 'biasa.png';
+            img.src = `biasa${prefix}.png`;
         }
     }
 
