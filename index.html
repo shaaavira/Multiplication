@@ -1213,36 +1213,6 @@
                 osc.start(now);
                 osc.stop(now + 0.25);
             }
-            // TAMBAHAN: Backsound Kemenangan Khas Game Mario (Stage Clear Fanfare)
-            else if (type === 'stageClear') {
-                let fanfareNotes = [
-                    { f: 659.25, d: 0.12, t: 0.0 }, // E5
-                    { f: 659.25, d: 0.12, t: 0.15 }, // E5
-                    { f: 0,      d: 0.12, t: 0.30 }, // rest
-                    { f: 659.25, d: 0.12, t: 0.45 }, // E5
-                    { f: 0,      d: 0.12, t: 0.60 }, // rest
-                    { f: 523.25, d: 0.12, t: 0.75 }, // C5
-                    { f: 659.25, d: 0.12, t: 0.90 }, // E5
-                    { f: 783.99, d: 0.25, t: 1.05 }, // G5
-                    { f: 392.00, d: 0.25, t: 1.35 }  // G4
-                ];
-                
-                fanfareNotes.forEach(n => {
-                    if (n.f > 0) {
-                        let osc = audioCtx.createOscillator();
-                        let gain = audioCtx.createGain();
-                        let startTime = now + n.t;
-                        osc.type = 'square';
-                        osc.frequency.setValueAtTime(n.f, startTime);
-                        gain.gain.setValueAtTime(0.3, startTime);
-                        gain.gain.exponentialRampToValueAtTime(0.001, startTime + n.d);
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.start(startTime);
-                        osc.stop(startTime + n.d);
-                    }
-                });
-            }
         } catch(e) {}
     }
 
@@ -1445,6 +1415,7 @@
             }
         });
 
+        // ATURAN MINIMAL 1 NAMA PEMAIN
         if (players.length === 0) {
             tvPeringatan.style.display = "block";
             tvPeringatan.innerText = "⚠️ Harap masukkan minimal 1 nama pemain untuk memulai!";
@@ -1518,9 +1489,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            // MEMUTAR BACKSOUND KEMENANGAN KHAS MARIO SAAT MASUK LAYAR SKOR AKHIR
-            playMarioSound('stageClear');
-            
+            playMarioSound('correct');
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
@@ -1542,6 +1511,7 @@
         
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
+        
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
@@ -1820,23 +1790,18 @@
         item.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             playMarioSound('click');
-            
+            let startX = e.clientX;
+            let startY = e.clientY;
             let rect = item.getBoundingClientRect();
-            let shiftX = e.clientX - rect.left;
-            let shiftY = e.clientY - rect.top;
-
+            
             item.classList.add('dragging');
-            item.setPointerCapture(e.pointerId);
-
-            function moveAt(clientX, clientY) {
-                item.style.left = `${clientX - shiftX}px`;
-                item.style.top = `${clientY - shiftY}px`;
-            }
-
-            moveAt(e.clientX, e.clientY);
+            item.style.left = `${rect.left}px`;
+            item.style.top = `${rect.top}px`;
 
             function onPointerMove(e) {
-                moveAt(e.clientX, e.clientY);
+                let dx = e.clientX - startX;
+                let dy = e.clientY - startY;
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.25) rotate(10deg)`;
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     let zRect = zone.getBoundingClientRect();
@@ -1850,10 +1815,10 @@
             }
 
             function onPointerUp(e) {
-                item.removeEventListener('pointermove', onPointerMove);
-                item.removeEventListener('pointerup', onPointerUp);
-                
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
                 item.classList.remove('dragging');
+                item.style.transform = '';
                 item.style.left = '';
                 item.style.top = '';
 
@@ -1908,8 +1873,8 @@
                 }
             }
 
-            item.addEventListener('pointermove', onPointerMove);
-            item.addEventListener('pointerup', onPointerUp);
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
         });
 
         container.appendChild(item);
@@ -2000,7 +1965,7 @@
             banner.innerText = `LUAR BIASA! +10 XP untuk ${activePlayer}! 🍄🎉`;
             banner.className = "correct";
             playerScores[activePlayer] += 10;
-            updateScoreboardTest();
+            updateScoreboardText();
             
             createSparkles(document.getElementById('question-text'));
 
@@ -2016,14 +1981,14 @@
         } else {
             playMarioSound('wrong'); 
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
-            updateScoreboardTest();
+            updateScoreboardText();
             
             banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
             banner.className = "incorrect";
             
             if (currentLevel === 'easy') {
                 document.querySelectorAll('.circle-dropzone').forEach(z => {
-                    z.classList.add('error-headline');
+                    z.classList.add('error-highlight');
                     setTimeout(() => z.classList.remove('error-highlight'), 600);
                 });
             } else {
