@@ -1214,22 +1214,35 @@
                 osc.stop(now + 0.25);
             }
             else if (type === 'win') {
-                // Nada Kemenangan Khas Game Mario (Level Clear Fanfare)
+                // Fanfare Kemenangan Super Mario yang Lebih Panjang, Megah, dan Meriah
                 let winNotes = [
-                    { f: 523.25, d: 0.12, t: 0 },    // C5
+                    // Bagian Awal (Menanjak Semangat)
+                    { f: 523.25, d: 0.12, t: 0.00 }, // C5
                     { f: 659.25, d: 0.12, t: 0.12 }, // E5
                     { f: 783.99, d: 0.12, t: 0.24 }, // G5
                     { f: 1046.50, d: 0.25, t: 0.36 },// C6
                     { f: 830.61, d: 0.12, t: 0.65 }, // Ab5
-                    { f: 987.77, d: 0.35, t: 0.77 }  // B5
+                    { f: 987.77, d: 0.25, t: 0.77 }, // B5
+                    
+                    // Bagian Tambahan (Lebih Panjang & Megah Khas Stage Clear)
+                    { f: 1046.50, d: 0.15, t: 1.05 }, // C6
+                    { f: 1174.66, d: 0.15, t: 1.22 }, // D6
+                    { f: 1318.51, d: 0.15, t: 1.39 }, // E6
+                    { f: 1567.98, d: 0.35, t: 1.56 }, // G6 (Puncak Panjang)
+                    
+                    // Penutup Ikonik Bertema Kemenangan Epik
+                    { f: 1318.51, d: 0.15, t: 2.00 }, // E6
+                    { f: 1567.98, d: 0.15, t: 2.18 }, // G6
+                    { f: 2093.00, d: 0.60, t: 2.36 }  // C7 (Nada Tinggi Panjang Menggelegar)
                 ];
+                
                 winNotes.forEach(n => {
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
                     let startTime = now + n.t;
                     osc.type = 'square';
                     osc.frequency.setValueAtTime(n.f, startTime);
-                    gain.gain.setValueAtTime(0.35, startTime);
+                    gain.gain.setValueAtTime(0.4, startTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, startTime + n.d);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
