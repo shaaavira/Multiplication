@@ -1258,8 +1258,9 @@
     let currentQuestion = {};
     let timer = 60;
     let timerInterval = null;
-    let failedPlayersInThisQuestion = 0; // TAMBAHAN: Menghitung berapa pemain yang sudah salah
+    let answeredPlayersInThisQuestion = [];
 
+    // BANK SOAL PERKALIAN
     const multiplicationLevelBanks = {
         easy: [
             { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
@@ -1311,6 +1312,7 @@
         ]
     };
 
+    // BANK SOAL PEMBAGIAN (DIVISION)
     const divisionLevelBanks = {
         easy: [
             { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
@@ -1531,7 +1533,7 @@
 
         currentQuestion = questions[questionIndex];
         activePlayer = null;
-        failedPlayersInThisQuestion = 0; // RESET hitungan salah untuk soal baru
+        answeredPlayersInThisQuestion = [];
 
         let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
         document.getElementById('game-title').innerText = operationMode === 'multiplication' ? 'DUNIA PERKALIAN ✖️' : 'DUNIA PEMBAGIAN ➗';
@@ -1567,9 +1569,18 @@
         let container = document.getElementById('player-buttons-box');
         container.innerHTML = '';
         
+        let availablePlayers = players.filter(p => !answeredPlayersInThisQuestion.includes(p));
+
+        if (availablePlayers.length === 0) {
+            // Semua pemain sudah mencoba dan salah -> Tampilkan Kunci Jawaban untuk Teacher
+            document.getElementById('player-selector-container').style.display = 'none';
+            showTeacherAnswerKey();
+            return;
+        }
+
         document.getElementById('player-selector-container').style.display = 'flex';
 
-        players.forEach(p => {
+        availablePlayers.forEach(p => {
             let char = playerCharacters[p];
             let imgFile = char === 'mario' ? 'mario.png' : 'luigi.png';
             let btn = document.createElement('button');
@@ -1583,9 +1594,54 @@
         document.getElementById('lbl-timer').innerText = '-';
     }
 
+    function showTeacherAnswerKey() {
+        let banner = document.getElementById('feedback-top-banner');
+        banner.innerText = "💡 Waktu habis / Semua salah! Kunci Jawaban untuk dibahas bersama Teacher:";
+        banner.className = "incorrect";
+
+        let qBox = document.getElementById('question-text');
+        qBox.className = "question-box";
+
+        document.getElementById('bond-container').style.display = 'flex';
+        document.getElementById('inputs-container').style.display = 'flex';
+        document.getElementById('inputs-container').classList.remove('disabled-section');
+        document.getElementById('submit-btn').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'block';
+
+        setupStandardGameplay();
+
+        // Otomatis isi kunci jawaban ke form agar terlihat oleh teacher
+        let decomp = currentQuestion.decomp;
+        decomp.forEach((val, index) => {
+            if (currentLevel === 'easy') {
+                let zone = document.getElementById(`decomp-${index}`);
+                zone.dataset.value = val;
+                zone.innerText = val;
+            } else {
+                let input = document.getElementById(`decomp-${index}`);
+                input.value = val;
+            }
+        });
+
+        updateDistributiveLabels();
+
+        currentQuestion.parts.forEach((val, index) => {
+            let partInput = document.getElementById(`part-${index}`);
+            if(partInput) partInput.value = val;
+        });
+
+        let finalInput = document.getElementById('final-ans');
+        if(finalInput) finalInput.value = currentQuestion.ans;
+
+        // Disable input agar tidak bisa diubah siswa saat kunci jawaban tampil
+        document.querySelectorAll('.circle-input, .breakdown-section input').forEach(el => el.disabled = true);
+        document.getElementById('drag-source-wrapper').style.display = 'none';
+    }
+
     function selectPlayerTurn(playerName) {
         clearInterval(timerInterval);
         activePlayer = playerName;
+        answeredPlayersInThisQuestion.push(playerName);
 
         document.getElementById('player-selector-container').style.display = 'none';
         
@@ -1926,63 +1982,28 @@
             let banner = document.getElementById('feedback-top-banner');
             
             if (!activePlayer) {
-                banner.innerText = "⏰ Waktu habis! Silakan pilih pahlawan untuk menjawab.";
+                banner.innerText = "⏰ Waktu habis! Giliran direbut ke pemain lain.";
                 banner.className = "incorrect";
+                document.getElementById('player-selector-container').style.display = 'none';
+                renderPlayerSelector();
+            } else {
+                banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
+                banner.className = "incorrect";
+                playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
+                updateScoreboardText();
+
                 document.getElementById('bond-container').style.display = 'none';
                 document.getElementById('inputs-container').style.display = 'none';
                 document.getElementById('drag-source-wrapper').style.display = 'none';
                 document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('lbl-timer').innerText = '-';
+                
+                document.getElementById('helper-division').style.display = 'none';
+                document.getElementById('helper-multiplication').style.display = 'none';
+
                 renderPlayerSelector();
-            } else {
-                failedPlayersInThisQuestion++;
-                if (failedPlayersInThisQuestion >= 2) {
-                    // Jika 2 pemain salah/habis waktu, tampilkan kunci jawaban
-                    showAnswerKey("⏰ Waktu habis! Kesempatan selesai. Kunci jawaban ditampilkan untuk dibahas bersama.");
-                } else {
-                    banner.innerText = `⏰ Waktu habis untuk ${activePlayer}! (-5 XP). Giliran direbut pemain lain!`;
-                    banner.className = "incorrect";
-                    playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
-                    updateScoreboardText();
-
-                    document.getElementById('bond-container').style.display = 'none';
-                    document.getElementById('inputs-container').style.display = 'none';
-                    document.getElementById('drag-source-wrapper').style.display = 'none';
-                    document.getElementById('submit-btn').style.display = 'none';
-                    document.getElementById('lbl-timer').innerText = '-';
-                    
-                    document.getElementById('helper-division').style.display = 'none';
-                    document.getElementById('helper-multiplication').style.display = 'none';
-
-                    activePlayer = null;
-                    renderPlayerSelector();
-                }
             }
         }
-    }
-
-    function showAnswerKey(message) {
-        let banner = document.getElementById('feedback-top-banner');
-        banner.innerText = message;
-        banner.className = "incorrect";
-
-        document.getElementById('bond-container').style.display = 'none';
-        document.getElementById('inputs-container').style.display = 'none';
-        document.getElementById('drag-source-wrapper').style.display = 'none';
-        document.getElementById('submit-btn').style.display = 'none';
-        document.getElementById('player-selector-container').style.display = 'none';
-        document.getElementById('helper-division').style.display = 'none';
-        document.getElementById('helper-multiplication').style.display = 'none';
-        document.getElementById('lbl-timer').innerText = '-';
-
-        // Tampilkan kunci jawaban di area soal atau buat section khusus pembahasan
-        let qBox = document.getElementById('question-text');
-        let opSymbol = operationMode === 'multiplication' ? '×' : '÷';
-        let decompStr = currentQuestion.decomp.join(' dan ');
-        let partsStr = currentQuestion.parts.join(' + ');
-        qBox.innerHTML = `KUNCI JAWABAN:<br>${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = (${decompStr})<br>Bagian: ${partsStr} = <b>${currentQuestion.ans}</b>`;
-        qBox.className = "question-box highlight-big-question";
-
-        document.getElementById('next-btn').style.display = 'block';
     }
 
     function checkAnswer() {
@@ -2036,38 +2057,30 @@
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            failedPlayersInThisQuestion++;
-
-            if (failedPlayersInThisQuestion >= 2) {
-                // Jika sudah 2 pemain salah, tampilkan kunci jawaban untuk dibahas bersama teacher
-                showAnswerKey(`❌ Wah, dua pemain sudah salah! (-5 XP). Kunci jawaban ditampilkan untuk dibahas bersama.`);
+            banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
+            banner.className = "incorrect";
+            
+            if (currentLevel === 'easy') {
+                document.querySelectorAll('.circle-dropzone').forEach(z => {
+                    z.classList.add('error-highlight');
+                    setTimeout(() => z.classList.remove('error-highlight'), 600);
+                });
             } else {
-                banner.innerText = `Ups, jawaban ${activePlayer} belum tepat. (-5 XP) Giliran direbut temanmu!`;
-                banner.className = "incorrect";
-                
-                if (currentLevel === 'easy') {
-                    document.querySelectorAll('.circle-dropzone').forEach(z => {
-                        z.classList.add('error-highlight');
-                        setTimeout(() => z.classList.remove('error-highlight'), 600);
-                    });
-                } else {
-                    document.querySelectorAll('.circle-input').forEach(i => {
-                        i.classList.add('error-highlight');
-                        setTimeout(() => i.classList.remove('error-highlight'), 600);
-                    });
-                }
-                
-                document.getElementById('bond-container').style.display = 'none';
-                document.getElementById('inputs-container').style.display = 'none';
-                document.getElementById('drag-source-wrapper').style.display = 'none';
-                document.getElementById('submit-btn').style.display = 'none';
-                
-                document.getElementById('helper-division').style.display = 'none';
-                document.getElementById('helper-multiplication').style.display = 'none';
-
-                activePlayer = null;
-                renderPlayerSelector();
+                document.querySelectorAll('.circle-input').forEach(i => {
+                    i.classList.add('error-highlight');
+                    setTimeout(() => i.classList.remove('error-highlight'), 600);
+                });
             }
+            
+            document.getElementById('bond-container').style.display = 'none';
+            document.getElementById('inputs-container').style.display = 'none';
+            document.getElementById('drag-source-wrapper').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            document.getElementById('helper-division').style.display = 'none';
+            document.getElementById('helper-multiplication').style.display = 'none';
+
+            renderPlayerSelector();
         }
     }
 
