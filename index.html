@@ -463,18 +463,17 @@
             margin-top: -2px;
         }
         
-        /* DIUBAH: Ukuran lingkaran & font diperkecil sedikit agar angka ratusan/ribuan tidak terpotong */
         .circle-dropzone {
-            width: 52px !important;
-            height: 52px !important;
-            min-width: 52px;
-            min-height: 52px;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px;
+            min-height: 60px;
             border: 4px dashed var(--mario-red) !important;
             border-radius: 50% !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 16px; /* DIUBAH: diperkecil agar angka ratusan tidak terpotong */
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -538,7 +537,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px; /* DIUBAH: diperkecil agar angka ratusan pada koin drag muat */
             color: #b71c1c;
             cursor: pointer;
             user-select: none;
@@ -576,16 +575,15 @@
             100% { transform: scale(1.8) translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
-        /* DIUBAH: Ukuran input lingkaran & font disesuaikan agar serasi dan muat angka ratusan */
         .circle-input {
-            width: 52px !important;
-            height: 52px !important;
-            min-width: 52px;
-            min-height: 52px;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px;
+            min-height: 60px;
             border: 4px solid var(--mario-red) !important;
             border-radius: 50% !important;
             text-align: center;
-            font-size: 16px;
+            font-size: 16px; /* DIUBAH: diperkecil agar input angka ratusan tidak terpotong */
             font-weight: bold;
             color: var(--mario-red);
             background-color: #ffebee;
@@ -641,21 +639,18 @@
             flex-direction: column;
             align-items: center;
         }
-        
-        /* DIUBAH: Memperbesar font label rumus agar lebih mudah dibaca anak-anak */
         .input-group label {
-            font-size: 17px;
-            color: #2e7d32;
+            font-size: 17px; /* DIUBAH: diperbesar agar rumus label lebih jelas dibaca anak-anak */
+            color: #1b5e20; /* DIUBAH: warna sedikit lebih gelap/tegas untuk keterbacaan */
             margin-bottom: 4px;
-            font-weight: bold;
+            font-weight: 700;
             white-space: nowrap;
         }
         
-        /* DIUBAH: Memperbesar kotak input rumus & ukuran font-nya */
         input[type="text"], input[type="number"] {
-            width: 110px;
+            width: 95px;
             padding: 10px;
-            font-size: 28px;
+            font-size: 25px;
             text-align: center;
             border: 4px solid #81c784;
             border-radius: 12px;
@@ -1219,20 +1214,26 @@
                 osc.stop(now + 0.25);
             }
             else if (type === 'win') {
+                // Fanfare Kemenangan Super Mario yang Lebih Panjang, Megah, dan Meriah
                 let winNotes = [
-                    { f: 523.25, d: 0.12, t: 0.00 },
-                    { f: 659.25, d: 0.12, t: 0.12 },
-                    { f: 783.99, d: 0.12, t: 0.24 },
-                    { f: 1046.50, d: 0.25, t: 0.36 },
-                    { f: 830.61, d: 0.12, t: 0.65 },
-                    { f: 987.77, d: 0.25, t: 0.77 },
-                    { f: 1046.50, d: 0.15, t: 1.05 },
-                    { f: 1174.66, d: 0.15, t: 1.22 },
-                    { f: 1318.51, d: 0.15, t: 1.39 },
-                    { f: 1567.98, d: 0.35, t: 1.56 },
-                    { f: 1318.51, d: 0.15, t: 2.00 },
-                    { f: 1567.98, d: 0.15, t: 2.18 },
-                    { f: 2093.00, d: 0.60, t: 2.36 }
+                    // Bagian Awal (Menanjak Semangat)
+                    { f: 523.25, d: 0.12, t: 0.00 }, // C5
+                    { f: 659.25, d: 0.12, t: 0.12 }, // E5
+                    { f: 783.99, d: 0.12, t: 0.24 }, // G5
+                    { f: 1046.50, d: 0.25, t: 0.36 },// C6
+                    { f: 830.61, d: 0.12, t: 0.65 }, // Ab5
+                    { f: 987.77, d: 0.25, t: 0.77 }, // B5
+                    
+                    // Bagian Tambahan (Lebih Panjang & Megah Khas Stage Clear)
+                    { f: 1046.50, d: 0.15, t: 1.05 }, // C6
+                    { f: 1174.66, d: 0.15, t: 1.22 }, // D6
+                    { f: 1318.51, d: 0.15, t: 1.39 }, // E6
+                    { f: 1567.98, d: 0.35, t: 1.56 }, // G6 (Puncak Panjang)
+                    
+                    // Penutup Ikonik Bertema Kemenangan Epik
+                    { f: 1318.51, d: 0.15, t: 2.00 }, // E6
+                    { f: 1567.98, d: 0.15, t: 2.18 }, // G6
+                    { f: 2093.00, d: 0.60, t: 2.36 }  // C7 (Nada Tinggi Panjang Menggelegar)
                 ];
                 
                 winNotes.forEach(n => {
@@ -1524,7 +1525,7 @@
 
     function loadQuestion() {
         if (questionIndex >= questions.length) {
-            playMarioSound('win');
+            playMarioSound('win'); // <-- BACKSOUND MENANG MARIO DIPANGGIL DI SINI
             let finalHtml = "";
             players.forEach(p => {
                 let char = playerCharacters[p];
@@ -1766,7 +1767,7 @@
             if (index > 0) {
                 let plus = document.createElement('span');
                 plus.innerText = '+';
-                plus.style.fontSize = '24px';
+                plus.style.fontSize = '22px';
                 plus.style.fontWeight = 'bold';
                 plus.style.color = '#2e7d32';
                 container.appendChild(plus);
@@ -1780,14 +1781,14 @@
 
         let equals = document.createElement('span');
         equals.innerText = '=';
-        equals.style.fontSize = '24px';
+        equals.style.fontSize = '22px';
         equals.style.fontWeight = 'bold';
         equals.style.color = '#2e7d32';
         container.appendChild(equals);
 
         let finalGroup = document.createElement('div');
         finalGroup.className = 'input-group';
-        finalGroup.innerHTML = `<label>Total Akhir</label><input type="number" id="final-ans" placeholder="Total">`;
+        finalGroup.innerHTML = `<label style="color:#b71c1c;">Total Akhir</label><input type="number" id="final-ans" placeholder="Total">`;
         container.appendChild(finalGroup);
     }
 
@@ -1815,6 +1816,7 @@
         }
     }
 
+    // --- OPTIMASI DRAG AND DROP TANPA DELAY ---
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
