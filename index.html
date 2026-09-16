@@ -21,12 +21,13 @@
             --level-primary: var(--mario-red);
         }
 
-        /* FULLSCREEN & PENYESUAIAN SCROLL UNTUK BANYAK PEMAIN */
+        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
         html, body {
             width: 100vw;
             height: 100vh;
             margin: 0;
             padding: 0;
+            overflow: hidden;
             box-sizing: border-box;
         }
 
@@ -45,15 +46,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: auto; /* Memungkinkan body ikut di-scroll jika layar terlalu kecil */
             transition: background-color 0.5s ease;
-            padding: 10px;
         }
 
         .game-container {
             width: 98vw;
-            min-height: 97vh;
+            height: 97vh;
             max-width: 1450px;
+            max-height: 900px;
             margin: auto;
             background: #ffffff;
             color: #333;
@@ -66,16 +66,15 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
             box-sizing: border-box;
             gap: 6px !important;
             transition: border-color 0.5s ease;
-            overflow: visible;
         }
 
-        /* PERBAIKAN: Aktifkan scroll secara otomatis jika pemain banyak */
+        /* PERUBAHAN / TAMBAHAN: Mengaktifkan scroll otomatis jika kelas many-players aktif */
         .game-container.many-players {
             overflow-y: auto !important;
-            max-height: 95vh;
         }
 
         /* --- THEME VARIATIONS: BACKGROUND TETAP PUTIH DENGAN AKSEN BERBEDA --- */
@@ -104,7 +103,7 @@
             --level-border: #00838f;
         }
         .game-container.theme-medium #screen-game::after {
-            content: "🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩 🚇 🟩";
+            content: "🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘 🚇 🛘";
             position: absolute;
             bottom: 0;
             left: 0;
@@ -199,6 +198,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 100%;
             width: 100%;
             animation: fadeInScreen 0.4s ease-in-out;
             position: relative;
@@ -256,14 +256,11 @@
             font-size: 10px;
             color: #5d4037;
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.7);
-            max-height: 80px;
-            overflow-y: auto; /* Mengizinkan scroll jika banyak skor pemain */
-            padding: 4px;
         }
 
         .score-item-card {
@@ -653,7 +650,7 @@
         input[type="text"], input[type="number"] {
             width: 95px;
             padding: 10px;
-            font-size: 20px;
+            font-size: 25px;
             text-align: center;
             border: 4px solid #81c784;
             border-radius: 12px;
@@ -798,27 +795,24 @@
         .btn-player-pick:active { transform: scale(0.95); }
         .btn-player-pick:hover { background-color: #1a45e6; transform: translateY(-3px); box-shadow: 0 8px 0px #001a75; }
 
-        /* PERBAIKAN: Kontainer daftar nama pemain diset agar bisa discroll secara vertikal */
         .name-setup-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             width: 100%;
             max-width: 680px;
             margin: 0 auto;
-            max-height: 350px;
+            max-height: 420px;
             overflow-y: auto;
             padding: 8px;
-            box-sizing: border-box;
         }
-
         .player-row-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #e3f2fd;
             border: 4px solid #000;
-            padding: 12px 18px;
+            padding: 14px 20px;
             border-radius: 18px;
             box-shadow: 0 6px 0px rgba(0,0,0,0.15);
             gap: 16px;
@@ -909,7 +903,7 @@
             <img src="intro.png" alt="Intro Miss Runi" style="width: 240px; height: 240px; object-fit: contain; margin: 5px 0;">
             <h1 style="color: #2e7d32; font-size: 20px; margin-bottom: 10px; text-shadow: 2px 2px 0px #a5d6a7;">SELAMAT DATANG!</h1>
             <p style="font-size: 18px; font-weight: bold; color: #333; line-height: 1.4;">
-                di game buatan Shavira Karunia Devi🌻
+                di game buatan Miss Runi🌻
             </p>
             <p style="font-size: 14px; color: #555; margin-top: 6px; font-weight: bold;">
                 Siapkan dirimu untuk berpetualang sambil belajar matematika dengan seru!
@@ -922,7 +916,7 @@
     <div id="screen-welcome" class="screen">
         <div class="arcade-header-decor">🍄 SUPER MATH BROS 🌟</div>
         <div class="mario-badge">✨ MASUKKAN NAMA & KOSTUM PAHLAWAN HEBAT ✨</div>
-        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 8px;">Ketik nama-nama jagoanmu dan pilih kostum pahlawan favoritmu di bawah ini:</p>
+        <p style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 8px;">Ketik minimal 1 nama jagoanmu dan pilih kostum pahlawan favoritmu di bawah ini:</p>
 
         <div class="name-setup-container" id="player-inputs-list-box">
             <div class="player-row-item" data-char="mario">
@@ -1066,9 +1060,9 @@
     <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
         <h1 style="color: var(--mario-red); font-size: 22px;">MISI BERHASIL DISELESAIKAN! 🎉</h1>
-        <img src="image.png" alt="Misi Selesai" style="width: 200px; height: 200px; object-fit: contain; margin: 10px 0;">
-        <p style="font-size: 16px; margin: 4px 0; font-weight: bold;">Perolehan Bintang XP Para Pahlawan:</p>
-        <div id="final-scores-list" style="font-size: 16px; font-weight: bold; margin: 10px 0; line-height: 1.6; color: #333; background: #e8f5e9; border: 4px solid #43b3ae; padding: 14px; border-radius: 14px; width: 70%; max-height: 200px; overflow-y: auto;"></div>
+        <img src="image.png" alt="Misi Selesai" style="width: 240px; height: 240px; object-fit: contain; margin: 10px 0;">
+        <p style="font-size: 16px; margin: 4px 0; font-weight: bold;">Perolehan Poin XP Para Pahlawan:</p>
+        <div id="final-scores-list" style="font-size: 18px; font-weight: bold; margin: 10px 0; line-height: 1.6; color: #333; background: #e8f5e9; border: 4px solid #43b3ae; padding: 14px; border-radius: 14px; width: 70%;"></div>
         <button class="btn" style="width: 40%; font-size: 15px;" onclick="playMarioSound('click'); goToScreen('screen-levels')">PILIH DUNIA LAIN 🗺️</button>
     </div>
 </div>
@@ -1373,7 +1367,7 @@
     function addPlayerRow() {
         let container = document.getElementById('player-inputs-list-box');
         let count = container.children.length + 1;
-        if (count > 12) return; // Batas maksimal 12 pemain agar tetap aman
+        if (count > 10) return;
 
         let div = document.createElement('div');
         div.className = 'player-row-item';
@@ -1421,6 +1415,7 @@
             }
         });
 
+        // ATURAN MINIMAL 1 NAMA PEMAIN
         if (players.length === 0) {
             tvPeringatan.style.display = "block";
             tvPeringatan.innerText = "⚠️ Harap masukkan minimal 1 nama pemain untuk memulai!";
@@ -1618,10 +1613,10 @@
 
         setupStandardGameplay();
 
-        if (currentLevel === 'easy') timer = 180;
-        else if (currentLevel === 'medium') timer = 120;
-        else if (currentLevel === 'expert') timer = 100;
-        else timer = 90;
+        if (currentLevel === 'easy') timer = 120;
+        else if (currentLevel === 'medium') timer = 100;
+        else if (currentLevel === 'expert') timer = 90;
+        else timer = 60;
 
         document.getElementById('lbl-timer').innerText = timer;
         timerInterval = setInterval(updateTimer, 1000);
