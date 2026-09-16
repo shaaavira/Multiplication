@@ -1415,7 +1415,6 @@
             }
         });
 
-        // ATURAN MINIMAL 1 NAMA PEMAIN
         if (players.length === 0) {
             tvPeringatan.style.display = "block";
             tvPeringatan.innerText = "⚠️ Harap masukkan minimal 1 nama pemain untuk memulai!";
@@ -1511,7 +1510,6 @@
         
         let qBox = document.getElementById('question-text');
         qBox.innerText = `${currentQuestion.a} ${opSymbol} ${currentQuestion.b} = ...`;
-        
         qBox.className = "question-box highlight-big-question";
 
         updateScoreboardText();
@@ -1781,6 +1779,7 @@
         }
     }
 
+    // --- OPTIMASI DRAG AND DROP TANPA DELAY ---
     function createDraggableItem(val, container) {
         let item = document.createElement('div');
         item.className = 'draggable-item';
@@ -1790,18 +1789,23 @@
         item.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             playMarioSound('click');
-            let startX = e.clientX;
-            let startY = e.clientY;
-            let rect = item.getBoundingClientRect();
             
+            let rect = item.getBoundingClientRect();
+            let shiftX = e.clientX - rect.left;
+            let shiftY = e.clientY - rect.top;
+
             item.classList.add('dragging');
-            item.style.left = `${rect.left}px`;
-            item.style.top = `${rect.top}px`;
+            item.setPointerCapture(e.pointerId);
+
+            function moveAt(clientX, clientY) {
+                item.style.left = `${clientX - shiftX}px`;
+                item.style.top = `${clientY - shiftY}px`;
+            }
+
+            moveAt(e.clientX, e.clientY);
 
             function onPointerMove(e) {
-                let dx = e.clientX - startX;
-                let dy = e.clientY - startY;
-                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.25) rotate(10deg)`;
+                moveAt(e.clientX, e.clientY);
 
                 document.querySelectorAll('.circle-dropzone').forEach(zone => {
                     let zRect = zone.getBoundingClientRect();
@@ -1815,10 +1819,10 @@
             }
 
             function onPointerUp(e) {
-                window.removeEventListener('pointermove', onPointerMove);
-                window.removeEventListener('pointerup', onPointerUp);
+                item.removeEventListener('pointermove', onPointerMove);
+                item.removeEventListener('pointerup', onPointerUp);
+                
                 item.classList.remove('dragging');
-                item.style.transform = '';
                 item.style.left = '';
                 item.style.top = '';
 
@@ -1873,8 +1877,8 @@
                 }
             }
 
-            window.addEventListener('pointermove', onPointerMove);
-            window.addEventListener('pointerup', onPointerUp);
+            item.addEventListener('pointermove', onPointerMove);
+            item.addEventListener('pointerup', onPointerUp);
         });
 
         container.appendChild(item);
