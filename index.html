@@ -1115,7 +1115,7 @@
                 <div class="score-display-kids" id="scoreboard-text"></div>
             </div>
             <div class="board-column-timer">
-                ⏱️ <span id="lbl-timer">-</span> detik
+                ⏱️ <span id="lbl-timer">-</span> s
             </div>
         </div>
         
@@ -1376,106 +1376,106 @@
     let answeredPlayersInThisQuestion = [];
 
     const multiplicationLevelBanks = {
-        easy: [
-            { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
-            { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
-            { a: 14, b: 2, decomp: [10, 4], parts: [20, 8], ans: 28 },
-            { a: 15, b: 3, decomp: [10, 5], parts: [30, 15], ans: 45 },
-            { a: 16, b: 4, decomp: [10, 6], parts: [40, 24], ans: 64 },
-            { a: 17, b: 3, decomp: [10, 7], parts: [30, 21], ans: 51 },
-            { a: 18, b: 2, decomp: [10, 8], parts: [20, 16], ans: 36 },
-            { a: 19, b: 4, decomp: [10, 9], parts: [40, 36], ans: 76 },
-            { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
-            { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 }
-        ],
-        medium: [
-            { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
-            { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
-            { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
-            { a: 42, b: 6, decomp: [40, 2], parts: [240, 12], ans: 252 },
-            { a: 45, b: 3, decomp: [40, 5], parts: [120, 15], ans: 135 },
-            { a: 28, b: 4, decomp: [20, 8], parts: [80, 32], ans: 112 },
-            { a: 36, b: 5, decomp: [30, 6], parts: [150, 30], ans: 180 },
-            { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
-            { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
-            { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
-        ],
-        expert: [
-            { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
-            { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
-            { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
-            { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
-            { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
-            { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
-            { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
-            { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
-            { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
-            { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
-        ],
-        nightmare: [
-            { a: 214, b: 5, decomp: [200, 10, 4], parts: [1000, 50, 20], ans: 1070 },
-            { a: 256, b: 3, decomp: [200, 50, 6], parts: [600, 150, 18], ans: 768 },
-            { a: 315, b: 5, decomp: [300, 10, 5], parts: [1500, 50, 25], ans: 1575 },
-            { a: 342, b: 3, decomp: [300, 40, 2], parts: [900, 120, 6], ans: 1026 },
-            { a: 423, b: 2, decomp: [400, 20, 3], parts: [800, 40, 6], ans: 846 },
-            { a: 512, b: 4, decomp: [500, 10, 2], parts: [2000, 40, 8], ans: 2048 },
-            { a: 231, b: 4, decomp: [200, 30, 1], parts: [800, 120, 4], ans: 924 },
-            { a: 324, b: 4, decomp: [300, 20, 4], parts: [1200, 80, 16], ans: 1296 },
-            { a: 415, b: 3, decomp: [400, 10, 5], parts: [1200, 30, 15], ans: 1245 },
-            { a: 245, b: 4, decomp: [200, 40, 5], parts: [800, 160, 20], ans: 980 }
-        ]
-    };
+    easy: [
+        { a: 12, b: 4, decomp: [10, 2], parts: [40, 8], ans: 48 },
+        { a: 13, b: 3, decomp: [10, 3], parts: [30, 9], ans: 39 },
+        { a: 14, b: 2, decomp: [10, 4], parts: [20, 8], ans: 28 },
+        { a: 15, b: 3, decomp: [10, 5], parts: [30, 15], ans: 45 },
+        { a: 16, b: 4, decomp: [10, 6], parts: [40, 24], ans: 64 },
+        { a: 17, b: 3, decomp: [10, 7], parts: [30, 21], ans: 51 },
+        { a: 18, b: 2, decomp: [10, 8], parts: [20, 16], ans: 36 },
+        { a: 19, b: 4, decomp: [10, 9], parts: [40, 36], ans: 76 },
+        { a: 11, b: 5, decomp: [10, 1], parts: [50, 5], ans: 55 },
+        { a: 12, b: 3, decomp: [10, 2], parts: [30, 6], ans: 36 }
+    ],
+    medium: [
+        { a: 13, b: 5, decomp: [10, 3], parts: [50, 15], ans: 65 },
+        { a: 14, b: 5, decomp: [10, 4], parts: [50, 20], ans: 70 },
+        { a: 15, b: 4, decomp: [10, 5], parts: [40, 20], ans: 60 },
+        { a: 16, b: 3, decomp: [10, 6], parts: [30, 18], ans: 48 },
+        { a: 17, b: 4, decomp: [10, 7], parts: [40, 28], ans: 68 },
+        { a: 18, b: 3, decomp: [10, 8], parts: [30, 24], ans: 54 },
+        { a: 19, b: 2, decomp: [10, 9], parts: [20, 18], ans: 38 },
+        { a: 12, b: 5, decomp: [10, 2], parts: [50, 10], ans: 60 },
+        { a: 13, b: 4, decomp: [10, 3], parts: [40, 12], ans: 52 },
+        { a: 15, b: 2, decomp: [10, 5], parts: [20, 10], ans: 30 }
+    ],
+    expert: [
+        { a: 24, b: 3, decomp: [20, 4], parts: [60, 12], ans: 72 },
+        { a: 32, b: 4, decomp: [30, 2], parts: [120, 8], ans: 128 },
+        { a: 35, b: 5, decomp: [30, 5], parts: [150, 25], ans: 175 },
+        { a: 42, b: 6, decomp: [40, 2], parts: [240, 12], ans: 252 },
+        { a: 45, b: 3, decomp: [40, 5], parts: [120, 15], ans: 135 },
+        { a: 28, b: 4, decomp: [20, 8], parts: [80, 32], ans: 112 },
+        { a: 36, b: 5, decomp: [30, 6], parts: [150, 30], ans: 180 },
+        { a: 48, b: 2, decomp: [40, 8], parts: [80, 16], ans: 96 },
+        { a: 25, b: 6, decomp: [20, 5], parts: [120, 30], ans: 150 },
+        { a: 34, b: 3, decomp: [30, 4], parts: [90, 12], ans: 102 }
+    ],
+    nightmare: [
+        { a: 74, b: 5, decomp: [70, 4], parts: [350, 20], ans: 370 },
+        { a: 86, b: 4, decomp: [80, 6], parts: [320, 24], ans: 344 },
+        { a: 95, b: 3, decomp: [90, 5], parts: [270, 15], ans: 285 },
+        { a: 68, b: 9, decomp: [60, 8], parts: [540, 72], ans: 612 },
+        { a: 124, b: 6, decomp: [100, 20, 4], parts: [600, 120, 24], ans: 744 },
+        { a: 156, b: 4, decomp: [100, 50, 6], parts: [400, 200, 24], ans: 624 },
+        { a: 178, b: 3, decomp: [100, 70, 8], parts: [300, 210, 24], ans: 534 },
+        { a: 112, b: 7, decomp: [100, 10, 2], parts: [700, 70, 14], ans: 784 },
+        { a: 135, b: 4, decomp: [100, 30, 5], parts: [400, 120, 20], ans: 540 },
+        { a: 190, b: 5, decomp: [100, 90], parts: [500, 450], ans: 950 }
+    ]
+};
 
     const divisionLevelBanks = {
-        easy: [
-            { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
-            { a: 39, b: 3, decomp: [30, 9], parts: [10, 3], ans: 13 },
-            { a: 28, b: 2, decomp: [20, 8], parts: [10, 4], ans: 14 },
-            { a: 45, b: 3, decomp: [30, 15], parts: [10, 5], ans: 15 },
-            { a: 64, b: 4, decomp: [40, 24], parts: [10, 6], ans: 16 },
-            { a: 51, b: 3, decomp: [30, 21], parts: [10, 7], ans: 17 },
-            { a: 36, b: 2, decomp: [20, 16], parts: [10, 8], ans: 18 },
-            { a: 76, b: 4, decomp: [40, 36], parts: [10, 9], ans: 19 },
-            { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13 },
-            { a: 70, b: 5, decomp: [50, 20], parts: [10, 4], ans: 14 }
-        ],
-        medium: [
-            { a: 72, b: 3, decomp: [60, 12], parts: [20, 4], ans: 24 },
-            { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32 },
-            { a: 175, b: 5, decomp: [150, 25], parts: [30, 5], ans: 35 },
-            { a: 252, b: 6, decomp: [240, 12], parts: [40, 2], ans: 42 },
-            { a: 135, b: 3, decomp: [120, 15], parts: [40, 5], ans: 45 },
-            { a: 112, b: 4, decomp: [80, 32], parts: [20, 8], ans: 28 },
-            { a: 180, b: 5, decomp: [150, 30], parts: [30, 6], ans: 36 },
-            { a: 96, b: 2, decomp: [80, 16], parts: [40, 8], ans: 48 },
-            { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
-            { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 }
-        ],
-        expert: [
-            { a: 224, b: 4, decomp: [200, 24], parts: [50, 6], ans: 56 },
-            { a: 245, b: 5, decomp: [200, 45], parts: [40, 9], ans: 49 },
-            { a: 312, b: 6, decomp: [300, 12], parts: [50, 2], ans: 52 },
-            { a: 378, b: 7, decomp: [350, 28], parts: [50, 4], ans: 54 },
-            { a: 432, b: 8, decomp: [400, 32], parts: [50, 4], ans: 54 },
-            { a: 288, b: 9, decomp: [270, 18], parts: [30, 2], ans: 32 },
-            { a: 455, b: 5, decomp: [400, 55], parts: [80, 11], ans: 91 },
-            { a: 512, b: 8, decomp: [480, 32], parts: [60, 4], ans: 64 },
-            { a: 216, b: 3, decomp: [210, 6], parts: [70, 2], ans: 72 },
-            { a: 324, b: 6, decomp: [300, 24], parts: [50, 4], ans: 54 }
-        ],
-        nightmare: [
-            { a: 624, b: 4, decomp: [600, 24], parts: [150, 6], ans: 156 },
-            { a: 635, b: 5, decomp: [600, 35], parts: [120, 7], ans: 127 },
-            { a: 726, b: 6, decomp: [720, 6], parts: [120, 1], ans: 121 },
-            { a: 812, b: 7, decomp: [700, 112], parts: [100, 16], ans: 116 },
-            { a: 936, b: 8, decomp: [800, 136], parts: [100, 17], ans: 117 },
-            { a: 639, b: 9, decomp: [630, 9], parts: [70, 1], ans: 71 },
-            { a: 756, b: 6, decomp: [720, 36], parts: [120, 6], ans: 126 },
-            { a: 845, b: 5, decomp: [800, 45], parts: [160, 9], ans: 169 },
-            { a: 912, b: 8, decomp: [880, 32], parts: [110, 4], ans: 114 },
-            { a: 651, b: 3, decomp: [600, 51], parts: [200, 17], ans: 217 }
-        ]
-    };
+    easy: [
+        { a: 48, b: 4, decomp: [40, 8], parts: [10, 2], ans: 12 },
+        { a: 39, b: 3, decomp: [30, 9], parts: [10, 3], ans: 13 },
+        { a: 28, b: 2, decomp: [20, 8], parts: [10, 4], ans: 14 },
+        { a: 45, b: 3, decomp: [30, 15], parts: [10, 5], ans: 15 },
+        { a: 64, b: 4, decomp: [40, 24], parts: [10, 6], ans: 16 },
+        { a: 51, b: 3, decomp: [30, 21], parts: [10, 7], ans: 17 },
+        { a: 36, b: 2, decomp: [20, 16], parts: [10, 8], ans: 18 },
+        { a: 76, b: 4, decomp: [40, 36], parts: [10, 9], ans: 19 },
+        { a: 55, b: 5, decomp: [50, 5], parts: [10, 1], ans: 11 },
+        { a: 36, b: 3, decomp: [30, 6], parts: [10, 2], ans: 12 }
+    ],
+    medium: [
+        { a: 65, b: 5, decomp: [50, 15], parts: [10, 3], ans: 13 },
+        { a: 70, b: 5, decomp: [50, 20], parts: [10, 4], ans: 14 },
+        { a: 60, b: 4, decomp: [40, 20], parts: [10, 5], ans: 15 },
+        { a: 48, b: 3, decomp: [30, 18], parts: [10, 6], ans: 16 },
+        { a: 68, b: 4, decomp: [40, 28], parts: [10, 7], ans: 17 },
+        { a: 54, b: 3, decomp: [30, 24], parts: [10, 8], ans: 18 },
+        { a: 38, b: 2, decomp: [20, 18], parts: [10, 9], ans: 19 },
+        { a: 60, b: 5, decomp: [50, 10], parts: [10, 2], ans: 12 },
+        { a: 52, b: 4, decomp: [40, 12], parts: [10, 3], ans: 13 },
+        { a: 30, b: 2, decomp: [20, 10], parts: [10, 5], ans: 15 }
+    ],
+    expert: [
+        { a: 108, b: 3, decomp: [90, 18], parts: [30, 6], ans: 36 },
+        { a: 128, b: 4, decomp: [120, 8], parts: [30, 2], ans: 32 },
+        { a: 175, b: 5, decomp: [150, 25], parts: [30, 5], ans: 35 },
+        { a: 135, b: 3, decomp: [120, 15], parts: [40, 5], ans: 45 },
+        { a: 112, b: 4, decomp: [80, 32], parts: [20, 8], ans: 28 },
+        { a: 180, b: 5, decomp: [150, 30], parts: [30, 6], ans: 36 },
+        { a: 120, b: 4, decomp: [80, 40], parts: [20, 10], ans: 30 },
+        { a: 150, b: 6, decomp: [120, 30], parts: [20, 5], ans: 25 },
+        { a: 102, b: 3, decomp: [90, 12], parts: [30, 4], ans: 34 },
+        { a: 144, b: 4, decomp: [120, 24], parts: [30, 6], ans: 36 }
+    ],
+    nightmare: [
+        { a: 102, b: 2, decomp: [100, 2], parts: [50, 1], ans: 51 },
+        { a: 106, b: 2, decomp: [100, 6], parts: [50, 3], ans: 53 },
+        { a: 153, b: 3, decomp: [120, 33], parts: [40, 11], ans: 51 },
+        { a: 162, b: 3, decomp: [150, 12], parts: [50, 4], ans: 54 },
+        { a: 156, b: 3, decomp: [150, 6], parts: [50, 2], ans: 52 },
+        { a: 174, b: 3, decomp: [150, 24], parts: [50, 8], ans: 58 },
+        { a: 184, b: 4, decomp: [160, 24], parts: [40, 6], ans: 46 },
+        { a: 104, b: 2, decomp: [100, 4], parts: [50, 2], ans: 52 },
+        { a: 114, b: 2, decomp: [100, 14], parts: [50, 7], ans: 57 },
+        { a: 165, b: 3, decomp: [150, 15], parts: [50, 5], ans: 55 }
+    ]
+};
 
     function updateTalkerExpression(state) {
         let img = document.getElementById('talker-character-img');
