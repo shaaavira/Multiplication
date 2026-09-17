@@ -1150,7 +1150,8 @@
         <div class="breakdown-section disabled-section" id="inputs-container" style="display:none;"></div>
 
         <button id="submit-btn" class="btn" onclick="checkAnswer()" style="display:none; margin-top: 8px; width: 35%;">JAWAB SEKARANG! 🎯</button>
-        <button id="next-btn" class="btn btn-secondary" onclick="playAudio('click'); handleNextOrSteal()" style="display:none; margin-top: 8px; width: 45%;">SOAL BERIKUTNYA ➡️</button>
+        <button id="next-btn" class="btn btn-secondary" onclick="playAudio('click'); nextQuestion()" style="display:none; margin-top: 8px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
+        <button id="steal-btn" class="btn" onclick="playAudio('click'); handleStealChance()" style="display:none; margin-top: 8px; width: 45%; background: linear-gradient(135deg, #ff9800, #f57f17); box-shadow: 0 4px 0px #e65100;">Beri kesempatan lawan! 🔄</button>
 
         <!-- OVERLAY PEMILIH SIAPA YANG MENJAWAB -->
         <div id="player-selector-screen-overlay">
@@ -1176,7 +1177,6 @@
 <script>
     let audioCtx = null;
     let bgmInterval = null;
-    let lastAnswerWasCorrect = false; // Status apakah jawaban sebelumnya benar
 
     function initAudio() {
         if (!audioCtx) {
@@ -1672,9 +1672,10 @@
         document.getElementById('drag-source-wrapper').style.display = 'none';
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('steal-btn').style.display = 'none';
         
         let banner = document.getElementById('feedback-top-banner');
-        banner.innerText = "Siapa semangatmu, Pahlawan! Siap merebut giliran?";
+        banner.innerText = "Siapa yang mau menjawab soal ini?";
         banner.className = "";
         updateTalkerExpression('biasa');
 
@@ -1696,15 +1697,10 @@
         if (availablePlayers.length === 0) {
             document.getElementById('player-selector-screen-overlay').style.display = 'none';
             let banner = document.getElementById('feedback-top-banner');
-            banner.innerText = "Semua pahlawan hebat sudah mencoba! Lanjut soal berikutnya.";
+            banner.innerText = "Semua pahlawan hebat sudah menjawab! Lanjut yuk.";
             banner.className = "incorrect";
             updateTalkerExpression('incorrect');
-            
-            // Tampilkan tombol untuk lanjut ke soal berikutnya otomatis
-            let nextBtn = document.getElementById('next-btn');
-            lastAnswerWasCorrect = true; // Anggap selesai agar lanjut soal
-            nextBtn.innerText = "SOAL BERIKUTNYA ➡️";
-            nextBtn.style.display = 'block';
+            document.getElementById('next-btn').style.display = 'block';
             clearInterval(timerInterval);
             document.getElementById('lbl-timer').innerText = '-';
             return;
@@ -1742,6 +1738,8 @@
 
         document.getElementById('inputs-container').style.display = 'flex';
         document.getElementById('submit-btn').style.display = 'block';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('steal-btn').style.display = 'none';
 
         let helperDivision = document.getElementById('helper-division');
         let helperMultiplication = document.getElementById('helper-multiplication');
@@ -2080,12 +2078,7 @@
                 banner.className = "incorrect";
                 updateTalkerExpression('incorrect');
                 document.getElementById('player-selector-screen-overlay').style.display = 'none';
-                
-                // Siapkan tombol aksi untuk salah/waktu habis -> pilih pemain baru
-                lastAnswerWasCorrect = false;
-                let nextBtn = document.getElementById('next-btn');
-                nextBtn.innerText = "GANTI PEMAIN LAIN 🔄";
-                nextBtn.style.display = 'block';
+                document.getElementById('next-btn').style.display = 'block';
             } else {
                 banner.innerText = `Waktu habis ${activePlayer}! (-5 XP). Giliran direbut!`;
                 banner.className = "incorrect";
@@ -2093,16 +2086,10 @@
                 playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
                 updateScoreboardText();
 
-                document.getElementById('bond-container').style.display = 'none';
-                document.getElementById('inputs-container').style.display = 'none';
-                document.getElementById('drag-source-wrapper').style.display = 'none';
                 document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('steal-btn').style.display = 'block';
                 document.getElementById('lbl-timer').innerText = '-';
-                
-                document.getElementById('helper-division').style.display = 'none';
-                document.getElementById('helper-multiplication').style.display = 'none';
-
-                renderPlayerSelector();
             }
         }
     }
@@ -2133,8 +2120,6 @@
         clearInterval(timerInterval);
         document.getElementById('lbl-timer').innerText = '-';
 
-        let nextBtn = document.getElementById('next-btn');
-
         if (allCorrect) {
             playAudio('coin'); 
             setTimeout(() => playAudio('correct'), 250); 
@@ -2154,17 +2139,15 @@
                 });
             }
 
-            // Jawaban BENAR -> Sembunyikan submit, tampilkan tombol ke soal berikutnya
-            lastAnswerWasCorrect = true;
             document.getElementById('submit-btn').style.display = 'none';
-            nextBtn.innerText = "SOAL BERIKUTNYA ➡️";
-            nextBtn.style.display = 'block';
+            document.getElementById('steal-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
         } else {
             playAudio('wrong'); 
             playerScores[activePlayer] = Math.max(0, playerScores[activePlayer] - 5);
             updateScoreboardText();
             
-            banner.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 XP). Beri kesempatan lawan!`;
+            banner.innerText = `Ups, jawaban ${activePlayer} kurang tepat. (-5 XP)`;
             banner.className = "incorrect";
             updateTalkerExpression('incorrect');
             
@@ -2180,32 +2163,20 @@
                 });
             }
             
-            document.getElementById('bond-container').style.display = 'none';
-            document.getElementById('inputs-container').style.display = 'none';
-            document.getElementById('drag-source-wrapper').style.display = 'none';
             document.getElementById('submit-btn').style.display = 'none';
-            
-            document.getElementById('helper-division').style.display = 'none';
-            document.getElementById('helper-multiplication').style.display = 'none';
-
-            // Jawaban SALAH -> Sembunyikan submit, tampilkan tombol untuk memilih pemain baru/giliran lawan
-            lastAnswerWasCorrect = false;
-            nextBtn.innerText = "GANTI PEMAIN LAIN 🔄";
-            nextBtn.style.display = 'block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('steal-btn').style.display = 'block';
         }
     }
 
-    // Fungsi tunggal tombol aksi di bawah (menggantikan fungsi lama)
-    function handleNextOrSteal() {
-        document.getElementById('next-btn').style.display = 'none';
-        if (lastAnswerWasCorrect) {
-            // Jika benar, lanjut ke soal berikutnya di array
-            questionIndex++;
-            loadQuestion();
-        } else {
-            // Jika salah, tetap di soal yang sama dan buka kembali panel pemilihan pemain baru (rebutan/kesempatan lain)
-            renderPlayerSelector();
-        }
+    function handleStealChance() {
+        document.getElementById('steal-btn').style.display = 'none';
+        renderPlayerSelector();
+    }
+
+    function nextQuestion() {
+        questionIndex++;
+        loadQuestion();
     }
 </script>
 
