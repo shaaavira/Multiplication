@@ -1181,7 +1181,6 @@
         if (bgmInterval) return; 
         initAudio();
 
-        // Melodi lagu anak-anak yang ceria & ramah (Bernuansa riang/lullaby klasik)
         const melody = [
             523.25, 523.25, 783.99, 783.99, 880.00, 880.00, 783.99, // C C G G A A G
             659.25, 659.25, 587.33, 587.33, 523.25, 523.25, 392.00, // E E D D C C G
@@ -1198,10 +1197,10 @@
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 
-                osc.type = 'sine'; // Menggunakan gelombang sine agar suaranya lebih lembut, manis, dan ramah di telinga anak-anak
+                osc.type = 'sine'; 
                 osc.frequency.setValueAtTime(melody[noteIndex], now);
                 
-                gain.gain.setValueAtTime(0.08, now); // Volume diatur lebih lembut/tidak bising
+                gain.gain.setValueAtTime(0.1, now); 
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
                 
                 osc.connect(gain);
