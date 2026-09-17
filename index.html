@@ -1200,7 +1200,7 @@
                 osc.type = 'sine'; 
                 osc.frequency.setValueAtTime(melody[noteIndex], now);
                 
-                gain.gain.setValueAtTime(0.1, now); 
+                gain.gain.setValueAtTime(0.3, now); 
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
                 
                 osc.connect(gain);
