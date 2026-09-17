@@ -14,14 +14,12 @@
             --pip-green: #43b3ae;
             --pip-bg-sky: #5c94fc;
             
-            /* Dynamic Level Themes - Background Putih Bersih */
             --level-bg: #ffffff;
             --level-container-bg: #ffffff;
             --level-border: #000;
             --level-primary: var(--pip-red);
         }
 
-        /* FULLSCREEN & TANPA SCROLL UNTUK LAYAR LAPTOP/TV */
         html, body {
             width: 100vw;
             height: 100vh;
@@ -76,7 +74,6 @@
             overflow-y: auto !important;
         }
 
-        /* Level 1: Aksen Rumput Daun */
         .game-container.theme-easy {
             --level-container-bg: #ffffff;
             --level-border: #2e7d32;
@@ -94,7 +91,6 @@
             white-space: nowrap;
         }
 
-        /* Level 2: Aksen Pipa Tanah */
         .game-container.theme-medium {
             --level-container-bg: #ffffff;
             --level-border: #00838f;
@@ -112,7 +108,6 @@
             white-space: nowrap;
         }
 
-        /* Level 3: Aksen Matahari Awan */
         .game-container.theme-expert {
             --level-container-bg: #ffffff;
             --level-border: #e65100;
@@ -130,7 +125,6 @@
             white-space: nowrap;
         }
 
-        /* Level 4: Aksen Gunung Lahar Magma */
         .game-container.theme-nightmare {
             --level-container-bg: #ffffff;
             --level-border: #6a1b9a;
@@ -297,18 +291,17 @@
             box-sizing: border-box;
         }
 
-        /* --- STYLING REVISI: BUBBLE PERCAKAPAN DI ATAS KARAKTER, MELEBAR KE BAWAH (POSISI DITAIKKAN) --- */
         .character-talk-wrapper {
             position: absolute;
-            bottom: 55px; /* Ditinggikan dari 10px ke 55px */
-            left: 15px; /* Disesuaikan sedikit dari 10px ke 15px */
+            bottom: 55px;
+            left: 15px;
             display: flex;
-            flex-direction: column-reverse; /* Karakter di bawah, bubble di atasnya */
+            flex-direction: column-reverse;
             align-items: flex-start;
             gap: 6px;
             z-index: 50;
             pointer-events: none;
-            max-width: 280px; /* Dibuat lebih ramping/melebar ke bawah */
+            max-width: 280px;
         }
 
         .character-talk-wrapper img.talker-avatar {
@@ -318,7 +311,6 @@
             flex-shrink: 0;
             filter: drop-shadow(2px 2px 0px #000);
             animation: charTalkBounce 1.5s infinite alternate;
-            /* Tambahan transisi agar perubahan ekspresi smooth */
             transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
             opacity: 1;
         }
@@ -350,7 +342,6 @@
             line-height: 1.5;
             word-break: break-word;
         }
-        /* Ekor Bubble Percakapan ke Bawah (menghadap karakter) */
         #feedback-top-banner::after {
             content: "";
             position: absolute;
@@ -367,13 +358,12 @@
 
         #feedback-top-banner.incorrect { color: #c62828; background: #ffebee; border-color: #c62828; }
         #feedback-top-banner.incorrect::after { border-color: #c62828 transparent transparent transparent; }
-        /* -------------------------------------------------------- */
         
         .math-problem-area {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 25px 0 4px 0; /* Diubah menjadi margin top 25px sesuai permintaan */
+            margin: 25px 0 4px 0;
             width: 100%;
             z-index: 2;
         }
@@ -382,7 +372,7 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 20px;
             color: var(--pip-blue);
-            margin-bottom: 8px; /* Menambah jarak bawah question box */
+            margin-bottom: 8px;
             width: fit-content !important;
             max-width: 90%;
             background: #e3f2fd;
@@ -404,7 +394,7 @@
             animation: pulseQuestion 1.5s infinite alternate;
             width: fit-content !important;
             max-width: 90%;
-            margin: 6px auto 12px auto !important; /* Menurunkan dan memberi jarak bawah */
+            margin: 6px auto 12px auto !important;
             padding: 10px 20px;
             display: inline-block;
         }
@@ -493,17 +483,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 10px !important; /* Memberi jarak bawah */
+            margin-bottom: 10px !important;
             transform: scale(1.05);
             transform-origin: top center;
             animation: floatContainer 3s ease-in-out infinite alternate;
         }
 
         .number-bond-container.mode-multiplication {
-            margin-top: -20px !important; /* Diubah menjadi -20px sesuai permintaan */
+            margin-top: -20px !important;
         }
         .number-bond-container.mode-division {
-            margin-top: -45px !important; /* Diubah menjadi -45px sesuai permintaan */
+            margin-top: -45px !important;
         }
         
         @keyframes floatContainer {
@@ -575,7 +565,7 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin: 6px 0; /* Diturunkan dan diberi ruang */
+            margin: 6px 0;
             min-height: 50px;
             align-items: center;
         }
@@ -672,7 +662,7 @@
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 8px auto; /* Diturunkan posisinya */
+            margin: 8px auto;
             background: rgba(255, 255, 255, 0.95);
             border: 4px solid #81c784;
             padding: 10px 18px;
@@ -730,7 +720,7 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 8px; /* Menurunkan tombol agar berjarak aman */
+            margin-top: 8px;
             width: 100%;
             box-shadow: 0 4px 0px #900;
             transition: all 0.1s;
@@ -1001,7 +991,6 @@
 <body>
 
 <div class="game-container" id="main-game-container">
-    <!-- SCREEN 0: HALAMAN SAMBUTAN (MISS RUNI) -->
     <div id="screen-intro" class="screen active">
         <div class="arcade-header-decor" style="font-size: 30px; margin-bottom: 10px;">🍄 SUPER MATH HERO 🌟</div>
         <div style="background: #e8f5e9; border: 5px solid #2e7d32; padding: 15px 25px; border-radius: 20px; box-shadow: 0 8px 0px #1b5e20; max-width: 750px; margin: 0 auto 10px auto;">
@@ -1017,7 +1006,6 @@
         <button class="btn" style="width: 45%; font-size: 16px; background: linear-gradient(135deg, #43b3ae, #2e7d32); box-shadow: 0 6px 0px #1b5e20; margin: 0 auto;" onclick="playAudio('startGame'); goToScreen('screen-welcome')">LANJUT BERMAIN ▶️</button>
     </div>
 
-    <!-- SCREEN 1: INPUT NAMA & PILIH KOTAK PAHLAWAN -->
     <div id="screen-welcome" class="screen">
         <div class="arcade-header-decor">🍄 SUPER MATH HERO 🌟</div>
         <div class="pip-badge">✨ MASUKKAN NAMA & KOSTUM PAHLAWAN HEBAT ✨</div>
@@ -1028,7 +1016,7 @@
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
                     <img src="pip.png" class="player-avatar-icon row-avatar-img pip-avatar">
-                    <input type="text" class="p-name-input" placeholder="Jagoan 1 (Wajib Diisi)" value="">
+                    <input type="text" class="p-name-input" placeholder="Jagoan 1" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn selected-pip" onclick="playAudio('click'); setPlayerRowCharacter(this, 'pip')">
@@ -1053,7 +1041,6 @@
         </div>
     </div>
 
-    <!-- SCREEN 1.5: PILIH MENU UTAMA -->
     <div id="screen-main-menu" class="screen">
         <div class="arcade-header-decor" style="font-size: 22px;">PILIH DUNIA BERMAIN</div>
         <p style="font-size: 14px; margin-bottom: 10px;">Pahlawan Siap Beraksi: <span id="display-players-list-menu" style="font-weight: bold; color: var(--pip-red);"></span></p>
@@ -1072,7 +1059,6 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: PILIH LEVEL -->
     <div id="screen-levels" class="screen">
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="playAudio('click'); goToScreen('screen-main-menu')">⬅️ Pilih Dunia</button>
@@ -1086,7 +1072,7 @@
             </div>
             <div class="level-card medium" onclick="playAudio('select'); startLevel('medium')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #ef6c00; margin-bottom: 8px;">🟡 Level 2: Dunia Terowongan Pipa</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🟩</span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🛘</span>
             </div>
             <div class="level-card expert" onclick="playAudio('select'); startLevel('expert')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #c62828; margin-bottom: 8px;">🟠 Level 3: Petualangan Kastil Awan</div>
@@ -1099,7 +1085,6 @@
         </div>
     </div>
 
-    <!-- SCREEN 3: GAMEPLAY ARENA -->
     <div id="screen-game" class="screen" style="justify-content: flex-start; padding-top: 2px;">
         <div class="top-nav-row">
             <button class="btn-back-menu" onclick="playAudio('click'); returnToMenu()">⬅️ Pilih Level</button>
@@ -1119,7 +1104,6 @@
             </div>
         </div>
         
-        <!-- BUBBLE PERCAKAPAN DI POJOK KIRI BAWAH (DI ATAS KARAKTER, MELEBAR KE BAWAH) -->
         <div class="character-talk-wrapper">
             <img id="talker-character-img" src="biasapip.png" class="talker-avatar" alt="Karakter">
             <div id="feedback-top-banner">Siapkan semangatmu, Pahlawan!</div>
@@ -1161,7 +1145,6 @@
         <button id="next-btn" class="btn btn-secondary" onclick="playAudio('click'); nextQuestion()" style="display:none; margin-top: 8px; width: 35%;">SOAL BERIKUTNYA ➡️</button>
         <button id="steal-btn" class="btn" onclick="playAudio('click'); handleStealChance()" style="display:none; margin-top: 8px; width: 45%; background: linear-gradient(135deg, #ff9800, #f57f17); box-shadow: 0 4px 0px #e65100;">Beri kesempatan lawan! 🔄</button>
 
-        <!-- OVERLAY PEMILIH SIAPA YANG MENJAWAB -->
         <div id="player-selector-screen-overlay">
             <div class="player-selector-arena">
                 <div class="arcade-header-decor" style="font-size: 18px; color: var(--pip-yellow); text-shadow: 2px 2px 0px #e52521, 4px 4px 0px #000;">⭐ REBUTAN JAWAB! ⭐</div>
@@ -1172,7 +1155,6 @@
         </div>
     </div>
 
-    <!-- SCREEN 4: HASIL AKHIR -->
     <div id="screen-score" class="screen">
         <h1 style="color: var(--pip-red); font-size: 22px;">MISI BERHASIL DISELESAIKAN! 🎉</h1>
         <img src="imagezip.png" alt="Misi Selesai" style="width: 240px; height: 240px; object-fit: contain; margin: 10px 0;">
@@ -1490,7 +1472,6 @@
             targetSrc = `biasa${prefix}.png`;
         }
 
-        // Efek transisi smooth (fade-out lalu ganti gambar dan fade-in)
         img.classList.add('fade-out');
         setTimeout(() => {
             img.src = targetSrc;
@@ -1655,7 +1636,6 @@
         if (questionIndex >= questions.length) {
             playAudio('win');
             
-            // Mengurutkan pemain dari skor tertinggi ke terendah
             let sortedPlayers = [...players].sort((a, b) => playerScores[b] - playerScores[a]);
             
             let finalHtml = "";
@@ -1663,10 +1643,9 @@
                 let char = playerCharacters[p];
                 let imgFile = char === 'pip' ? 'pip.png' : 'zip.png';
                 
-                // Menentukan warna font dan tambahan mahkota khusus untuk juara 1 (paling atas)
                 let isTopScorer = (index === 0);
                 let rowStyle = isTopScorer ? 'color: #b71c1c; font-size: 20px; text-shadow: 1px 1px 0px #ffd54f;' : 'color: #333;';
-                let crownBadge = isTopScorer ? '👑 <b>[JUARA 1]</b> ' : '';
+                let crownBadge = isTopScorer ? '<b>[JUARA 1]</b> ' : '';
 
                 finalHtml += `<div style="margin: 6px 0; ${rowStyle}"><img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"> ${crownBadge}${p}: <b>${playerScores[p]} XP</b></div>`;
             });
@@ -2056,7 +2035,6 @@
                         item.remove();
                         banner.innerText = `Keren ${activePlayer}! Lanjutkan perjalananmu...`;
                         banner.className = "correct";
-                        // Berubah menjadi pip.png untuk perkalian, zip.png untuk pembagian saat benar drop koin
                         let talkerImg = document.getElementById('talker-character-img');
                         talkerImg.src = operationMode === 'multiplication' ? 'pip.png' : 'zip.png';
                         
