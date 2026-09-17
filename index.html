@@ -297,11 +297,11 @@
             box-sizing: border-box;
         }
 
-        /* --- STYLING REVISI: BUBBLE PERCAKAPAN DI ATAS KARAKTER, MELEBAR KE BAWAH --- */
+        /* --- STYLING REVISI: BUBBLE PERCAKAPAN DI ATAS KARAKTER, MELEBAR KE BAWAH (POSISI DITAIKKAN) --- */
         .character-talk-wrapper {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
+            bottom: 55px; /* Ditinggikan dari 10px ke 55px */
+            left: 15px; /* Disesuaikan sedikit dari 10px ke 15px */
             display: flex;
             flex-direction: column-reverse; /* Karakter di bawah, bubble di atasnya */
             align-items: flex-start;
@@ -318,7 +318,15 @@
             flex-shrink: 0;
             filter: drop-shadow(2px 2px 0px #000);
             animation: charTalkBounce 1.5s infinite alternate;
+            /* Tambahan transisi agar perubahan ekspresi smooth */
+            transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+            opacity: 1;
         }
+        .character-talk-wrapper img.talker-avatar.fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
         @keyframes charTalkBounce {
             0% { transform: translateY(0); }
             100% { transform: translateY(-4px); }
@@ -1472,14 +1480,22 @@
     function updateTalkerExpression(state) {
         let img = document.getElementById('talker-character-img');
         let prefix = operationMode === 'multiplication' ? 'pip' : 'zip';
+        let targetSrc = 'biasa';
         
         if (state === 'correct') {
-            img.src = `ceria${prefix}.png`;
+            targetSrc = `ceria${prefix}.png`;
         } else if (state === 'incorrect') {
-            img.src = `sedih${prefix}.png`;
+            targetSrc = `sedih${prefix}.png`;
         } else {
-            img.src = `biasa${prefix}.png`;
+            targetSrc = `biasa${prefix}.png`;
         }
+
+        // Efek transisi smooth (fade-out lalu ganti gambar dan fade-in)
+        img.classList.add('fade-out');
+        setTimeout(() => {
+            img.src = targetSrc;
+            img.classList.remove('fade-out');
+        }, 200);
     }
 
     function goToScreen(screenId) {
