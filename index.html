@@ -1016,7 +1016,7 @@
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
                     <img src="pip.png" class="player-avatar-icon row-avatar-img pip-avatar">
-                    <input type="text" class="p-name-input" placeholder="Jagoan 1 (Wajib Diisi)" value="">
+                    <input type="text" class="p-name-input" placeholder="Jagoan 1" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn selected-pip" onclick="playAudio('click'); setPlayerRowCharacter(this, 'pip')">
@@ -1031,7 +1031,7 @@
 
         <div style="display: flex; gap: 12px; margin-top: 10px; width: 100%; justify-content: center;">
             <button class="btn-back-menu" style="background-color: #2e7d32; padding: 10px 16px;" onclick="playAudio('click'); addPlayerRow()">➕ Tambah Teman</button>
-            <button class="btn-back-menu" style="background-color: #c62828; padding: 10px 16px;" onclick="playAudio('click'); removePlayerRow()">➖ Hapus Pemain</button>
+            <button class="btn-back-menu" style="background-color: #c62828; padding: 10px 16px;" onclick="playAudio('click'); removePlayerRow()">➖ Hapus Teman</button>
         </div>
 
         <div id="tv-peringatan" style="color: var(--pip-red); font-size: 13px; font-weight: bold; margin-top: 4px; display: none;"></div>
@@ -1072,7 +1072,7 @@
             </div>
             <div class="level-card medium" onclick="playAudio('select'); startLevel('medium')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #ef6c00; margin-bottom: 8px;">🟡 Level 2: Dunia Terowongan Pipa</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🟩</span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🛘</span>
             </div>
             <div class="level-card expert" onclick="playAudio('select'); startLevel('expert')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #c62828; margin-bottom: 8px;">🟠 Level 3: Petualangan Kastil Awan</div>
@@ -1126,7 +1126,7 @@
                 </div>
 
                 <div id="helper-multiplication" class="helper-multiplication-box" style="display: none;">
-                    <b>TIPS JITU JAWAB 💡</b>
+                    <b>TIPS JITU MENJAWAB💡</b>
                     <div style="font-size: 10px; font-family:'Press Start 2P'; line-height: 1.5; margin-top: 4px;">
                         Pecah angka besar menjadi Puluhan & Satuan ya!
                     </div>
@@ -1303,7 +1303,7 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, now);
                 osc.frequency.linearRampToValueAtTime(80, now + 0.25);
-                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.setValueAtTime(0.8, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
