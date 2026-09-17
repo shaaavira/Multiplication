@@ -1016,7 +1016,7 @@
                 <div class="player-row-left">
                     <span style="font-family:'Press Start 2P'; font-size: 11px; color: #555;">#1</span>
                     <img src="pip.png" class="player-avatar-icon row-avatar-img pip-avatar">
-                    <input type="text" class="p-name-input" placeholder="Jagoan 1" value="">
+                    <input type="text" class="p-name-input" placeholder="Jagoan 1 (Wajib Diisi)" value="">
                 </div>
                 <div class="char-choice-group-row">
                     <div class="char-row-btn selected-pip" onclick="playAudio('click'); setPlayerRowCharacter(this, 'pip')">
@@ -1072,7 +1072,7 @@
             </div>
             <div class="level-card medium" onclick="playAudio('select'); startLevel('medium')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #ef6c00; margin-bottom: 8px;">🟡 Level 2: Dunia Terowongan Pipa</div>
-                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🛘</span>
+                <span style="font-size:13px; display:block; color:#444; font-weight:bold;">Tantangan Pohon Angka Puluhan 🟩</span>
             </div>
             <div class="level-card expert" onclick="playAudio('select'); startLevel('expert')">
                 <div style="font-family:'Press Start 2P'; font-size: 13px; color: #c62828; margin-bottom: 8px;">🟠 Level 3: Petualangan Kastil Awan</div>
@@ -1181,11 +1181,12 @@
         if (bgmInterval) return; 
         initAudio();
 
+        // Melodi lagu anak-anak yang ceria & ramah (Bernuansa riang/lullaby klasik)
         const melody = [
-            523.25, 659.25, 783.99, 1046.50,  
-            783.99, 659.25, 523.25, 392.00,   
-            440.00, 554.37, 659.25, 880.00,   
-            659.25, 554.37, 440.00, 523.25    
+            523.25, 523.25, 783.99, 783.99, 880.00, 880.00, 783.99, // C C G G A A G
+            659.25, 659.25, 587.33, 587.33, 523.25, 523.25, 392.00, // E E D D C C G
+            783.99, 783.99, 659.25, 659.25, 587.33, 587.33, 392.00, // G G E E D D G
+            783.99, 783.99, 659.25, 659.25, 587.33, 587.33, 523.25  // G G E E D D C
         ];
         let noteIndex = 0;
 
@@ -1197,21 +1198,21 @@
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 
-                osc.type = 'triangle'; 
+                osc.type = 'sine'; // Menggunakan gelombang sine agar suaranya lebih lembut, manis, dan ramah di telinga anak-anak
                 osc.frequency.setValueAtTime(melody[noteIndex], now);
                 
-                gain.gain.setValueAtTime(0.18, now); 
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                gain.gain.setValueAtTime(0.08, now); // Volume diatur lebih lembut/tidak bising
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
                 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 
                 osc.start(now);
-                osc.stop(now + 0.25);
+                osc.stop(now + 0.35);
 
                 noteIndex = (noteIndex + 1) % melody.length;
             } catch(e) {}
-        }, 300); 
+        }, 400); 
     }
 
     window.addEventListener('pointerdown', () => {
@@ -1645,7 +1646,7 @@
                 
                 let isTopScorer = (index === 0);
                 let rowStyle = isTopScorer ? 'color: #b71c1c; font-size: 20px; text-shadow: 1px 1px 0px #ffd54f;' : 'color: #333;';
-                let crownBadge = isTopScorer ? '<b>[JUARA 1]</b> ' : '';
+                let crownBadge = isTopScorer ? '👑 <b>[JUARA 1]</b> ' : '';
 
                 finalHtml += `<div style="margin: 6px 0; ${rowStyle}"><img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"> ${crownBadge}${p}: <b>${playerScores[p]} XP</b></div>`;
             });
