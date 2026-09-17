@@ -1654,12 +1654,23 @@
     function loadQuestion() {
         if (questionIndex >= questions.length) {
             playAudio('win');
+            
+            // Mengurutkan pemain dari skor tertinggi ke terendah
+            let sortedPlayers = [...players].sort((a, b) => playerScores[b] - playerScores[a]);
+            
             let finalHtml = "";
-            players.forEach(p => {
+            sortedPlayers.forEach((p, index) => {
                 let char = playerCharacters[p];
                 let imgFile = char === 'pip' ? 'pip.png' : 'zip.png';
-                finalHtml += `<img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"> ${p}: <b>${playerScores[p]} XP</b><br>`;
+                
+                // Menentukan warna font dan tambahan mahkota khusus untuk juara 1 (paling atas)
+                let isTopScorer = (index === 0);
+                let rowStyle = isTopScorer ? 'color: #b71c1c; font-size: 20px; text-shadow: 1px 1px 0px #ffd54f;' : 'color: #333;';
+                let crownBadge = isTopScorer ? '👑 <b>[JUARA 1]</b> ' : '';
+
+                finalHtml += `<div style="margin: 6px 0; ${rowStyle}"><img src="${imgFile}" class="scoreboard-avatar ${char}-avatar"> ${crownBadge}${p}: <b>${playerScores[p]} XP</b></div>`;
             });
+            
             document.getElementById('final-scores-list').innerHTML = finalHtml;
             goToScreen('screen-score');
             return;
