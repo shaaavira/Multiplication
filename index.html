@@ -2045,7 +2045,10 @@
                         item.remove();
                         banner.innerText = `Keren ${activePlayer}! Lanjutkan perjalananmu...`;
                         banner.className = "correct";
-                        updateTalkerExpression('biasa');
+                        // Berubah menjadi pip.png untuk perkalian, zip.png untuk pembagian saat benar drop koin
+                        let talkerImg = document.getElementById('talker-character-img');
+                        talkerImg.src = operationMode === 'multiplication' ? 'pip.png' : 'zip.png';
+                        
                         checkNumberBondCompletion();
                     }
                 });
